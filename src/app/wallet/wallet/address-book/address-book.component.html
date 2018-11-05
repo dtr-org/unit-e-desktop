@@ -1,0 +1,52 @@
+<div class="container-block address-book disable-select">
+
+  <div class="filter">
+
+    <div class="add-address">
+      <button mat-raised-button color="primary" (click)="openNewAddress()" class="full-width"
+              matTooltip="Save new address to your Address book" matTooltipPosition="above">
+        <mat-icon fontSet="uniteIcon" fontIcon="unite-circle-plus"></mat-icon>
+        Add new address
+      </button>
+    </div>
+
+    <div class="section search-sorting">
+      <div class="subtitle">Search</div>
+      <mat-card class="filter-card">
+        <mat-form-field class="icon-input search-address">
+          <input matInput type="text" [(ngModel)]="query" [ngModelOptions]="{standalone: true}"
+                placeholder="Search Addresses" (keyup.escape)="query = ''">
+          <mat-icon *ngIf="query" (click)="query=''" matTooltip="Clear" fontSet="uniteIcon"
+                    fontIcon="unite-clear-all"></mat-icon>
+          <mat-icon *ngIf="!query" fontSet="uniteIcon" fontIcon="unite-search" matTooltip="Search For Address" matTooltipPosition="before"></mat-icon>
+        </mat-form-field>
+      </mat-card>
+
+    </div><!-- .search-sorting -->
+
+    <p class="widget-help">
+      Address Book is your personal collection of saved addresses belonging to other parties. Kindly note that as re-using the same address for more than one transaction increases traceability &ndash; it is recommended that you mostly save private addresses (if possible) so that both parties’ identities remain private.
+    </p>
+
+  </div><!-- .filter -->
+
+
+  <div class="addresses section">
+
+    <address-table
+      [query]="query"
+      [filter]="filter"
+      [displayHeader]="false"
+      [displayInternalHeader]="true"
+      [displayPagination]="true"
+      [displayLabel]="true"
+      [displayAddress]="true"
+      [displayPurpose]="true"
+      [displayToolsMenu]="true"
+      [displayQrMenu]="false"
+      (editLabelEmitter)="editLabel($event)">
+    </address-table>
+
+  </div><!-- addresses -->
+
+</div>

@@ -1,0 +1,135 @@
+{
+  "clients": {
+    "united": {
+      "version": "0.17.0.1",
+      "platforms": {
+        "linux": {
+          "arm": {
+            "download": {
+              "url": "https://github.com/drt-org/unit-e/releases/download/v0.17.0.1/unite-0.17.0.1-arm-linux-gnueabihf.tar.gz",
+              "type": "tar",
+              "sha256": "48c56fdd52aea9b81ab133d16de5b10d468a3ca47fe95b016dc49a0abbc9b434",
+              "bin": "unite-0.17.0.1/bin/united"
+            },
+            "bin": "united",
+            "commands": {
+              "sanity": {
+                "args": [
+                  "-version"
+                ],
+                "output": [
+                  "UnitE Core Daemon",
+                  "0.17.0.1"
+                ]
+              }
+            }
+          },
+          "ia32": {
+            "download": {
+              "url": "https://github.com/drt-org/unit-e/releases/download/v0.17.0.1/unite-0.17.0.1-i686-pc-linux-gnu_nousb.tar.gz",
+              "type": "tar",
+              "sha256": "e433f71869e5b6be6f29353f0d5c45162ae52eeb1258a9abca3c9f916322e8d0",
+              "bin": "unite-0.17.0.1/bin/united"
+            },
+            "bin": "united",
+            "commands": {
+              "sanity": {
+                "args": [
+                  "-version"
+                ],
+                "output": [
+                  "UnitE Core Daemon",
+                  "0.17.0.1"
+                ]
+              }
+            }
+          },
+          "x64": {
+            "download": {
+              "url": "https://github.com/drt-org/unit-e/releases/download/v0.17.0.1/unite-0.17.0.1-x86_64-linux-gnu_nousb.tar.gz",
+              "type": "tar",
+              "sha256": "1c73e7576e9977ed19f795b0d5a16a571275244ce72fbff5d3a2c2f28860e4fd",
+              "bin": "unite-0.17.0.1/bin/united"
+            },
+            "bin": "united",
+            "commands": {
+              "sanity": {
+                "args": [
+                  "-version"
+                ],
+                "output": [
+                  "UnitE Core Daemon",
+                  "0.17.0.1"
+                ]
+              }
+            }
+          }
+        },
+        "mac": {
+          "x64": {
+            "download": {
+              "url": "https://github.com/drt-org/unit-e/releases/download/v0.17.0.1/unite-0.17.0.1-osx64.tar.gz",
+              "type": "tar",
+              "sha256": "37f9f69dfff22871bf7d59ea4baa66e0732b79a03679de316d7eaaa0fdb3fe59",
+              "bin": "unite-0.17.0.1/bin/united"
+            },
+            "bin": "united",
+            "commands": {
+              "sanity": {
+                "args": [
+                  "-version"
+                ],
+                "output": [
+                  "UnitE Core Daemon",
+                  "0.17.0.1"
+                ]
+              }
+            }
+          }
+        },
+        "win": {
+          "ia32": {
+            "download": {
+              "url": "https://github.com/drt-org/unit-e/releases/download/v0.17.0.1/unite-0.17.0.1-win32.zip",
+              "type": "zip",
+              "sha256": "ba17b2869e1d10818e29caaeea8815ddea2ea13568529b91b19caa51a0aae153",
+              "bin": "unite-0.17.0.1/bin/united.exe"
+            },
+            "bin": "united.exe",
+            "commands": {
+              "sanity": {
+                "args": [
+                  "-version"
+                ],
+                "output": [
+                  "UnitE Core Daemon",
+                  "0.17.0.1"
+                ]
+              }
+            }
+          },
+          "x64": {
+            "download": {
+              "url": "https://github.com/drt-org/unit-e/releases/download/v0.17.0.1/unite-0.17.0.1-win64.zip",
+              "type": "zip",
+              "sha256": "fdda08451e532a9deac8719c9c5f04c75680ed07b603c07608136f20be0bf68b",
+              "bin": "unite-0.17.0.1/bin/united.exe"
+            },
+            "bin": "united.exe",
+            "commands": {
+              "sanity": {
+                "args": [
+                  "-version"
+                ],
+                "output": [
+                  "UnitE Core Daemon",
+                  "0.17.0.1"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

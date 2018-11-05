@@ -1,0 +1,57 @@
+<div mat-dialog-title>Confirm transaction</div>
+<button class="small-close_button pull-right" (click)="dialogClose()">
+  <mat-icon fontSet="uniteIcon" fontIcon="unite-circle-remove"></mat-icon>
+</button>
+
+<div mat-dialog-content class="dialog-content">
+
+  <!--TX confirmation-->
+  <div class="tx-confirmation">
+    <div class="tx-info">
+      <!-- if public -->
+      <div class="public" *ngIf="transactionType === TxType.PUBLIC">
+        <mat-icon class="icon public" fontSet="uniteIcon" fontIcon="unite-public"></mat-icon>
+        <div class="title">Public transaction</div>
+        <p class="help-text">
+          Sender, Receiver & transaction amount will be publicly visible on the blockchain
+        </p>
+      </div>
+    </div>
+
+    <div class="tx-amount">
+      <span class="big">{{ sendAmount.getIntegerPart() }}</span>
+      <span *ngIf="sendAmount.ifDotExist()">
+      <span class="point">.</span>
+      <span class="small">{{ sendAmount.getFractionalPart() }}</span>&ensp;</span>
+      <span class="currency">UNT</span>
+      <!-- TODO: until fiat estimations are implemented, hide them -->
+      <div class="fiat">&asymp; 3.42 USD</div>
+    </div>
+
+    <mat-icon class="icon arrow" fontSet="uniteIcon" fontIcon="unite-arrow-down"></mat-icon>
+
+    <div class="receiver-info">
+      <!--if address saved in Address Book, display its label. if not, hide it -->
+      <div class="label" *ngIf="receiverName !== ''">{{ receiverName }}</div>
+      <code class="address"> {{ sendAddress }} </code>
+    </div>
+
+    <p class="fee-info">
+      Transaction fee:<span class="amount">{{ transactionAmount.getFee() }} UNT</span><span class="fiat">&asymp; 0.05 USD</span><br>
+      Total amount:<span
+      class="amount">{{ transactionAmount.getAmountWithFee(sendAmount.getAmount()) }} UNT</span><span class="fiat">&asymp; 3.47 USD</span>
+    </p>
+  </div><!-- TX confirmation -->
+
+</div><!-- .dialog-content -->
+
+<mat-dialog-actions fxLayoutAlign="space-between center">
+  <button mat-button mat-dialog-close (click)="dialogClose()">
+    <mat-icon fontSet="uniteIcon" fontIcon="unite-cross"></mat-icon>
+    Cancel
+  </button>
+  <button mat-raised-button color="primary" mat-dialog-close (click)="confirm()">
+    <mat-icon fontSet="uniteIcon" fontIcon="unite-check"></mat-icon>
+    Confirm &amp; Send
+  </button>
+</mat-dialog-actions>

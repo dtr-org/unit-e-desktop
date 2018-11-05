@@ -1,0 +1,62 @@
+<div mat-dialog-title class="title">Manage overview widgets</div>
+
+<mat-dialog-content class="modal-content">
+
+  <p>
+    These options allow you to customize your Overview. Enable the widgets you want to see, disable the rest. You can change this anytime in the future as you like.
+  </p>
+
+  <div class="balances area">
+    <mat-slide-toggle checked>Balance overview</mat-slide-toggle>
+    <p class="widget-help">
+      Display your current wallet balance.
+    </p>
+  </div><!-- .balances -->
+
+  <div class="row" fxLayout fxLayoutGap="24px">
+    <div class="main" fxFlex="50">
+      
+      <div class="sellers area">
+        <mat-slide-toggle checked>Seller's overview</mat-slide-toggle>
+        <p class="widget-help">
+          Provides a quick glance at your market listings and associated orders.
+        </p>
+      </div><!-- .sellers -->
+
+      <div class="recent-txs area">
+        <mat-slide-toggle checked>Recent transactions</mat-slide-toggle>
+        <p class="widget-help">
+          Lists your most recent transaction (both incoming and outgoing).
+        </p>
+      </div><!-- .recent-txs -->
+      
+    </div><!-- .main -->
+  
+    <div class="sidebar" fxFlex="50">
+      
+      <div class="buyers area">
+        <mat-slide-toggle checked>Buyer's overview</mat-slide-toggle>
+        <p class="widget-help">
+          Quick overview of your active orders, that you're buying from others.
+        </p>
+      </div><!-- .buyers -->
+      
+    </div><!-- .sidebar -->
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions fxLayoutAlign="end center">
+  <button type="button" mat-button mat-dialog-close>
+    <mat-icon fontSet="uniteIcon" fontIcon="unite-cross"></mat-icon>
+    Cancel
+  </button>
+  <button type="button" mat-button mat-dialog-close>
+    <mat-icon fontSet="uniteIcon" fontIcon="unite-refresh"></mat-icon>
+    Reset to defaults
+  </button>
+  <button mat-raised-button color="primary">
+    <mat-icon fontSet="uniteIcon" fontIcon="unite-check"></mat-icon>
+    Save changes
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,101 @@
+<app-header class="disable-select">
+  <div class="container-fluid">
+    <mat-tab-group (selectChange)="selectTab($event.index)">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon fontSet="uniteIcon" fontIcon="unite-send"></mat-icon>
+          Send payment
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</app-header>
+
+
+<div class="container-block disable-select" fxLayout="row" fxLayoutGap="35px">
+
+  <div class="from-box" fxFlex="0 0 320px">
+    <mat-card>
+      <div class="title">Pay from</div>
+
+      <div class="balance">
+        <div class="desc">Available balance:<span class="amount">{{ getBalance(TxType.PUBLIC) }}</span></div>
+      </div>
+    </mat-card>
+  </div><!-- .from-box -->
+
+
+  <div class="to-box" fxFlex="1 1 100%">
+    <form name="walletSendForm">
+
+      <mat-card class="pay-to" *ngIf="type === 'sendPayment' || advanced">
+        <div class="title">
+          Pay to
+        </div>
+
+        <!-- Receiver's address/label -->
+        <div class="section receiver-address">
+          <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="15px">
+            <mat-form-field fxFlex="1 1 100%" class="full-width larger">
+              <input #address name="toAddress" matInput
+                     [ngClass]="{'verify-sucess': checkAddress() === true, 'verify-error': checkAddress() === false }"
+                     type="text" placeholder="Receiver's address" [(ngModel)]="send.toAddress"
+                     (ngModelChange)="verifyAddress()"/>
+            </mat-form-field>
+            <span fxFlex="0 0 16px">
+              <mat-icon class="cursor-pointer" matTooltip="Pick from Address Book" (click)="openLookup()"
+                        fontSet="uniteIcon" fontIcon="unite-people"></mat-icon>
+            </span>
+            <span fxFlex="0 0 16px">
+              <mat-icon class="cursor-pointer" matTooltip="Paste" fontSet="uniteIcon" fontIcon="unite-past"
+                        (click)="pasteAddress()"></mat-icon>
+            </span>
+            <span fxFlex="0 0 16px">
+              <mat-icon class="cursor-pointer" matTooltip="Clear all" (click)="clearReceiver()"
+                        color="warn" fontSet="uniteIcon" fontIcon="unite-clear-all"></mat-icon>
+            </span>
+          </div>
+          <mat-form-field class="full-width larger no-top-padding" floatPlaceholder="never">
+            <input name="toLabel" matInput type="text" placeholder="Receiver's name (optional)"
+                   [(ngModel)]="send.toLabel">
+          </mat-form-field>
+          <p class="widget-help">
+            You can save Receiver's address to your Address book by labeling it here.
+          </p>
+        </div><!-- .receiver-address.section -->
+
+      </mat-card><!-- .pay-to -->
+
+      <!-- Send amount % buttons -->
+      <mat-card class="send-amount" fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="start center">
+        <mat-form-field fxFlex="0 0 150px">
+          <!-- Send amount -->
+          <input matInput type="text" name="sendAmount" placeholder="Amount to send" [(ngModel)]="send.amount"
+                 (input)="verifyAmount()"
+                 [ngClass]="{'verify-sucess': checkAmount() === true, 'verify-error': checkAmount() === false }"
+                 [disabled]="send.subtractFeeFromAmount">
+        </mat-form-field>
+        <mat-checkbox name="send_all" [(ngModel)]="send.subtractFeeFromAmount" (click)="sendAllBalance()"
+                      class="send-all">
+          Send All
+        </mat-checkbox>
+        <!-- Choose currency -->
+        <mat-select class="underliningSelect" fxFlex="0 0 70px" name="currency" [(ngModel)]="send.currency"
+                    placeholder="Currency">
+          <mat-option value="unt">UNT</mat-option>
+        </mat-select>
+        <!-- Send buttons -->
+        <div class="actions" fxFlex="1 1 100%">
+          <button mat-raised-button color="primary" class="validate" (click)="onSubmit()"
+                  [disabled]="!checkAddress() || !checkAmount()">
+            <mat-icon fontSet="uniteIcon" fontIcon="unite-check"></mat-icon>
+            Make payment
+          </button>
+        </div><!-- .actions -->
+      </mat-card><!-- .send-amount -->
+
+
+    </form><!-- walletSendForm -->
+  </div><!-- .to-box -->
+
+</div><!-- .container -->

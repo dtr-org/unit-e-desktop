@@ -1,0 +1,462 @@
+/* ------------------------------- *\
+    Fonts
+\* ------------------------------- */
+
+// ------ DEFAULT FONT ------ //
+
+@font-face {
+  font-family: 'Inter_UI';
+  font-style: normal;
+  font-weight: 400;
+  src: url("assets/fonts/Inter-UI-Regular.woff2") format("woff2"),
+       url("assets/fonts/Inter-UI-Regular.woff") format("woff");
+}
+@font-face {
+  font-family: 'Inter_UI';
+  font-style: italic;
+  font-weight: 400;
+  src: url("assets/fonts/Inter-UI-Italic.woff2") format("woff2"),
+       url("assets/fonts/Inter-UI-Italic.woff") format("woff");
+}
+@font-face {
+  font-family: 'Inter_UI';
+  font-style: normal;
+  font-weight: 500;
+  src: url("assets/fonts/Inter-UI-Medium.woff2") format("woff2"),
+       url("assets/fonts/Inter-UI-Medium.woff") format("woff");
+}
+@font-face {
+  font-family: 'Inter_UI';
+  font-style: normal;
+  font-weight: 700;
+  src: url("assets/fonts/Inter-UI-Bold.woff2") format("woff2"),
+       url("assets/fonts/Inter-UI-Bold.woff") format("woff");
+}
+@font-face {
+  font-family: 'Inter_UI';
+  font-style: normal;
+  font-weight: 900;
+  src: url("assets/fonts/Inter-UI-Black.woff2") format("woff2"),
+       url("assets/fonts/Inter-UI-Black.woff") format("woff");
+}
+
+
+// ------ ICONS ------ //
+
+@font-face {
+  font-family: 'part';
+  src: url('assets/fonts/part.eot');
+  src: url('assets/fonts/part.eot') format('embedded-opentype'),
+       url('assets/fonts/part.woff2') format('woff2'),
+       url('assets/fonts/part.woff') format('woff'),
+       url('assets/fonts/part.ttf') format('truetype'),
+       url('assets/fonts/part.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.unite-icon {
+  & {
+    display: inline-block;
+    font: normal normal normal 14px/1 'part';
+    font-size: inherit;
+    speak: none;
+    text-transform: none;
+    /* Better Font Rendering
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+     */
+  }
+}
+
+.unite-add-account::before {
+  content: "\ea01";
+}
+
+.unite-airplane::before {
+  content: "\ea02";
+}
+
+.unite-alert::before {
+  content: "\ea03";
+}
+
+.unite-arrow-down::before {
+  content: "\ea05";
+}
+
+.unite-arrow-left::before {
+  content: "\ea06";
+}
+
+.unite-arrow-right::before {
+  content: "\ea07";
+}
+
+.unite-arrow-up::before {
+  content: "\ea08";
+}
+
+.unite-attach::before {
+  content: "\ea09";
+}
+
+.unite-bag-buy::before {
+  content: "\ea0a";
+}
+
+.unite-bag-sell::before {
+  content: "\ea0b";
+}
+
+.unite-bag::before {
+  content: "\ea0c";
+}
+
+.unite-blind::before {
+  content: "\ea0d";
+}
+
+.unite-bug::before {
+  content: "\ea0e";
+}
+
+.unite-cart::before {
+  content: "\ea0f";
+}
+
+.unite-check::before {
+  content: "\ea10";
+}
+
+.unite-circle-alert::before {
+  content: "\ea11";
+}
+
+.unite-circle-check::before {
+  content: "\ea12";
+}
+
+.unite-circle-info::before {
+  content: "\ea13";
+}
+
+.unite-circle-minus::before {
+  content: "\ea14";
+}
+
+.unite-circle-plus::before {
+  content: "\ea15";
+}
+
+.unite-circle-question::before {
+  content: "\ea16";
+}
+
+.unite-circle-remove::before {
+  content: "\ea17";
+}
+
+.unite-circle-user::before {
+  content: "\ea18";
+}
+
+.unite-clear-all::before {
+  content: "\ea19";
+}
+
+.unite-cog::before {
+  content: "\ea1a";
+}
+
+.unite-console-window::before {
+  content: "\ea1b";
+}
+
+.unite-console::before {
+  content: "\ea1c";
+}
+
+.unite-copy::before {
+  content: "\ea1d";
+}
+
+.unite-cross::before {
+  content: "\ea1e";
+}
+
+.unite-cryptocurrency-bitcoin::before {
+  content: "\ea1f";
+}
+
+.unite-cryptocurrency-unite::before {
+  content: "\ea20";
+}
+
+.unite-currency-dollar::before {
+  content: "\ea21";
+}
+
+.unite-currency-euro::before {
+  content: "\ea22";
+}
+
+.unite-currency-pound::before {
+  content: "\ea23";
+}
+
+.unite-currency-yen::before {
+  content: "\ea24";
+}
+
+.unite-date::before {
+  content: "\ea25";
+}
+
+.unite-document::before {
+  content: "\ea26";
+}
+
+.unite-error::before {
+  content: "\ea27";
+}
+
+.unite-filter::before {
+  content: "\ea28";
+}
+
+.unite-flag::before {
+  content: "\ea29";
+}
+
+.unite-flash::before {
+  content: "\ea2a";
+}
+
+.unite-globe::before {
+  content: "\ea2b";
+}
+
+.unite-hamburger::before {
+  content: "\ea2c";
+}
+
+.unite-heart-outline-add::before {
+  content: "\ea2d";
+}
+
+.unite-heart-outline-remove::before {
+  content: "\ea2e";
+}
+
+.unite-heart-outline::before {
+  content: "\ea2f";
+}
+
+.unite-heart::before {
+  content: "\ea30";
+}
+
+.unite-image-upload::before {
+  content: "\ea31";
+}
+
+.unite-info::before {
+  content: "\ea32";
+}
+
+.unite-label::before {
+  content: "\ea33";
+}
+
+.unite-lightning::before {
+  content: "\ea34";
+}
+
+.unite-listings::before {
+  content: "\ea35";
+}
+
+.unite-lock-open::before {
+  content: "\ea36";
+}
+
+.unite-lock::before {
+  content: "\ea37";
+}
+
+.unite-minus::before {
+  content: "\ea38";
+}
+
+.unite-next-double::before {
+  content: "\ea39";
+}
+
+.unite-next-single::before {
+  content: "\ea3a";
+}
+
+.unite-notification-bell::before {
+  content: "\ea3b";
+}
+
+.unite-notification-speaker::before {
+  content: "\ea3c";
+}
+
+.unite-overview::before {
+  content: "\ea3d";
+}
+
+.unite-past::before {
+  content: "\ea3e";
+}
+
+.unite-pen-1::before {
+  content: "\ea3f";
+}
+
+.unite-pen-2::before {
+  content: "\ea40";
+}
+
+.unite-people::before {
+  content: "\ea41";
+}
+
+.unite-person-add::before {
+  content: "\ea42";
+}
+
+.unite-person-check::before {
+  content: "\ea43";
+}
+
+.unite-person-edit::before {
+  content: "\ea44";
+}
+
+.unite-person-heart::before {
+  content: "\ea45";
+}
+
+.unite-person-remove::before {
+  content: "\ea46";
+}
+
+.unite-person::before {
+  content: "\ea47";
+}
+
+.unite-plus::before {
+  content: "\ea48";
+}
+
+.unite-preferences::before {
+  content: "\ea49";
+}
+
+.unite-previous-double::before {
+  content: "\ea4a";
+}
+
+.unite-previous-single::before {
+  content: "\ea4b";
+}
+
+.unite-public::before {
+  content: "\ea4c";
+}
+
+.unite-qr::before {
+  content: "\ea4d";
+}
+
+.unite-receive::before {
+  content: "\ea4e";
+}
+
+.unite-refresh::before {
+  content: "\ea4f";
+}
+
+.unite-rocket::before {
+  content: "\ea50";
+}
+
+.unite-search::before {
+  content: "\ea51";
+}
+
+.unite-select::before {
+  content: "\ea52";
+}
+
+.unite-send::before {
+  content: "\ea53";
+}
+
+.unite-ship::before {
+  content: "\ea54";
+}
+
+.unite-small-cross::before {
+  content: "\ea55";
+}
+
+.unite-small-minus::before {
+  content: "\ea56";
+}
+
+.unite-small-plus::before {
+  content: "\ea57";
+}
+
+.unite-smiley::before {
+  content: "\ea58";
+}
+
+.unite-snowflake::before {
+  content: "\ea59";
+}
+
+.unite-swap::before {
+  content: "\ea5b";
+}
+
+.unite-tool::before {
+  content: "\ea5c";
+}
+
+.unite-transfer::before {
+  content: "\ea5d";
+}
+
+.unite-triangle-down::before {
+  content: "\ea5e";
+}
+
+.unite-triangle-left::before {
+  content: "\ea5f";
+}
+
+.unite-triangle-right::before {
+  content: "\ea60";
+}
+
+.unite-triangle-up::before {
+  content: "\ea61";
+}
+
+.unite-truck::before {
+  content: "\ea62";
+}
+
+.unite-zoom-bold-in::before {
+  content: "\ea63";
+}
+
+.unite-zoom-out::before {
+  content: "\ea64";
+}

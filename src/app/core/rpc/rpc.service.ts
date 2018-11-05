@@ -1,0 +1,191 @@
+import { Injectable, OnDestroy } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Log } from 'ng2-logger';
+import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
+import { map, catchError } from 'rxjs/operators';
+
+import { IpcService } from '../ipc/ipc.service';
+import { environment } from '../../../environments/environment';
+
+const MAINNET_PORT = 51735;
+const TESTNET_PORT = 51935;
+const HOSTNAME = 'localhost';
+
+declare global {
+  interface Window {
+    electron: boolean;
+  }
+}
+
+class Outputs {
+  address: string;
+  amount: number | string;
+  subfee?: boolean;
+  script?: string;
+  narr?: string;
+};
+
+class CoinControl {
+  changeaddress?: string;
+  inputs?: any;
+  replaceable?: boolean;
+  conf_target?: number;
+  estimate_mode?: 'UNSET' | 'ECONOMICAL' | 'CONSERVATIVE';
+  fee_rate?: number;
+}
+
+/**
+ * The RPC service that maintains a single connection to the united daemon.
+ *
+ * It has two important functions: call and register.
+ */
+
+@Injectable()
+export class RpcService implements OnDestroy {
+
+  private log: any = Log.create('rpc.service');
+  private destroyed: boolean = false;
+
+  /**
+   * IP/URL for daemon (default = localhost)
+   */
+  // private hostname: String = HOSTNAME; // TODO: URL Flag / Settings
+  private hostname: String = environment.uniteHost;
+
+  /**
+   * Port number of of daemon (default = 51935)
+   */
+  // private port: number = TESTNET_PORT; // TODO: Mainnet / testnet flag...
+  private port: number = environment.unitePort;
+
+  // note: basic64 equiv= dGVzdDp0ZXN0
+  private username: string = 'test';
+  private password: string = 'test';
+
+  public isElectron: boolean = false;
+
+  constructor(
+    private _http: HttpClient,
+    private _ipc: IpcService
+  ) {
+    this.isElectron = window.electron
+  }
+
+  ngOnDestroy() {
+    this.destroyed = true;
+  }
+
+  /**
+   * The call method will perform a single call to the united daemon and perform a callback to
+   * the instance through the function as defined in the params.
+   *
+   * @param {string} method  The JSON-RPC method to call, see ```./united help```
+   * @param {Array<Any>} params  The parameters to pass along with the JSON-RPC request.
+   * The content of the array is of type any (ints, strings, booleans etc)
+   *
+   * @example
+   * ```JavaScript
+   * this._rpc.call('listtransactions', [0, 20]).subscribe(
+   *              success => ...,
+   *              error => ...);
+   * ```
+   */
+  call(method: Commands, params?: Array<any> | null): Observable<any> {
+    if (this.isElectron) {
+      return this._ipc.runCommand('rpc-channel', null, method, params).pipe(
+        map(response => {
+          return response && (response.result !== undefined)
+                      ? response.result
+                      : response;
+        })
+      );
+    } else {
+      // Running in browser, delete?
+      const postData = JSON.stringify({
+        method: method,
+        params: params,
+        id: 1
+      });
+
+
+      const headerJson = {
+       'Content-Type': 'application/json',
+       'Authorization': 'Basic ' + btoa(`${this.username}:${this.password}`),
+       'Accept': 'application/json',
+      };
+      const headers = new HttpHeaders(headerJson);
+
+      return this._http
+        .post(`http://${this.hostname}:${this.port}`, postData, { headers: headers })
+          .map((response: any) => response.result)
+          .catch(error => {
+            let err: string;
+            if (typeof error._body === 'object') {
+              err =  error._body
+            } else if (error._body) {
+              err = JSON.parse(error._body);
+            } else {
+              err = error.error && error.error.error ? error.error.error : error.message;
+            }
+
+            return Observable.throw(err)
+          })
+    }
+  }
+
+  addressBookInfo() {
+    return this.call(Commands.ADDRESSBOOKINFO);
+  }
+
+  filterAddresses(offset?: number, count?: number, sort_code?: 0 | 1, search?: string, match_owned?: 0 | 1 | 2) {
+    offset = offset || 0;
+    count = count || null;
+    sort_code = sort_code || 0;
+    search = search || '';
+    match_owned = match_owned || 0;
+
+    let params = [offset, count, sort_code, search, match_owned];
+    return this.call(Commands.FILTERADDRESSES, params);
+  }
+
+  sendtypeto(
+    typein: string, typeout: string, outputs: Outputs[], comment?: string, commentTo?: string,
+    testFee?: boolean, coinControl?: CoinControl
+  ) {
+    comment = comment || null;
+    commentTo = commentTo || null;
+    testFee = testFee || false;
+    coinControl = coinControl || null;
+
+    let params : any[] = [typein, typeout, outputs, comment, commentTo, testFee, coinControl];
+    return this.call(Commands.SENDTYPETO, params);
+  }
+}
+
+export enum Commands {
+  INVALID = '',
+  ADDRESSBOOKINFO = 'addressbookinfo',
+  ENCRYPTWALLET = 'encryptwallet',
+  FILTERADDRESSES = 'filteraddresses',
+  FILTERTRANSACTIONS = 'filtertransactions',
+  GETBLOCKCHAININFO = 'getblockchaininfo',
+  GETBLOCKCOUNT = 'getblockcount',
+  GETNETWORKINFO = 'getnetworkinfo',
+  GETNEWADDRESS = 'getnewaddress',
+  GETPEERINFO = 'getpeerinfo',
+  GETRECEIVEDBYADDRESS = 'getreceivedbyaddress',
+  GETWALLETINFO = 'getwalletinfo',
+  IMPORTMASTERKEY = 'importmasterkey',
+  LISTUNSPENT = 'listunspent',
+  MANAGEADDRESSBOOK = 'manageaddressbook',
+  MNEMONIC = 'mnemonic',
+  RESCANBLOCKCHAIN = 'rescanblockchain',
+  RUNSTRINGCOMMAND = 'runstringcommand',
+  SENDTYPETO = 'sendtypeto',
+  SIGNMESSAGE = 'signmessage',
+  VALIDATEADDRESS = 'validateaddress',
+  VERIFYMESSAGE = 'verifymessage',
+  WALLETLOCK = 'walletlock',
+  WALLETPASSPHRASE = 'walletpassphrase',
+}

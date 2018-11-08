@@ -14,8 +14,8 @@ export class HistoryComponent implements OnInit {
     { title: 'All transactions',   value: 'all',               icon: ''},
     { title: 'Sent',               value: 'send',              icon: 'send'},
     { title: 'Received',           value: 'receive',           icon: 'receive'},
+    { title: 'Coinstake',          value: 'coinbase',          icon: 'currency-dollar'},
     // { title: 'Immature',         value: 'immature'          },
-    // { title: 'Coinbase',         value: 'coinbase'          },
     // { title: 'Orphan',           value: 'orphan'            },
   ];
 

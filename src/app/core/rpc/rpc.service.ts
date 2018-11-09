@@ -36,6 +36,21 @@ class CoinControl {
   fee_rate?: number;
 }
 
+class ProposerStatus {
+  incoming_connections: number;
+  outgoing_connections: number;
+  time: string;
+  sync_status: string;
+  wallets: {
+    wallet: string;
+    balance: number;
+    stakeable_balance: number;
+    status: string;
+    searches: number;
+    searches_attempted: number;
+  }[]
+}
+
 /**
  * The RPC service that maintains a single connection to the united daemon.
  *
@@ -149,6 +164,10 @@ export class RpcService implements OnDestroy {
     return this.call(Commands.FILTERADDRESSES, [
       offset, count, sort_code, search, match_owned
     ]);
+  }
+
+  proposerStatus() : Observable<ProposerStatus> {
+    return this.call(Commands.PROPOSERSTATUS);
   }
 
   sendtypeto(

@@ -15,6 +15,7 @@ enum Commands {
   LISTUNSPENT = 'listunspent',
   MANAGEADDRESSBOOK = 'manageaddressbook',
   MNEMONIC = 'mnemonic',
+  PROPOSERSTATUS = 'proposerstatus',
   RESCANBLOCKCHAIN = 'rescanblockchain',
   RUNSTRINGCOMMAND = 'runstringcommand',
   SENDTYPETO = 'sendtypeto',
@@ -24,5 +25,4 @@ enum Commands {
   WALLETLOCK = 'walletlock',
   WALLETPASSPHRASE = 'walletpassphrase',
 }
-
 export { Commands };

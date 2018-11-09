@@ -1,0 +1,42 @@
+@import "./src/assets/_config"; // import shared colors etc.
+@import '../shared/shared.scss';
+
+.mat-card {
+  padding: 0;
+}
+
+.staking-overview { // listing of staking stats
+  @extend %disable-select;
+  width: 100%;
+  td, th {
+    padding: 10px 20px;
+    border-bottom: 1px solid rgba($bg-shadow, 0.4);
+  }
+  tr:last-of-type {
+    td, th {
+      border: none;
+    }
+  }
+  .heading {
+    text-align: left;
+    padding-right: 20px;
+    font-weight: normal;
+    color: $text-muted;
+  }
+  .value {
+    font-weight: 500;
+    text-align: right;
+  }
+}
+
+.proposer-alert {
+    color: $color-alert;
+}
+
+.proposer-info {
+    color: $color-info;
+}
+
+.proposer-success {
+    color: $color-success;
+}

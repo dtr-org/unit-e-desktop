@@ -1,0 +1,26 @@
+<div class="staking-info">
+  <app-header>
+    <ul class="header-nav">
+      <li>Staking Info</li>
+      <!-- TODO: uncomment when widget management is ready -->
+      <!--li class="buttons">
+        <mat-icon class="icon" fontSet="uniteIcon" fontIcon="unite-cog" matTooltip="Edit widget"></mat-icon>
+        <mat-icon class="icon move" fontSet="uniteIcon" fontIcon="unite-hamburger" matTooltip="Move widget"></mat-icon>
+      </li-->
+    </ul>
+  </app-header>
+  <mat-card>
+    <table class="staking-overview">
+      <tr>
+        <td colspan="2">
+          <div class="heading">Proposer status</div>
+          <div class="value proposer-{{ severity }}">{{ proposerStatus }}</div>
+        </td>
+      </tr>
+      <tr>
+        <th class="heading">Stakeable balance</th>
+        <td class="value">{{ stakeableBalance.getIntegerPart() }}.<small>{{ stakeableBalance.getFractionalPart() }}</small></td>
+      </tr>
+    </table>
+  </mat-card>
+</div><!-- .staking-info -->

@@ -39,15 +39,4 @@ describe('SyncingComponent', () => {
     expect(component.getRemainder).tobe();
   });
 */
-  it('should get increasePerMinute', () => {
-    expect(component.increasePerMinute).toBe(undefined);
-  });
-
-  it('should get lastBlockTime', () => {
-    expect(component.lastBlockTime).toBe(undefined);
-  });
-
-  it('should get remainingBlocks', () => {
-    expect(component.remainder).toBe(undefined);
-  });
 });

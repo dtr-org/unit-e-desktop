@@ -15,12 +15,9 @@ export class SyncingComponent implements OnDestroy {
   log: any = Log.create('syncing.component');
   private destroyed: boolean = false;
 
-  remainder: any;
-  lastBlockTime: Date;
-  increasePerMinute: string;
-  estimatedTimeLeft: string;
   manuallyOpened: boolean;
   syncPercentage: number;
+  syncStatusString: string;
   nPeers: number;
 
   /* modal stuff */
@@ -37,28 +34,33 @@ export class SyncingComponent implements OnDestroy {
       .subscribe(connections => this.nPeers = connections);
 
     this._blockStatusService.statusUpdates.asObservable().subscribe(status => {
-
-      this.remainder = status.remainingBlocks < 0
-        ? 'waiting for peers...'
-        : status.remainingBlocks;
-
-      this.lastBlockTime = status.lastBlockTime;
-
-      this.increasePerMinute = status.syncPercentage === 100
-        ? 'DONE'
-        : status.syncPercentage.toFixed(2).toString() + ' %';
-
-      this.estimatedTimeLeft = status.syncPercentage === 100
-        ? 'DONE'
-        : status.estimatedTimeLeft;
-
       this.manuallyOpened = status.manuallyOpened;
       this.syncPercentage = status.syncPercentage;
+      this.syncStatusString = this.getSyncStatusString(status.syncStatus);
 
       if (status.syncPercentage === 100 && !this.manuallyOpened) {
         this.closeOnceHackishly();
       }
     });
+  }
+
+  getSyncStatusString(statusEnum : string) : string {
+    switch (statusEnum) {
+      case 'SYNCED':
+        return 'Synced.';
+      case 'IMPORTING':
+        return 'Importing...';
+      case 'REINDEXING':
+        return 'Reindexing...';
+      case 'NO_TIP':
+        return 'No tip.';
+      case 'MINIMUM_CHAIN_WORK_NOT_REACHED':
+        return 'Minimum chain work not reached.';
+      case 'MAX_TIP_AGE_EXCEEDED':
+        return 'Max tip age exceeded.';
+      default:
+        return ''
+    }
   }
 
   closeOnceHackishly() {

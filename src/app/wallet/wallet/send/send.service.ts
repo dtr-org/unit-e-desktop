@@ -58,7 +58,7 @@ export class SendService {
     // Truncate the address to 16 characters only
     const trimAddress = address.substring(0, 16) + '...';
     const txsId = json.substring(0, 45) + '...';
-    this.flashNotification.open(`Succesfully sent ${amount} UNT to ${trimAddress}!\nTransaction id: ${txsId}`, 'warn');
+    this.flashNotification.open(`Succesfully sent ${amount} UTE to ${trimAddress}!\nTransaction id: ${txsId}`, 'warn');
   }
 
   private rpc_send_failed(message: string, address?: string, amount?: number) {

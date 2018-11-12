@@ -66,7 +66,7 @@ export class NewTxNotifierService implements OnDestroy {
     this.log.d('notify new tx: ' + tx);
     if (tx.category === 'receive') {
       this._notification.sendNotification(
-        'Incoming transaction', tx.amount + ' UNT received'
+        'Incoming transaction', tx.amount + ' UTE received'
       );
     }
   }

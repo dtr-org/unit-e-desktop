@@ -23,7 +23,7 @@
       <span *ngIf="sendAmount.ifDotExist()">
       <span class="point">.</span>
       <span class="small">{{ sendAmount.getFractionalPart() }}</span>&ensp;</span>
-      <span class="currency">UNT</span>
+      <span class="currency">UTE</span>
       <!-- TODO: until fiat estimations are implemented, hide them -->
       <div class="fiat">&asymp; 3.42 USD</div>
     </div>
@@ -37,9 +37,9 @@
     </div>
 
     <p class="fee-info">
-      Transaction fee:<span class="amount">{{ transactionAmount.getFee() }} UNT</span><span class="fiat">&asymp; 0.05 USD</span><br>
+      Transaction fee:<span class="amount">{{ transactionAmount.getFee() }} UTE</span><span class="fiat">&asymp; 0.05 USD</span><br>
       Total amount:<span
-      class="amount">{{ transactionAmount.getAmountWithFee(sendAmount.getAmount()) }} UNT</span><span class="fiat">&asymp; 3.47 USD</span>
+      class="amount">{{ transactionAmount.getAmountWithFee(sendAmount.getAmount()) }} UTE</span><span class="fiat">&asymp; 3.47 USD</span>
     </p>
   </div><!-- TX confirmation -->
 

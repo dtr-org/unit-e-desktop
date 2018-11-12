@@ -43,4 +43,11 @@ describe('SendConfirmationModalComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should have the right currency name', () => {
+    const element: HTMLElement = fixture.nativeElement;
+    const currency = element.querySelector('.currency');
+
+    expect(currency.textContent).toEqual('UTE');
+  });
 });

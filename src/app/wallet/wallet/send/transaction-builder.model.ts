@@ -1,5 +1,5 @@
 export enum TxType {
-  PUBLIC = 'unt',
+  PUBLIC = 'ute',
 }
 
 export class TransactionBuilder {
@@ -15,7 +15,7 @@ export class TransactionBuilder {
   validAddress: boolean;
   validAmount: boolean;
   isMine: boolean;
-  currency: string = 'unt';
+  currency: string = 'ute';
   ringsize: number = 8;
   subtractFeeFromAmount: boolean = false;
   estimateFeeOnly: boolean = true;

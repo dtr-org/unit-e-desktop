@@ -33,8 +33,9 @@ export class PassphraseService {
   }
 
   validateWord(word: string): boolean {
-    if (!word)
+    if (!word) {
       return false;
+    }
 
     return true;
 

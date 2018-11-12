@@ -7,6 +7,7 @@ import { map, catchError } from 'rxjs/operators';
 
 import { IpcService } from '../ipc/ipc.service';
 import { environment } from '../../../environments/environment';
+import { Commands } from './commands';
 
 const MAINNET_PORT = 51735;
 const TESTNET_PORT = 51935;
@@ -145,8 +146,9 @@ export class RpcService implements OnDestroy {
     search = search || '';
     match_owned = match_owned || 0;
 
-    let params = [offset, count, sort_code, search, match_owned];
-    return this.call(Commands.FILTERADDRESSES, params);
+    return this.call(Commands.FILTERADDRESSES, [
+      offset, count, sort_code, search, match_owned
+    ]);
   }
 
   sendtypeto(
@@ -158,34 +160,10 @@ export class RpcService implements OnDestroy {
     testFee = testFee || false;
     coinControl = coinControl || null;
 
-    let params : any[] = [typein, typeout, outputs, comment, commentTo, testFee, coinControl];
-    return this.call(Commands.SENDTYPETO, params);
+    return this.call(Commands.SENDTYPETO, [
+      typein, typeout, outputs, comment, commentTo, testFee, coinControl
+    ]);
   }
 }
 
-export enum Commands {
-  INVALID = '',
-  ADDRESSBOOKINFO = 'addressbookinfo',
-  ENCRYPTWALLET = 'encryptwallet',
-  FILTERADDRESSES = 'filteraddresses',
-  FILTERTRANSACTIONS = 'filtertransactions',
-  GETBLOCKCHAININFO = 'getblockchaininfo',
-  GETBLOCKCOUNT = 'getblockcount',
-  GETNETWORKINFO = 'getnetworkinfo',
-  GETNEWADDRESS = 'getnewaddress',
-  GETPEERINFO = 'getpeerinfo',
-  GETRECEIVEDBYADDRESS = 'getreceivedbyaddress',
-  GETWALLETINFO = 'getwalletinfo',
-  IMPORTMASTERKEY = 'importmasterkey',
-  LISTUNSPENT = 'listunspent',
-  MANAGEADDRESSBOOK = 'manageaddressbook',
-  MNEMONIC = 'mnemonic',
-  RESCANBLOCKCHAIN = 'rescanblockchain',
-  RUNSTRINGCOMMAND = 'runstringcommand',
-  SENDTYPETO = 'sendtypeto',
-  SIGNMESSAGE = 'signmessage',
-  VALIDATEADDRESS = 'validateaddress',
-  VERIFYMESSAGE = 'verifymessage',
-  WALLETLOCK = 'walletlock',
-  WALLETPASSPHRASE = 'walletpassphrase',
-}
+export { Commands } from './commands';

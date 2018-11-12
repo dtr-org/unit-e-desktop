@@ -106,7 +106,7 @@ export class PasswordComponent implements OnDestroy {
           let _subs = this._rpcState.observe('getwalletinfo', 'unlocked_until').skip(1)
             .subscribe(
               unlocked_until => {
-                let encryptionStatus = (unlocked_until === 0) ? 'Locked' : 'Unlocked';
+                const encryptionStatus = (unlocked_until === 0) ? 'Locked' : 'Unlocked';
                 this.log.d('rpc_unlock: success: unlock was called! New Status:', encryptionStatus);
 
                 // hook for unlockEmitter, warn parent component that wallet is unlocked!

@@ -48,16 +48,15 @@ export class ConsoleModalComponent implements OnInit, AfterViewChecked {
   }
 
   rpcCall() {
-    let commandString = Commands.RUNSTRINGCOMMAND;
     this.waitingForRPC = false;
     this.commandHistory.push(this.command);
     this.historyCount = this.commandHistory.length;
-    let params = this.queryParser(this.command);
+    const params = this.queryParser(this.command);
 
     if (params.length > 0) {
       params.splice(1, 0, ''); // TODO: Add wallet name here for multiwallet
     }
-    this[this.activeTab].call(commandString, params)
+    this[this.activeTab].call(Commands.RUNSTRINGCOMMAND, params)
       .subscribe(
         response => this.formatSuccessResponse(response),
         error => this.formatErrorResponse(error));

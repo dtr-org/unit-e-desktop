@@ -1,0 +1,28 @@
+enum Commands {
+  INVALID = '',
+  ADDRESSBOOKINFO = 'addressbookinfo',
+  ENCRYPTWALLET = 'encryptwallet',
+  FILTERADDRESSES = 'filteraddresses',
+  FILTERTRANSACTIONS = 'filtertransactions',
+  GETBLOCKCHAININFO = 'getblockchaininfo',
+  GETBLOCKCOUNT = 'getblockcount',
+  GETNETWORKINFO = 'getnetworkinfo',
+  GETNEWADDRESS = 'getnewaddress',
+  GETPEERINFO = 'getpeerinfo',
+  GETRECEIVEDBYADDRESS = 'getreceivedbyaddress',
+  GETWALLETINFO = 'getwalletinfo',
+  IMPORTMASTERKEY = 'importmasterkey',
+  LISTUNSPENT = 'listunspent',
+  MANAGEADDRESSBOOK = 'manageaddressbook',
+  MNEMONIC = 'mnemonic',
+  RESCANBLOCKCHAIN = 'rescanblockchain',
+  RUNSTRINGCOMMAND = 'runstringcommand',
+  SENDTYPETO = 'sendtypeto',
+  SIGNMESSAGE = 'signmessage',
+  VALIDATEADDRESS = 'validateaddress',
+  VERIFYMESSAGE = 'verifymessage',
+  WALLETLOCK = 'walletlock',
+  WALLETPASSPHRASE = 'walletpassphrase',
+}
+
+export { Commands };

@@ -91,7 +91,7 @@ export class AddressLookupComponent implements OnInit {
     this._rpc.addressBookInfo()
       .subscribe(
         (response: any) => {
-          let typeInt : 0 | 1 | 2 = 0;
+          let typeInt: 0 | 1 | 2 = 0;
           if (this.type === 'send') {
             typeInt = 2;
             this._addressCount = response.num_send;

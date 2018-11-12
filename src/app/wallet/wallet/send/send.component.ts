@@ -165,7 +165,7 @@ export class SendComponent implements OnInit {
   openSendConfirmationModal() {
     const dialogRef = this.dialog.open(SendConfirmationModalComponent);
 
-    let txt = `Do you really want to send ${this.send.amount} ${this.send.currency.toUpperCase()} to ${this.send.toAddress}?`;
+    const txt = `Do you really want to send ${this.send.amount} ${this.send.currency.toUpperCase()} to ${this.send.toAddress}?`;
     dialogRef.componentInstance.dialogContent = txt;
     dialogRef.componentInstance.send = this.send;
 

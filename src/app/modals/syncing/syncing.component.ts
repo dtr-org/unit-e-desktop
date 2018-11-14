@@ -4,6 +4,7 @@ import { MatDialogRef } from '@angular/material';
 import { RpcStateService, BlockStatusService } from '../../core/core.module';
 
 import { Log } from 'ng2-logger';
+import { SyncStatus } from 'app/core/rpc/rpc-types';
 
 @Component({
   selector: 'app-syncing',
@@ -44,7 +45,7 @@ export class SyncingComponent implements OnDestroy {
     });
   }
 
-  getSyncStatusString(syncStatus: string): string {
+  getSyncStatusString(syncStatus: SyncStatus): string {
     switch (syncStatus) {
       case 'SYNCED':
         return 'Synced.';

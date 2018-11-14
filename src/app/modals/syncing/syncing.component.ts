@@ -44,8 +44,8 @@ export class SyncingComponent implements OnDestroy {
     });
   }
 
-  getSyncStatusString(statusEnum : string) : string {
-    switch (statusEnum) {
+  getSyncStatusString(syncStatus : string) : string {
+    switch (syncStatus) {
       case 'SYNCED':
         return 'Synced.';
       case 'IMPORTING':

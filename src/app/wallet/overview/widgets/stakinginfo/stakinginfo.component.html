@@ -19,7 +19,7 @@
       </tr>
       <tr>
         <th class="heading">Stakeable balance</th>
-        <td class="value">{{ stakeableBalance.getIntegerPart() }}.<small>{{ stakeableBalance.getFractionalPart() }}</small></td>
+        <td class="value">{{ stakeableBalance.getIntegerPart() }}{{ stakeableBalance.dot() }}<small>{{ stakeableBalance.getFractionalPart() }}</small></td>
       </tr>
     </table>
   </mat-card>

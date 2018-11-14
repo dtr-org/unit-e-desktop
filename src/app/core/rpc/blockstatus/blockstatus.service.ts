@@ -33,7 +33,7 @@ export class BlockStatusService {
   constructor(
     private _rpcState: RpcStateService
   ) {
-    // Calculate syncing status
+    // Retrieve the syncing status as returned by the `proposerstatus` RPC call
     this.log.d('constructor blockstatus');
     this._rpcState.observe('proposerstatus')
       .subscribe(

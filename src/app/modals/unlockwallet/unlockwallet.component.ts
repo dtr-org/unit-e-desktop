@@ -4,6 +4,7 @@ import { Log } from 'ng2-logger';
 import { RpcService } from '../../core/core.module';
 import { MatDialogRef } from '@angular/material';
 import { UnlockModalConfig } from 'app/modals/models/unlock.modal.config.interface';
+import { EncryptionState } from 'app/core/rpc/rpc-types';
 
 @Component({
   selector: 'app-unlockwallet',
@@ -17,7 +18,7 @@ export class UnlockwalletComponent {
   DEFAULT_TIMEOUT: number = 300;
   log: any = Log.create('unlockwallet.component');
 
-  @Output() unlockEmitter: EventEmitter<string> = new EventEmitter<string>();
+  @Output() unlockEmitter: EventEmitter<EncryptionState> = new EventEmitter<EncryptionState>();
   @Input() autoClose: boolean = true;
 
   private callback: Function;
@@ -27,16 +28,16 @@ export class UnlockwalletComponent {
     public _dialogRef: MatDialogRef<UnlockwalletComponent>) {
   }
 
-  unlock(encryptionStatus: string): void {
+  unlock(encryptionState: EncryptionState): void {
     // unlock actually happened in password.component.ts
-    this.log.d('Unlock signal emitted! = ' + encryptionStatus );
+    this.log.d('Unlock signal emitted! = ' + encryptionState );
 
-    if (encryptionStatus.indexOf('Unlocked') !== -1) {
+    if (encryptionState == 'UNLOCKED' || encryptionState == 'UNLOCKED_FOR_STAKING_ONLY') {
       if (!!this.callback) {
         this.callback();
       }
       // unlock wallet emitter
-      this.unlockEmitter.emit(encryptionStatus);
+      this.unlockEmitter.emit(encryptionState);
       // close the modal!
       this.closeModal();
     } else {
@@ -66,7 +67,7 @@ export class UnlockwalletComponent {
     this.timeout = this.DEFAULT_TIMEOUT;
     this.log.d('Closing modal!');
 
-    if (this.autoClose ) {
+    if (this.autoClose && this._dialogRef) {
       this._dialogRef.close();
       this.log.d('Closing modal!');
     }

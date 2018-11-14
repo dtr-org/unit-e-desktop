@@ -35,4 +35,15 @@ describe('UnlockwalletComponent', () => {
   it('should be created', () => {
      expect(component).toBeTruthy();
   });
+
+  it('should let us unlock the wallet', () => {
+    let unlocked = false;
+    let _sub = component.unlockEmitter
+      .subscribe(() => {
+        unlocked = true;
+        _sub.unsubscribe();
+      });
+    component.unlock('UNLOCKED_FOR_STAKING_ONLY');
+    expect(unlocked).toBeTruthy();
+  })
 });

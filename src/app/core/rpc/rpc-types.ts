@@ -6,7 +6,11 @@ export class Outputs {
   narr?: string;
 };
 
-export type EstimateMode = 'UNSET' | 'ECONOMICAL' | 'CONSERVATIVE';
+export enum EstimateMode {
+  UNSET = 'UNSET',
+  ECONOMICAL = 'ECONOMICAL',
+  CONSERVATIVE = 'CONSERVATIVE',
+}
 
 export class CoinControl {
   changeaddress?: string;
@@ -17,13 +21,27 @@ export class CoinControl {
   fee_rate?: number;
 }
 
-export type SyncStatus = 'SYNCED' | 'IMPORTING' | 'REINDEXING' | 'NO_TIP' |
-                         'MINIMUM_CHAIN_WORK_NOT_REACHED' | 'MAX_TIP_AGE_EXCEEDED';
+export enum SyncStatus {
+  SYNCED = 'SYNCED',
+  IMPORTING = 'IMPORTING',
+  REINDEXING = 'REINDEXING',
+  NO_TIP = 'NO_TIP',
+  MINIMUM_CHAIN_WORK_NOT_REACHED = 'MINIMUM_CHAIN_WORK_NOT_REACHED',
+  MAX_TIP_AGE_EXCEEDED = 'MAX_TIP_AGE_EXCEEDED',
+}
 
-export type ProposerState = 'NOT_PROPOSING' | 'IS_PROPOSING' | 'JUST_PROPOSED_GRACE_PERIOD' |
-                            'NOT_PROPOSING_SYNCING_BLOCKCHAIN' | 'NOT_PROPOSING_NO_PEERS' |
-                            'NOT_PROPOSING_NOT_ENOUGH_BALANCE' | 'NOT_PROPOSING_DEPTH' | 'NOT_PROPOSING_WALLET_LOCKED' |
-                            'NOT_PROPOSING_LIMITED' | 'NOT_PROPOSING_LAGGING_BEHIND';
+export enum ProposerState {
+  NOT_PROPOSING = 'NOT_PROPOSING',
+  IS_PROPOSING = 'IS_PROPOSING',
+  JUST_PROPOSED_GRACE_PERIOD = 'JUST_PROPOSED_GRACE_PERIOD',
+  NOT_PROPOSING_SYNCING_BLOCKCHAIN = 'NOT_PROPOSING_SYNCING_BLOCKCHAIN',
+  NOT_PROPOSING_NO_PEERS = 'NOT_PROPOSING_NO_PEERS',
+  NOT_PROPOSING_NOT_ENOUGH_BALANCE = 'NOT_PROPOSING_NOT_ENOUGH_BALANCE',
+  NOT_PROPOSING_DEPTH = 'NOT_PROPOSING_DEPTH',
+  NOT_PROPOSING_WALLET_LOCKED = 'NOT_PROPOSING_WALLET_LOCKED',
+  NOT_PROPOSING_LIMITED = 'NOT_PROPOSING_LIMITED',
+  NOT_PROPOSING_LAGGING_BEHIND = 'NOT_PROPOSING_LAGGING_BEHIND',
+}
 
 export class ProposerStatus {
   incoming_connections: number;
@@ -40,7 +58,12 @@ export class ProposerStatus {
   }[]
 }
 
-export type EncryptionState = 'UNENCRYPTED' | 'LOCKED' | 'UNLOCKED' | 'UNLOCKED_FOR_STAKING_ONLY';
+export enum EncryptionState {
+  UNENCRYPTED = 'UNENCRYPTED',
+  LOCKED = 'LOCKED',
+  UNLOCKED = 'UNLOCKED',
+  UNLOCKED_FOR_STAKING_ONLY = 'UNLOCKED_FOR_STAKING_ONLY',
+}
 
 export class WalletInfo {
   walletname: string;

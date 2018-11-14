@@ -78,35 +78,31 @@ export class StatusComponent implements OnInit, OnDestroy {
    */
   getEncryptionDisplay(): [string, string] {
     switch (this.encryptionState) {
-      case 'LOCKED':
+      case EncryptionState.LOCKED:
         return ['Locked', ''];
-      case 'UNENCRYPTED':
+      case EncryptionState.UNENCRYPTED:
         return ['Unencrypted', '-off'];  // TODO: icon?
-      case 'UNLOCKED':
+      case EncryptionState.UNLOCKED:
         return ['Unlocked', '-off'];
-      case 'UNLOCKED_FOR_STAKING_ONLY':
+      case EncryptionState.UNLOCKED_FOR_STAKING_ONLY:
         return ['Unlocked, staking only', '-stake'];
     }
-
-    return ['Unknown', '-off']
   }
 
   toggle() {
     switch (this.encryptionState) {
-      case 'UNENCRYPTED':
+      case EncryptionState.UNENCRYPTED:
         this._modals.encrypt();
         break;
-      case 'UNLOCKED':
-      case 'UNLOCKED_FOR_STAKING_ONLY':
+      case EncryptionState.UNLOCKED:
+      case EncryptionState.UNLOCKED_FOR_STAKING_ONLY:
         this._rpc.call(Commands.WALLETLOCK)
           .subscribe(
             success => this._rpcState.stateCall(Commands.GETWALLETINFO),
             error => this.log.er('walletlock error'));
         break;
-      case 'LOCKED':
+      case EncryptionState.LOCKED:
         this._modals.unlock({});
-        break;
-      default:
         break;
     }
   }

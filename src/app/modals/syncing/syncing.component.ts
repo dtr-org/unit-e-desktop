@@ -6,6 +6,17 @@ import { RpcStateService, BlockStatusService } from '../../core/core.module';
 import { Log } from 'ng2-logger';
 import { SyncStatus } from 'app/core/rpc/rpc-types';
 
+
+// The user-friendly message for proposer blockchain sync status values
+const SYNC_MAPPINGS = new Map<SyncStatus, string>([
+  [SyncStatus.SYNCED, 'Synced.'],
+  [SyncStatus.IMPORTING, 'Importing...'],
+  [SyncStatus.REINDEXING, 'Reindexing...'],
+  [SyncStatus.NO_TIP, 'No tip.'],
+  [SyncStatus.MINIMUM_CHAIN_WORK_NOT_REACHED, 'Minimum chain work not reached.'],
+  [SyncStatus.MAX_TIP_AGE_EXCEEDED, 'Max tip age exceeded.'],
+]);
+
 @Component({
   selector: 'app-syncing',
   templateUrl: './syncing.component.html',
@@ -46,22 +57,7 @@ export class SyncingComponent implements OnDestroy {
   }
 
   getSyncStatusString(syncStatus: SyncStatus): string {
-    switch (syncStatus) {
-      case 'SYNCED':
-        return 'Synced.';
-      case 'IMPORTING':
-        return 'Importing...';
-      case 'REINDEXING':
-        return 'Reindexing...';
-      case 'NO_TIP':
-        return 'No tip.';
-      case 'MINIMUM_CHAIN_WORK_NOT_REACHED':
-        return 'Minimum chain work not reached.';
-      case 'MAX_TIP_AGE_EXCEEDED':
-        return 'Max tip age exceeded.';
-      default:
-        return ''
-    }
+    return SYNC_MAPPINGS.get(syncStatus);
   }
 
   closeOnceHackishly() {

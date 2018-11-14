@@ -1,8 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { RpcStateService, Commands } from '../../../../core/core.module';
 import { Amount } from '../../../../core/util/utils';
+import { ProposerState, ProposerStatus } from 'app/core/rpc/rpc-types';
 
 type Severity = 'alert' | 'info' | 'success';
+
+// The user-friendly message and alert category for proposer state values
+const STATUS_MAPPINGS = new Map<ProposerState, [string, Severity]>([
+  [ProposerState.IS_PROPOSING, ['Proposing', 'success']],
+  [ProposerState.JUST_PROPOSED_GRACE_PERIOD, ['Just proposed; grace period', 'success']],
+  [ProposerState.NOT_PROPOSING_WALLET_LOCKED, ['Not proposing: wallet locked', 'info']],
+  [ProposerState.NOT_PROPOSING_SYNCING_BLOCKCHAIN, ['Not proposing: syncing blockchain', 'info']],
+  [ProposerState.NOT_PROPOSING, ['Not proposing', 'alert']],
+  [ProposerState.NOT_PROPOSING_NO_PEERS, ['Not proposing: no peers', 'alert']],
+  [ProposerState.NOT_PROPOSING_NOT_ENOUGH_BALANCE, ['Not proposing: not enough balance', 'alert']],
+  [ProposerState.NOT_PROPOSING_DEPTH, ['Not proposing: depth', 'alert']],
+  [ProposerState.NOT_PROPOSING_LIMITED, ['Not proposing: limited', 'alert']],
+  [ProposerState.NOT_PROPOSING_LAGGING_BEHIND, ['Not proposing: lagging behind', 'alert']],
+]);
 
 @Component({
   selector: 'app-stakinginfo',
@@ -20,7 +35,7 @@ export class StakingInfoComponent implements OnInit {
 
   ngOnInit() {
     this._rpcState.observe(Commands.PROPOSERSTATUS)
-      .subscribe(proposer => {
+      .subscribe((proposer: ProposerStatus) => {
         if (proposer && proposer.wallets) {
           this.stakeableBalance = new Amount(proposer.wallets[0].stakeable_balance);
           [this.proposerStatus, this.severity] = this.getStatusString(proposer.wallets[0].status);
@@ -28,31 +43,8 @@ export class StakingInfoComponent implements OnInit {
       });
   }
 
-  private getStatusString(proposerStatus: string): [string, Severity] {
-    switch (proposerStatus) {
-      case 'IS_PROPOSING':
-        return ['Proposing', 'success'];
-      case 'JUST_PROPOSED_GRACE_PERIOD':
-        return ['Just proposed; grace period', 'success'];
-      case 'NOT_PROPOSING_WALLET_LOCKED':
-        return ['Not proposing: wallet locked', 'info'];
-      case 'NOT_PROPOSING_SYNCING_BLOCKCHAIN':
-        return ['Not proposing: syncing blockchain', 'info'];
-      case 'NOT_PROPOSING':
-        return ['Not proposing', 'alert'];
-      case 'NOT_PROPOSING_NO_PEERS':
-        return ['Not proposing: no peers', 'alert'];
-      case 'NOT_PROPOSING_NOT_ENOUGH_BALANCE':
-        return ['Not proposing: not enough balance', 'alert'];
-      case 'NOT_PROPOSING_DEPTH':
-        return ['Not proposing: depth', 'alert'];
-      case 'NOT_PROPOSING_LIMITED':
-        return ['Not proposing: limited', 'alert'];
-      case 'NOT_PROPOSING_LAGGING_BEHIN':
-        return ['Not proposing: lagging behind', 'alert'];
-      default:
-        return ['Invalid', 'alert'];
-    }
+  private getStatusString(proposerState: ProposerState): [string, Severity] {
+    return STATUS_MAPPINGS.get(proposerState);
   }
 
 }

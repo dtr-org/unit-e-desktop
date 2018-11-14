@@ -1,4 +1,4 @@
-const mockproposerstatus : any = {
+const mockproposerstatus: any = {
   'wallets': [
     {
       'wallet': 'wallet.dat',

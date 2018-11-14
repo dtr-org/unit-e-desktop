@@ -32,7 +32,7 @@ export class UnlockwalletComponent {
     // unlock actually happened in password.component.ts
     this.log.d('Unlock signal emitted! = ' + encryptionState );
 
-    if (encryptionState == 'UNLOCKED' || encryptionState == 'UNLOCKED_FOR_STAKING_ONLY') {
+    if (encryptionState === 'UNLOCKED' || encryptionState === 'UNLOCKED_FOR_STAKING_ONLY') {
       if (!!this.callback) {
         this.callback();
       }

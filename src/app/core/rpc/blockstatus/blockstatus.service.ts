@@ -25,7 +25,7 @@ export class BlockStatusService {
 
   public statusUpdates: Subject<any> = new Subject<any>();
 
-  private status = {
+  private status: any = {
     syncPercentage: 0,
     syncStatus: undefined,
   };
@@ -37,13 +37,13 @@ export class BlockStatusService {
     this.log.d('constructor blockstatus');
     this._rpcState.observe('proposerstatus')
       .subscribe(
-        (proposerStatus : ProposerStatus) => {
+        (proposerStatus: ProposerStatus) => {
           if (proposerStatus.sync_status === this.status.syncStatus) {
             return;
           }
 
           this.status.syncStatus = proposerStatus.sync_status;
-          this.status.syncPercentage = (proposerStatus.sync_status == 'SYNCED') ? 100 : 0;
+          this.status.syncPercentage = (proposerStatus.sync_status === 'SYNCED') ? 100 : 0;
 
           this.statusUpdates.next(this.status);
         },

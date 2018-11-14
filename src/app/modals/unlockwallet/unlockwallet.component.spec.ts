@@ -38,7 +38,7 @@ describe('UnlockwalletComponent', () => {
 
   it('should let us unlock the wallet', () => {
     let unlocked = false;
-    let _sub = component.unlockEmitter
+    const _sub = component.unlockEmitter
       .subscribe(() => {
         unlocked = true;
         _sub.unsubscribe();

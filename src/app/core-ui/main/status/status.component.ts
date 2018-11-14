@@ -20,7 +20,7 @@ export class StatusComponent implements OnInit, OnDestroy {
 
   // UI state
   public encryptionStatus: string = 'Locked';
-  public lockIcon = '';
+  public lockIcon: string = '';
 
   peerListCount: number = 0;
   encryptionState: EncryptionState;
@@ -48,7 +48,7 @@ export class StatusComponent implements OnInit, OnDestroy {
 
     this._rpcState.observe('getwalletinfo', 'encryption_state')
       .takeWhile(() => !this.destroyed)
-      .subscribe((encryptionState : EncryptionState) => {
+      .subscribe((encryptionState: EncryptionState) => {
         this.encryptionState = encryptionState;
         [this.encryptionStatus, this.lockIcon] = this.getEncryptionDisplay();
       });
@@ -76,7 +76,7 @@ export class StatusComponent implements OnInit, OnDestroy {
   /**
    * Return the user-readable encryption status string and the wallet lock icon.
    */
-  getEncryptionDisplay() : [string, string] {
+  getEncryptionDisplay(): [string, string] {
     switch (this.encryptionState) {
       case 'LOCKED':
         return ['Locked', ''];

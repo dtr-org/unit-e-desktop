@@ -134,7 +134,7 @@ export class RpcService implements OnDestroy {
     ]);
   }
 
-  proposerStatus() : Observable<ProposerStatus> {
+  proposerStatus(): Observable<ProposerStatus> {
     return this.call(Commands.PROPOSERSTATUS);
   }
 

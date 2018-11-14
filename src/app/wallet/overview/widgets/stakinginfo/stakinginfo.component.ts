@@ -12,9 +12,9 @@ type Severity = 'alert' | 'info' | 'success';
 export class StakingInfoComponent implements OnInit {
 
   // UI
-  public proposerStatus : string;
-  public severity : Severity = 'success';
-  public stakeableBalance : Amount = new Amount(0);
+  public proposerStatus: string;
+  public severity: Severity = 'success';
+  public stakeableBalance: Amount = new Amount(0);
 
   constructor(private _rpcState: RpcStateService) { }
 

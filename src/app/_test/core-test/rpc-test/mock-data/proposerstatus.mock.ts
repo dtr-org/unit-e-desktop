@@ -1,4 +1,6 @@
-const mockproposerstatus: any = {
+import { ProposerStatus } from 'app/core/rpc/rpc-types';
+
+const mockproposerstatus: ProposerStatus = {
   'wallets': [
     {
       'wallet': 'wallet.dat',

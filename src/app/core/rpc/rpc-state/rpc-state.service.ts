@@ -23,6 +23,7 @@ export class RpcStateService extends StateService implements OnDestroy {
 
     this.register(Commands.ADDRESSBOOKINFO, 1000, null, true);
     this.register(Commands.GETWALLETINFO, 1000);
+    this.register(Commands.PROPOSERSTATUS, 1000);
     this.register(Commands.GETBLOCKCHAININFO, 5000);
     this.register(Commands.GETNETWORKINFO, 10000);
 

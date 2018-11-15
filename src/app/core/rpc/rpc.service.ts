@@ -8,6 +8,7 @@ import { map, catchError } from 'rxjs/operators';
 import { IpcService } from '../ipc/ipc.service';
 import { environment } from '../../../environments/environment';
 import { Commands } from './commands';
+import { Outputs, CoinControl, ProposerStatus } from './rpc-types';
 
 const MAINNET_PORT = 51735;
 const TESTNET_PORT = 51935;
@@ -19,29 +20,11 @@ declare global {
   }
 }
 
-class Outputs {
-  address: string;
-  amount: number | string;
-  subfee?: boolean;
-  script?: string;
-  narr?: string;
-};
-
-class CoinControl {
-  changeaddress?: string;
-  inputs?: any;
-  replaceable?: boolean;
-  conf_target?: number;
-  estimate_mode?: 'UNSET' | 'ECONOMICAL' | 'CONSERVATIVE';
-  fee_rate?: number;
-}
-
 /**
  * The RPC service that maintains a single connection to the united daemon.
  *
  * It has two important functions: call and register.
  */
-
 @Injectable()
 export class RpcService implements OnDestroy {
 
@@ -149,6 +132,10 @@ export class RpcService implements OnDestroy {
     return this.call(Commands.FILTERADDRESSES, [
       offset, count, sort_code, search, match_owned
     ]);
+  }
+
+  proposerStatus(): Observable<ProposerStatus> {
+    return this.call(Commands.PROPOSERSTATUS);
   }
 
   sendtypeto(

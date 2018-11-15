@@ -7,6 +7,7 @@ import { CoreModule } from '../../core/core.module';
 import { CoreUiModule } from '../../core-ui/core-ui.module';
 
 import { OverviewComponent } from './overview.component';
+import { StakingInfoComponent } from './widgets/stakinginfo/stakinginfo.component';
 import { TransactionService } from 'app/wallet/wallet/shared/transaction.service';
 
 import { TransactionsTableComponent } from 'app/wallet/wallet/shared/transaction-table/transaction-table.component';
@@ -28,6 +29,7 @@ describe('OverviewComponent', () => {
       ],
       declarations: [
         OverviewComponent,
+        StakingInfoComponent,
       ]
     })
 

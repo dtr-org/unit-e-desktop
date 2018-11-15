@@ -5,6 +5,14 @@ import { IPassword } from './password.interface';
 
 import { RpcService, RpcStateService, Commands } from '../../../core/core.module';
 import { SnackbarService } from '../../../core/snackbar/snackbar.service';
+import { EncryptionState } from 'app/core/rpc/rpc-types';
+
+
+const DEFAULT_UNLOCK_TIMEOUT = 60;
+
+// When unlocking the wallet for staking, set timeout to infinite
+const STAKING_UNLOCK_TIMEOUT = 0;
+
 
 @Component({
   selector: 'app-password',
@@ -17,14 +25,16 @@ export class PasswordComponent implements OnDestroy {
   // UI State
   password: string;
   private destroyed: boolean = false;
+  stakingOnly: boolean = false;
 
   @Input() showPass: boolean = false;
   @Input() label: string = 'Your Wallet password';
   @Input() buttonText: string;
-  @Input() unlockTimeout: number = 60;
+  @Input() unlockTimeout: number = DEFAULT_UNLOCK_TIMEOUT;
   @Input() isDisabled: boolean = false;
   @Input() isButtonDisable: boolean = false;
   @Input() showPassword: boolean = false;
+  @Input() showStakingOnly: boolean = false;
 
   /**
     * The password emitter will send over an object with the password info.
@@ -39,7 +49,7 @@ export class PasswordComponent implements OnDestroy {
     * send a transaction, before it locks again.
     */
   @Input() emitUnlock: boolean = false;
-  @Output() unlockEmitter: EventEmitter<string> = new EventEmitter<string>();
+  @Output() unlockEmitter: EventEmitter<EncryptionState> = new EventEmitter<EncryptionState>();
 
   log: any = Log.create('password.component');
 
@@ -85,6 +95,7 @@ export class PasswordComponent implements OnDestroy {
   sendPassword(): void {
     const pass: IPassword = {
       password: this.password,
+      stakingOnly: this.stakingOnly,
     };
     this.passwordEmitter.emit(pass);
   }
@@ -93,24 +104,29 @@ export class PasswordComponent implements OnDestroy {
     * TODO: This should be moved to a service...
     */
   private rpc_unlock(): void {
+    if (this.stakingOnly) {
+      // The user will want to stake for as long as possible
+      this.unlockTimeout = STAKING_UNLOCK_TIMEOUT;
+    }
+
     this.log.i('rpc_unlock: calling unlock! timeout=' + this.unlockTimeout);
     this._rpc.call(Commands.WALLETPASSPHRASE, [
         this.password,
         +this.unlockTimeout,
+        this.stakingOnly,
       ])
       .subscribe(
         success => {
           // update state
           this._rpcState.stateCall(Commands.GETWALLETINFO);
 
-          let _subs = this._rpcState.observe('getwalletinfo', 'unlocked_until').skip(1)
+          let _subs = this._rpcState.observe('getwalletinfo', 'encryption_state').skip(1)
             .subscribe(
-              unlocked_until => {
-                const encryptionStatus = (unlocked_until === 0) ? 'Locked' : 'Unlocked';
-                this.log.d('rpc_unlock: success: unlock was called! New Status:', encryptionStatus);
+              (encryptionState: EncryptionState) => {
+                this.log.d('rpc_unlock: success: unlock was called! New Status:', encryptionState);
 
                 // hook for unlockEmitter, warn parent component that wallet is unlocked!
-                this.unlockEmitter.emit(encryptionStatus);
+                this.unlockEmitter.emit(encryptionState);
                 if (_subs) {
                   _subs.unsubscribe();
                   _subs = null;

@@ -8,6 +8,7 @@ import { ModalsHelperService } from 'app/modals/modals.module';
 import { RpcService, RpcStateService, Commands } from '../../../core/core.module';
 
 import { ConsoleModalComponent } from './modal/help-modal/console-modal.component';
+import { EncryptionState } from 'app/core/rpc/rpc-types';
 
 
 @Component({
@@ -17,8 +18,13 @@ import { ConsoleModalComponent } from './modal/help-modal/console-modal.componen
 })
 export class StatusComponent implements OnInit, OnDestroy {
 
-  peerListCount: number = 0;
+  // UI state
   public encryptionStatus: string = 'Locked';
+  public lockIcon: string = '';
+
+  peerListCount: number = 0;
+  encryptionState: EncryptionState;
+
   private _sub: Subscription;
   private destroyed: boolean = false;
 
@@ -40,10 +46,11 @@ export class StatusComponent implements OnInit, OnDestroy {
       .takeWhile(() => !this.destroyed)
       .subscribe(connections => this.peerListCount = connections);
 
-    this._rpcState.observe('getwalletinfo', 'unlocked_until')
+    this._rpcState.observe('getwalletinfo', 'encryption_state')
       .takeWhile(() => !this.destroyed)
-      .subscribe(unlocked => {
-        this.encryptionStatus = (unlocked === 0) ? 'Locked' : 'Unlocked';
+      .subscribe((encryptionState: EncryptionState) => {
+        this.encryptionState = encryptionState;
+        [this.encryptionStatus, this.lockIcon] = this.getEncryptionDisplay();
       });
 
     /* Bug: If you remove this line, then the state of 'txcount' doesn't update in the Transaction.service */
@@ -66,33 +73,36 @@ export class StatusComponent implements OnInit, OnDestroy {
     }
   }
 
-  getIconEncryption() {
-    switch (this.encryptionStatus) {
-      case 'Unencrypted':  // TODO: icon?
-      case 'Unlocked':
-        return '-off';
-      case 'Locked':
-        return '';
-      default:
-        return '-off'; // TODO: icon?
+  /**
+   * Return the user-readable encryption status string and the wallet lock icon.
+   */
+  getEncryptionDisplay(): [string, string] {
+    switch (this.encryptionState) {
+      case EncryptionState.LOCKED:
+        return ['Locked', ''];
+      case EncryptionState.UNENCRYPTED:
+        return ['Unencrypted', '-off'];  // TODO: icon?
+      case EncryptionState.UNLOCKED:
+        return ['Unlocked', '-off'];
+      case EncryptionState.UNLOCKED_FOR_STAKING_ONLY:
+        return ['Unlocked, staking only', '-stake'];
     }
   }
 
   toggle() {
-    switch (this.encryptionStatus) {
-      case 'Unencrypted':
+    switch (this.encryptionState) {
+      case EncryptionState.UNENCRYPTED:
         this._modals.encrypt();
         break;
-      case 'Unlocked':
+      case EncryptionState.UNLOCKED:
+      case EncryptionState.UNLOCKED_FOR_STAKING_ONLY:
         this._rpc.call(Commands.WALLETLOCK)
           .subscribe(
             success => this._rpcState.stateCall(Commands.GETWALLETINFO),
             error => this.log.er('walletlock error'));
         break;
-      case 'Locked':
+      case EncryptionState.LOCKED:
         this._modals.unlock({});
-        break;
-      default:
         break;
     }
   }

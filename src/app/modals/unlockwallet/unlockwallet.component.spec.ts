@@ -7,6 +7,7 @@ import { SharedModule } from '../../wallet/shared/shared.module';
 import { CoreUiModule } from '../../core-ui/core-ui.module';
 
 import { UnlockwalletComponent } from './unlockwallet.component';
+import { EncryptionState } from 'app/core/rpc/rpc-types';
 
 
 describe('UnlockwalletComponent', () => {
@@ -35,4 +36,15 @@ describe('UnlockwalletComponent', () => {
   it('should be created', () => {
      expect(component).toBeTruthy();
   });
+
+  it('should let us unlock the wallet', () => {
+    let unlocked = false;
+    const _sub = component.unlockEmitter
+      .subscribe(() => {
+        unlocked = true;
+        _sub.unsubscribe();
+      });
+    component.unlock(EncryptionState.UNLOCKED_FOR_STAKING_ONLY);
+    expect(unlocked).toBeTruthy();
+  })
 });

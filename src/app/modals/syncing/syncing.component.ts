@@ -4,6 +4,18 @@ import { MatDialogRef } from '@angular/material';
 import { RpcStateService, BlockStatusService } from '../../core/core.module';
 
 import { Log } from 'ng2-logger';
+import { SyncStatus } from 'app/core/rpc/rpc-types';
+
+
+// The user-friendly message for proposer blockchain sync status values
+const SYNC_MAPPINGS = new Map<SyncStatus, string>([
+  [SyncStatus.SYNCED, 'Synced.'],
+  [SyncStatus.IMPORTING, 'Importing...'],
+  [SyncStatus.REINDEXING, 'Reindexing...'],
+  [SyncStatus.NO_TIP, 'No tip.'],
+  [SyncStatus.MINIMUM_CHAIN_WORK_NOT_REACHED, 'Minimum chain work not reached.'],
+  [SyncStatus.MAX_TIP_AGE_EXCEEDED, 'Max tip age exceeded.'],
+]);
 
 @Component({
   selector: 'app-syncing',
@@ -15,12 +27,9 @@ export class SyncingComponent implements OnDestroy {
   log: any = Log.create('syncing.component');
   private destroyed: boolean = false;
 
-  remainder: any;
-  lastBlockTime: Date;
-  increasePerMinute: string;
-  estimatedTimeLeft: string;
   manuallyOpened: boolean;
   syncPercentage: number;
+  syncStatusString: string;
   nPeers: number;
 
   /* modal stuff */
@@ -37,28 +46,18 @@ export class SyncingComponent implements OnDestroy {
       .subscribe(connections => this.nPeers = connections);
 
     this._blockStatusService.statusUpdates.asObservable().subscribe(status => {
-
-      this.remainder = status.remainingBlocks < 0
-        ? 'waiting for peers...'
-        : status.remainingBlocks;
-
-      this.lastBlockTime = status.lastBlockTime;
-
-      this.increasePerMinute = status.syncPercentage === 100
-        ? 'DONE'
-        : status.syncPercentage.toFixed(2).toString() + ' %';
-
-      this.estimatedTimeLeft = status.syncPercentage === 100
-        ? 'DONE'
-        : status.estimatedTimeLeft;
-
       this.manuallyOpened = status.manuallyOpened;
       this.syncPercentage = status.syncPercentage;
+      this.syncStatusString = this.getSyncStatusString(status.syncStatus);
 
       if (status.syncPercentage === 100 && !this.manuallyOpened) {
         this.closeOnceHackishly();
       }
     });
+  }
+
+  getSyncStatusString(syncStatus: SyncStatus): string {
+    return SYNC_MAPPINGS.get(syncStatus);
   }
 
   closeOnceHackishly() {

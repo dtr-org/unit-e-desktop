@@ -19,6 +19,9 @@ This repository is the user interface that works in combination with our [`unite
 * Download + Install [Node.js®](https://nodejs.org/) 6.4—7.10
 * Download + Install [git](https://git-scm.com/)
 
+*Note: On MacOS you will need to have the full Xcode installed in order to
+build all dependencies.*
+
 ```bash
 git clone https://github.com/dtr-org/unit-e-desktop
 cd unit-e-desktop
@@ -27,20 +30,39 @@ yarn install
 
 ### Development with Electron
 
-1. `git submodule init` (needed only for the first time setup)
-2. `git submodule update` (needed only for the first time setup)
-3. run `ng serve` to start the dev server and keep it running
-4. in a 2nd terminal, run `yarn run start:electron:dev -testnet -opendevtools` to start the electron application. Daemon will be updated and launched automatically.
+1. run `ng serve --env=regtest` to start the dev server and keep it running
+2. in a 2nd terminal, run `yarn run start:electron:dev -regtest -devtools` to
+   start the electron application. Daemon will be updated and launched
+   automatically.
    * note: this command will auto-refresh the client on each saved change
-   * `-testnet` – for running on testnet (omit this argument for running the client on mainnet)
-   * `-opendevtools` – automatically opens Developer Tools on client launch
+   * `-regtest` – for running in a local testing environment
+   * `-devtools` – automatically opens Developer Tools on client launch
 
-#### Interact with unite-core daemon
 
-You can directly interact with the daemon ran by the Electron version.
+### Running the unit tests
+
+Run the unit tests with
 
 ```
-./unite-cli -testnet getblockchaininfo
+ng test
+```
+
+This will open a browser window where the tests are running and show progress on
+the command line. Keep the window open to continuously run the unit tests when
+changing the code.
+
+### Interact with Unit-e daemon
+
+You need to start a Unit-e daemon so the UI can talk to it.
+
+```
+./united -regtest
+```
+
+You can directly interact with the daemon.
+
+```
+./unite-cli -regtest getblockchaininfo
 ```
 
 ## Running

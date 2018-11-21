@@ -1,6 +1,13 @@
 # Contributing guidelines
 
-See the [UnitE contributing guidelines](https://github.com/dtr-org/unit-e/blob/master/CONTRIBUTING.md).
+See the [UnitE contributing
+guidelines](https://github.com/dtr-org/unit-e/blob/master/CONTRIBUTING.md). We
+follow the same process for the desktop UI as we do for all other UnitE
+software.
+
+There is one notable difference. The desktop UI is licensed under the GPLv2 not
+MIT. By contributing to this repository you agree to contribute your work under
+the [GPL](LICENSE).
 
 ## Dev resources
 

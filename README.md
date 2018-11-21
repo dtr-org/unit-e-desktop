@@ -92,3 +92,5 @@ Join us in `#unite-core-dev` on FreeNode or on our developer [mailing list](http
 Copyright (C) 2018 UnitE Maintainers.
 
 Portions copyright (C) 2017-2018 Particl Maintainers.
+
+The code in this repository is licensed under the [GPL](LICENSE).

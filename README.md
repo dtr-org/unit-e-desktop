@@ -8,7 +8,13 @@ This repository is the user interface that works in combination with our [`unite
 
 [Download the packaged wallet for Mac, Windows and Linux](https://github.com/dtr-org/unit-e-desktop/releases)
 
-# Contribute
+## Code of conduct
+
+The UnitE team is committed to fostering a welcoming and harassment-free
+environment. All participants are expected to adhere to our [code of
+conduct](CODE_OF_CONDUCT.md).
+
+## Contribute
 
 > Be sure to read our [Contributing Guidelines](CONTRIBUTING.md) first
 

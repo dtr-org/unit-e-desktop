@@ -35,7 +35,7 @@ exports.parse = function() {
 
   // make a copy of process.argv, because we'll be changing it
   // which messes with the map operator
-  const args = process.argv.slice(0); 
+  const args = process.argv.slice(0);
 
   args.map((arg, index) => {
     let nDashes = arg.lastIndexOf('-') + 1;
@@ -48,6 +48,11 @@ exports.parse = function() {
       let verboseLevel = isVerboseLevel(arg);
       if (verboseLevel) {
         options['verbose'] = verboseLevel;
+        return ;
+      }
+      if (arg.includes('=')) {
+        arg = arg.split('=');
+        options[arg[0]] = arg[1];
         return ;
       }
     } else if (nDashes === 1) { /* single-dash: core argument */
@@ -71,6 +76,9 @@ exports.parse = function() {
       : options.regtest
         ? 18443  // default regtest port
         : 8332 ; // default mainnet port
+
+  // Angular development server port
+  options.devport = options.devport || 4200;
   _options = options;
   return options;
 }

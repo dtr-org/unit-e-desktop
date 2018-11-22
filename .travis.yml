@@ -39,8 +39,7 @@ script:
   - echo -en 'travis_fold:end:script.build\\r'
 
   - echo 'Trailing Whitespace & Lint Codebase' && echo -en 'travis_fold:start:script.lint\\r'
-  - |
-    ! find . -name node_modules -prune -o \( -name '*.ts' -o -name '*.html' -o -name '*.js' -o -name '*.scss' \) -exec grep -q ' \s\+$' {} +
+  - ./contrib/trailing_whitespace.sh
   - yarn run lint
   - echo -en 'travis_fold:end:script.lint\\r'
 

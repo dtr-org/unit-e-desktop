@@ -21,6 +21,7 @@ exports.init = function () {
         // clone it
         const url = new URL(details.url);
         const u = url.hostname + ":" + url.port;
+        const options = _options.get();
 
         if (isWhitelisted(u)) {
             let headers = Object.assign({}, details.requestHeaders);
@@ -28,7 +29,7 @@ exports.init = function () {
             // get authentication
             let auth = getAuthentication(u);
 
-            if(auth === undefined && u === "localhost:4200") {
+            if(auth === undefined && u === `localhost:${options.devport}`) {
                 auth = false;
             }
 
@@ -95,7 +96,7 @@ exports.removeWalletAuthentication = () => {
 
 function loadDev() {
     let options = _options.get();
-    let key = 'localhost:4200';
+    let key = `localhost:${options.devport}`;
     let value = {
         name: "dev",
         auth: false

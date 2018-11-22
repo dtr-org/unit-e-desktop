@@ -41,12 +41,12 @@ app.on('ready', () => {
   log.info('app ready')
   log.debug('argv', process.argv);
   log.debug('options', options);
-  
+
   app.setAppUserModelId("io.unite.desktop");
-  
+
   // initialize the authentication filter
   _auth.init();
-  
+
   initMainWindow();
   init.start(mainWindow);
 });
@@ -105,7 +105,7 @@ function initMainWindow() {
 
   // and load the index.html of the app.
   if (options.dev) {
-    mainWindow.loadURL('http://localhost:4200');
+    mainWindow.loadURL(`http://localhost:${options.devport}`);
   } else {
     mainWindow.loadURL(url.format({
       protocol: 'file:',

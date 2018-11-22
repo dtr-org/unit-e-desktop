@@ -18,13 +18,6 @@
         </mat-icon>
       </mat-form-field>
 
-      <mat-select fxFlex="1 0 130px" name="filter" [(ngModel)]="filter" class="address-type"
-                  *ngIf="allowFilter" (ngModelChange)="resetPagination()">
-        <mat-option *ngFor="let addressType of addressTypes" [value]="addressType">
-          {{ addressType }}
-        </mat-option>
-      </mat-select>
-
     </div>
   </form>
 
@@ -35,7 +28,6 @@
       <div class="address-list-header" fxFlex="row" fxLayoutGap="10px" layout-padding>
         <div fxFlex="0 0 350px">Label</div>
         <div fxFlex="0 0 300px">Address</div>
-        <div fxFlex="0 0 80px" class="text-right">Type</div>
       </div>
     </mat-list-item>
 

@@ -8,7 +8,7 @@
 // Usage: @include break(l|xl|xxl|hd) { .. }
 
 @mixin break($media) {
-  @if $media == l { 
+  @if $media == l {
     @media only screen and (min-width: $break-l) { @content; }
   }
   @else if $media == xl {

@@ -6,7 +6,7 @@ const log = require('electron-log');
 
 
 function getRootOrResourcePath() {
-  var dir; 
+  var dir;
   // running from packaged
   if(__dirname.search('app.asar') > -1) {
     dir = __dirname.substring(0, __dirname.indexOf('app.asar')) + 'app.asar';

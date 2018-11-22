@@ -14,7 +14,7 @@
   display: flex;
   $padding: 35px;
   $padding-bottom: $padding + 45px; // offset "show older addys" button from bottom
-  padding: ($header-main-height + $tab-bar-height + $padding) $padding $padding-bottom;
+  padding: ($tab-bar-height + $padding) $padding $padding-bottom;
   height: calc(100vh - #{$header-main-height} - #{$tab-bar-height} - #{$padding} - #{$padding-bottom});
   position: relative;
   @include break(l) {

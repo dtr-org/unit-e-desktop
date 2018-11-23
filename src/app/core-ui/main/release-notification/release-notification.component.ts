@@ -16,7 +16,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, NgZone } from '@angular/core';
 import { interval } from 'rxjs/observable/interval';
 
 import { environment } from '../../../../environments/environment';
@@ -36,12 +36,17 @@ export class ReleaseNotificationComponent implements OnInit, OnDestroy {
   public releaseUrl: string;
   private destroyed: boolean = false;
 
-  constructor(private clientVersionService: ClientVersionService) { }
+  constructor(
+    private clientVersionService: ClientVersionService,
+    private _ngZone: NgZone,
+  ) { }
 
   ngOnInit() {
     // check new update in every 30 minute
     const versionInterval = interval(1800000);
-    versionInterval.takeWhile(() => !this.destroyed).subscribe(val => this.getCurrentClientVersion());
+    this._ngZone.runOutsideAngular(() => {
+      versionInterval.takeWhile(() => !this.destroyed).subscribe(val => this.getCurrentClientVersion());
+    });
   }
 
   // no need to destroy.

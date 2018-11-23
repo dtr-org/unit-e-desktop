@@ -17,7 +17,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, NgZone } from '@angular/core';
 import { Log } from 'ng2-logger';
 import { Subject } from 'rxjs';
 
@@ -37,7 +37,7 @@ export class RpcStateService extends StateService implements OnDestroy {
   /** errors gets updated everytime the stateCall RPC requests return an error */
   public errorsStateCall: Subject<any> = new Subject<any>();
 
-  constructor(private _rpc: RpcService, private _ipc: IpcService) {
+  constructor(private _rpc: RpcService, private _ipc: IpcService, private _ngZone: NgZone) {
     super();
 
     this.register(Commands.ADDRESSBOOKINFO, 1000, null, true);
@@ -97,7 +97,11 @@ export class RpcStateService extends StateService implements OnDestroy {
 
               if (!once) {
                 // re-start loop after timeout
-                setTimeout(_call, timeout);
+                // Run timer outside Angular's zone, so that tests don't hang up forever
+                // waiting for it to end
+                this._ngZone.runOutsideAngular(() => {
+                  setTimeout(_call, timeout);
+                });
               }
             },
             error => {

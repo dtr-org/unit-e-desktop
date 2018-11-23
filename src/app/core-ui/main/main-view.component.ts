@@ -16,7 +16,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, NgZone } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Log } from 'ng2-logger';
 import { MatDialog } from '@angular/material';
@@ -71,7 +71,8 @@ export class MainViewComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     // the following imports are just 'hooks' to
     // get the singleton up and running
-    private _newtxnotifier: NewTxNotifierService
+    private _newtxnotifier: NewTxNotifierService,
+    private _ngZone: NgZone,
   ) { }
 
   ngOnInit() {
@@ -165,8 +166,10 @@ export class MainViewComponent implements OnInit, OnDestroy {
     }
     if (min >= 0 && sec >= 0) {
       this.time = min + ':' + ('0' + sec).slice(-2);
-      this.unSubscribeTimer = Observable.timer(1000).
-        subscribe(() => this.startTimer(min, sec));
+      this._ngZone.runOutsideAngular(() => {
+        this.unSubscribeTimer = Observable.timer(1000).
+          subscribe(() => this.startTimer(min, sec));
+      })
     } else {
       this.unSubscribeTimer.unsubscribe();
     }

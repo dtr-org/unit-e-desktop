@@ -64,10 +64,12 @@
         </button>
       </div>
       <div class="right" fxFlex="70%">
+        <!--
         <a mat-button matTooltip="Display address' public information on Block Explorer" href="https://explorer{{testnet ? '-testnet' : ''}}.unit-e.io/address/{{selected?.address}}" target="_blank">
           <mat-icon fontSet="uniteIcon" fontIcon="unite-info"></mat-icon>
           Show on Explorer
         </a>
+        -->
         <button mat-raised-button color="primary" ngxClipboard [cbContent]="selected?.address" (click)="copyToClipBoard()">
           <mat-icon fontSet="uniteIcon" fontIcon="unite-copy"></mat-icon>
           Copy address

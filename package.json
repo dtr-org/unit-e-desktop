@@ -21,7 +21,7 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint --type-check && htmlhint --ignore **/documentation/**,**/docs/**,**/packages/** && sass-lint -v",
-    "e2e": "ng e2e",
+    "e2e": "ng e2e --env=e2e",
     "generate:versions": "node modules/clientBinaries/generateVersions.js",
     "generate:documentation": "",
     "checksum": "cd packages && checksum -a sha256 *.*",

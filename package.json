@@ -45,6 +45,7 @@
     "travis:win64": "electron-builder --win --x64 && yarn run checksum",
     "travis:win32": "electron-builder --win --ia32 && yarn run checksum",
     "travis:test": "ng test --single-run --code-coverage",
+    "travis:e2e": "./node_modules/.bin/webdriver-manager update --versions.chrome=2.44 --gecko=false && ng e2e --env=e2e --webdriver-update=false",
     "start": "yarn run start:electron:fast"
   },
   "productName": "unit-e-desktop",

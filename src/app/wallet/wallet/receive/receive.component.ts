@@ -183,10 +183,6 @@ export class ReceiveComponent implements OnInit {
     this.setAddressType('public');
   }
 
-  getAddressType(): string {
-    return this.type;
-  }
-
   /**
     * Selected address stuff
     * @param address The address to select

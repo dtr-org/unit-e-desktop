@@ -1,17 +1,3 @@
-<app-header class="disable-select">
-  <div class="tab-bar">
-    <mat-tab-group (selectChange)="changeTab($event.index)">
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon fontSet="uniteIcon" fontIcon="unite-public"></mat-icon>
-          Public address
-        </ng-template>
-      </mat-tab>
-    </mat-tab-group>
-  </div>
-</app-header>
-
-
 <!-- ====== FRESH RECEIVE ADDRESS ====== -->
 
 <div class="container-flex disable-select">
@@ -28,12 +14,6 @@
       </div>
 
       <div class="main" fxFlex="1 1 480px">
-
-        <!-- Address type (public/private)-->
-        <div class="address-type">
-          <mat-icon *ngIf="getAddressType() === 'public'" fontSet="uniteIcon" fontIcon="unite-public"></mat-icon>
-          {{ getAddressType() }} address #{{ selected?.id }}
-        </div>
 
         <!-- Address label -->
         <div class="address-label">
@@ -69,8 +49,8 @@
           </div>
         </div>
 
-        <p class="widget-help" *ngIf="getAddressType() === 'public'">
-          This is your public UnitE address.
+        <p class="widget-help">
+          This is your UnitE address.
         </p>
 
       </div><!-- .main -->
@@ -80,7 +60,7 @@
       <div class="left" fxFlex="30%">
         <button mat-button color="primary" matTooltip="Generate fresh address" (click)="generateAddress()">
           <mat-icon fontSet="uniteIcon" fontIcon="unite-plus"></mat-icon>
-          New {{ getAddressType() }} address
+          New address
         </button>
       </div>
       <div class="right" fxFlex="70%">

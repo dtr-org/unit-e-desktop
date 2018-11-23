@@ -4,7 +4,6 @@
 .balance-overview { // list of balances
   @extend %disable-select;
   display: flex;
-  margin-top: $header-main-height;
   padding: 24px 35px;
   @include break(l) {
     padding: 24px 50px;

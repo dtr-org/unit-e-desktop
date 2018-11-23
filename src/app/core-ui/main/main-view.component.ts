@@ -34,7 +34,7 @@ import { ModalsHelperService } from 'app/modals/modals.module';
  * The MainView is basically:
  * sidebar + router-outlet.
  * Will display the _main_ sidebar (not wallet picker)
- * and display wallet + market views.
+ * and display wallet view.
  */
 @Component({
   selector: 'app-main-view',

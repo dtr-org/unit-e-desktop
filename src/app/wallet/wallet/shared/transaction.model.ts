@@ -33,7 +33,6 @@ export class Transaction {
 
     txid: string;
     address: string ;
-    stealth_address: string;
     label: string;
     category: TransactionCategory;
     amount: number;
@@ -60,7 +59,6 @@ export class Transaction {
     this.txid = json.txid;
     if (json.outputs && json.outputs.length) {
       this.address = json.outputs[0].address;
-      this.stealth_address = json.outputs[0].stealth_address;
       this.label = json.outputs[0].label;
     }
     this.category = json.category;
@@ -85,21 +83,14 @@ export class Transaction {
   }
 
   public getAddress(): string {
-    if (this.stealth_address === undefined) {
-      return this.address;
-    }
-    return this.stealth_address;
+    return this.address;
   }
 
   private getAddressType(): AddressType {
-    if (this.stealth_address === undefined) {
-      if (this.address && this.address.startsWith('r')) {
-        return AddressType.MULTISIG;
-      }
-      return AddressType.NORMAL;
-    } else {
-      return AddressType.STEALTH;
+    if (this.address && this.address.startsWith('r')) {
+      return AddressType.MULTISIG;
     }
+    return AddressType.NORMAL;
   }
 
   public isMultiSig(): boolean {

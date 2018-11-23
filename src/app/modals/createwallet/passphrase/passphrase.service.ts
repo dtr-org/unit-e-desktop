@@ -82,7 +82,7 @@ export class PassphraseService {
 
   generateDefaultAddresses() {
 
-    /* generate initial public address */
+    /* generate initial address */
     this._rpc.call(Commands.GETNEWADDRESS, ['initial address']).subscribe(
       (response: any) => this.log.i('generateDefaultAddresses(): generated initial address'),
       error => this.log.er('generateDefaultAddresses: getnewaddress failed'));

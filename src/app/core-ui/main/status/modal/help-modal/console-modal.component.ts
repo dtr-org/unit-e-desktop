@@ -155,11 +155,6 @@ export class ConsoleModalComponent implements OnInit, AfterViewChecked {
     this.command = this.commandHistory[this.historyCount];
   }
 
-  selectTab(tabIndex: number) {
-    this.activeTab = tabIndex === 1 ? 'market' : '_rpc'
-    this.commandList = [];
-  }
-
   // capture the enter button
   @HostListener('window:keydown', ['$event'])
   keyDownEvent(event: any) {

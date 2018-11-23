@@ -22,7 +22,6 @@ interface Deserializable {
 
 export enum AddressType {
     NORMAL,
-    STEALTH,
     MULTISIG
 }
 

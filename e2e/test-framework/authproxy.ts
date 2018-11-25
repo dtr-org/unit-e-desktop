@@ -21,7 +21,6 @@ export class AuthServiceProxy implements IRpc {
 
   constructor(url: string, proxyKwargs: any) {
     this.url = new URL(url);
-    const port = this.url.port;
     const user = this.url.username;
     const passwd = this.url.password;
     const authpair = user + ':' + passwd;

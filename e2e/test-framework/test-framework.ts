@@ -115,11 +115,8 @@ export class TestFramework implements IRpc {
   }
 
   async syncAll() {
-    const nodeGroups = [this.nodes];
-    for (const group of nodeGroups) {
-      await syncBlocks(group);
-      await syncMempools(group);
-    }
+    await syncBlocks(this.nodes);
+    await syncMempools(this.nodes);
   }
 
   addNodes(numNodes: number) {

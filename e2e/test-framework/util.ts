@@ -2,6 +2,7 @@ const path = require('path');
 const os = require('os');
 const fs = require('fs');
 const assert = require('assert');
+const { promisify } = require('util');
 
 const stat = promisify(fs.stat);
 const readFile = promisify(fs.readFile);
@@ -209,21 +210,6 @@ export async function syncMempools(rpcConnections: IRpc[]) {
   }
 
   throw new Error('Mempool sync failed');
-}
-
-// An implementation of utils.promisify for older Node versions
-function promisify(fn: Function): Function {
-  return function(...args: any[]) {
-    return new Promise(function (resolve: Function, reject: Function) {
-      fn(...args, function (err: any, result: any) {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(result);
-        }
-      });
-    });
-  };
 }
 
 async function mkdirRecursive(absPath: string) {

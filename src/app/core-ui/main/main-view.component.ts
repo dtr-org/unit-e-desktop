@@ -69,8 +69,6 @@ export class MainViewComponent implements OnInit, OnDestroy {
     private _rpcState: RpcStateService,
     private _modalsService: ModalsHelperService,
     private dialog: MatDialog,
-    // the following imports are just 'hooks' to
-    // get the singleton up and running
     private _newtxnotifier: NewTxNotifierService,
     private _ngZone: NgZone,
   ) { }

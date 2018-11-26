@@ -26,7 +26,7 @@ const MERSENNE_SEED = 42;
  */
 export class TestFramework implements IRpc {
 
-  private numNodes: number = 1;
+  private numNodes: number = 4;
 
   private preserveDataDir: boolean = false;
 
@@ -64,8 +64,8 @@ export class TestFramework implements IRpc {
     }
     if ('numNodes' in options) {
       this.numNodes = options.numNodes;
-      if (this.numNodes < 1) {
-        throw new Error('End-to-end testing requires at least one node!');
+      if (this.numNodes < 4) {
+        this.numNodes = 4;
       }
     }
     if ('createChain' in options) {
@@ -100,13 +100,10 @@ export class TestFramework implements IRpc {
   }
 
   async initializeChain() {
-    const numBlocks = 200;
-
-    for (let i = 0; i < numBlocks;) {
-      for (let peer = 0; peer < this.numNodes; peer++) {
+    // Generate 200 blocks on the first 4 nodes
+    for (let i = 0; i < 2; i++) {
+      for (let peer = 0; peer < 4; peer++) {
         await this.nodes[peer].call('generate', 25);
-        i += 25;
-
         await syncBlocks(this.nodes);
       }
     }

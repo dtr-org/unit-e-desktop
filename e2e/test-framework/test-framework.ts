@@ -1,5 +1,6 @@
 const os = require('os');
 const process = require('process');
+const MersenneTwister = require('mersenne-twister');
 
 import { IRpc } from './authproxy';
 import { TestNode } from './test-node';
@@ -14,6 +15,8 @@ import {
 
 
 const ROOT_DIR = `${os.tmpdir()}/test`;
+const MERSENNE_SEED = 42;
+
 
 /**
  * Utility class to start and configure the Unit-e backend for end-to-end tests.
@@ -32,6 +35,8 @@ export class TestFramework implements IRpc {
   private binary: string = 'united';
 
   private createChain: boolean = false;
+
+  private rnd: MersenneTwister = new MersenneTwister(MERSENNE_SEED);
 
   nodes: TestNode[] = [];
 
@@ -65,6 +70,9 @@ export class TestFramework implements IRpc {
     }
     if ('createChain' in options) {
       this.createChain = options.createChain;
+    }
+    if ('randomSeed' in options) {
+      this.rnd = new MersenneTwister(options.randomSeed);
     }
   }
 
@@ -108,7 +116,7 @@ export class TestFramework implements IRpc {
     await syncMempools(this.nodes);
 
     for (let i = 0; i < n; i++) {
-      const nodeId = Math.trunc(Math.random() * this.numNodes);
+      const nodeId = this.rnd.random_int() % this.numNodes;
       await this.nodes[nodeId].call('generate', 1);
       await syncBlocks(this.nodes);
     }

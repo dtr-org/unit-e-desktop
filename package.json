@@ -90,14 +90,14 @@
     "win": {
       "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
       "target": [
-      	{
+        {
           "target": "nsis",
           "arch": [
             "x64",
             "ia32"
           ]
-	},
-	{
+        },
+        {
           "target": "zip",
           "arch": [
             "x64",
@@ -140,8 +140,7 @@
       "icon": "resources/linux"
     },
     "asar": true,
-    "asarUnpack": [
-    ]
+    "asarUnpack": []
   },
   "dependencies": {
     "bluebird": "^3.4.7",
@@ -193,6 +192,7 @@
     "karma-coverage-istanbul-reporter": "^1.4.1",
     "karma-jasmine": "^1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
+    "mersenne-twister": "^1.1.0",
     "ng2-logger": "^1.0.11",
     "ngx-clipboard": "^10.0.0",
     "ngx-infinite-scroll": "^0.8.3",

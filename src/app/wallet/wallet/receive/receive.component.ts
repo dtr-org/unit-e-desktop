@@ -37,6 +37,8 @@ export class ReceiveComponent implements OnInit {
 
   @ViewChild('paginator') paginator: any;
 
+  @ViewChild('previous_addresses') previousAddresses: any;
+
   log: any = Log.create('receive.component');
 
   MAX_ADDRESSES_PER_PAGE: number = 10;
@@ -181,6 +183,10 @@ export class ReceiveComponent implements OnInit {
     this.page = 1;
     this.exitLabelEditingMode();
     this.setAddressType('public');
+  }
+
+  scrollToOlderAddresses(): void {
+    this.previousAddresses.nativeElement.scrollIntoView(true);
   }
 
   /**

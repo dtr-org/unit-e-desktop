@@ -80,7 +80,7 @@
   </mat-card><!-- .receive-address -->
 
 
-  <div class="show-old">
+  <div class="show-old" (click)="scrollToOlderAddresses()">
     <mat-icon fontSet="uniteIcon" fontIcon="unite-triangle-down"></mat-icon>
     Show older addresses
     <!--button mat-button class="small" matTooltip="Display and filter your previously used addresses">
@@ -94,7 +94,7 @@
 
 <!-- ====== PREVIOUSLY CREATED ADDRESS ====== -->
 
-<div class="previous-addresses container-block" fxLayout="row" fxLayoutGap="40px">
+<div #previous_addresses class="previous-addresses container-block" fxLayout="row" fxLayoutGap="40px">
 
   <!-- Sorting, filtering -->
   <div class="filter">

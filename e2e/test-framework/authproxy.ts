@@ -11,7 +11,7 @@ export interface IRpc {
 
 export class AuthServiceProxy implements IRpc {
 
-  static id: number = 0;
+  id: number = 0;
 
   url: URL;
 
@@ -48,7 +48,7 @@ export class AuthServiceProxy implements IRpc {
       'version': '1.1',
       'method': method,
       'params': args,
-      'id': ++AuthServiceProxy.id
+      'id': ++this.id,
     };
   }
 

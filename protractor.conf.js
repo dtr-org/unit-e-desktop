@@ -22,12 +22,18 @@
 const { SpecReporter } = require('jasmine-spec-reporter');
 
 exports.config = {
-  allScriptsTimeout: 11000,
+  allScriptsTimeout: 50000,
   specs: [
     './e2e/**/*.e2e-spec.ts'
   ],
   capabilities: {
-    'browserName': 'chrome'
+    'browserName': 'chrome',
+    'chromeOptions': {
+      'args': [
+        '--headless', '--disable-gpu', '--window-size=1920,1080',
+        '--disable-web-security', '--user-data-dir=/tmp/.e2e-chrome-profile'
+      ]
+    }
   },
   directConnect: true,
   baseUrl: 'http://localhost:4200/',

@@ -21,7 +21,7 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint --type-check && htmlhint --ignore **/documentation/**,**/docs/**,**/packages/** && sass-lint -v",
-    "e2e": "ng e2e",
+    "e2e": "ng e2e --env=e2e",
     "generate:versions": "node modules/clientBinaries/generateVersions.js",
     "generate:documentation": "",
     "checksum": "cd packages && checksum -a sha256 *.*",
@@ -45,6 +45,7 @@
     "travis:win64": "electron-builder --win --x64 && yarn run checksum",
     "travis:win32": "electron-builder --win --ia32 && yarn run checksum",
     "travis:test": "ng test --single-run --code-coverage",
+    "travis:e2e": "./node_modules/.bin/webdriver-manager update --versions.chrome=2.44 --gecko=false && ng e2e --env=e2e --webdriver-update=false",
     "start": "yarn run start:electron:fast"
   },
   "productName": "unit-e-desktop",
@@ -89,14 +90,14 @@
     "win": {
       "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
       "target": [
-      	{
+        {
           "target": "nsis",
           "arch": [
             "x64",
             "ia32"
           ]
-	},
-	{
+        },
+        {
           "target": "zip",
           "arch": [
             "x64",
@@ -139,8 +140,7 @@
       "icon": "resources/linux"
     },
     "asar": true,
-    "asarUnpack": [
-    ]
+    "asarUnpack": []
   },
   "dependencies": {
     "bluebird": "^3.4.7",
@@ -192,6 +192,7 @@
     "karma-coverage-istanbul-reporter": "^1.4.1",
     "karma-jasmine": "^1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
+    "mersenne-twister": "^1.1.0",
     "ng2-logger": "^1.0.11",
     "ngx-clipboard": "^10.0.0",
     "ngx-infinite-scroll": "^0.8.3",

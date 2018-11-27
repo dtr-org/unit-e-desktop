@@ -30,6 +30,7 @@
         "docker1": "environments/environment.docker1.ts",
         "docker2": "environments/environment.docker2.ts",
         "regtest": "environments/environment.regtest.ts",
+        "e2e": "environments/environment.e2e.ts",
         "prod": "environments/environment.prod.ts"
       }
     }

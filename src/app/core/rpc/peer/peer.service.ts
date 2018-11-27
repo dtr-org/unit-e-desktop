@@ -16,7 +16,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, NgZone } from '@angular/core';
 import { Observable, Observer, Subscription } from 'rxjs'; // use this for testing atm
 import { Log } from 'ng2-logger';
 
@@ -39,7 +39,7 @@ export class PeerService implements OnDestroy {
   private _observerHighestBlockHeightNetwork: Observer<number>;
   private subs: Subscription;
 
-  constructor(private _rpc: RpcService) {
+  constructor(private _rpc: RpcService, private _ngZone: NgZone) {
 
     this._peerList = Observable.create(
       observer => this._observerPeerList = observer
@@ -79,7 +79,9 @@ export class PeerService implements OnDestroy {
     );
 
     if (!this.destroyed) {
-      setTimeout(this.updatePeerListLoop.bind(this), 10000);
+      this._ngZone.runOutsideAngular(() => {
+        setTimeout(this.updatePeerListLoop.bind(this), 10000);
+      });
     }
   }
 

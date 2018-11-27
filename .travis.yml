@@ -2,17 +2,29 @@ sudo: required
 dist: trusty
 language: node_js
 node_js:
-  - '6.11'
+  - '8'
 
 addons:
-apt:
-  sources:
-    - google-chrome
-  packages:
-    - google-chrome-stable
-    - google-chrome-beta
-    - icnsutils
-    - graphicsmagick
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
+      - google-chrome-beta
+      - icnsutils
+      - graphicsmagick
+      - curl
+      - libboost-system1.54.0
+      - libboost-filesystem1.54.0
+      - libboost-chrono1.54.0
+      - libboost-program-options1.54.0
+      - libboost-test1.54.0
+      - libboost-thread1.54.0
+      - libevent-pthreads-2.0
+      - libdb5.1++
+      - libminiupnpc8
+      - libevent-2.0
+      - libzmq3
 
 cache:
   directories:
@@ -20,6 +32,7 @@ cache:
   - $HOME/.npm/_prebuilds
   - $HOME/.cache/electron
   - $HOME/.cache/electron-builder
+  - $HOME/.cache/downloads
 
 before_install:
   - export CHROME_BIN=chromium-browser
@@ -30,8 +43,14 @@ before_script:
   - export TRUE_COMMIT_MESSAGES=$(git log --oneline -2 | grep "+build")
   - export TRUE_COMMIT=$(echo $TRUE_COMMIT_MESSAGES | awk '{print $1}')
   - echo $TRUE_COMMIT_MESSAGES
-
   - yarn install
+  - >
+    mkdir -p $HOME/.cache/downloads ;
+    if ! [ -e $HOME/.cache/downloads/unite.tgz ] ; then
+      curl -vLJ -H 'Accept: application/octet-stream' -o $HOME/.cache/downloads/unite.tgz https://api.github.com/repos/dtr-org/unit-e/releases/assets/$UNITE_RELEASE_ID?access_token=$ACCESS_TOKEN ;
+    fi
+  - tar xzf $HOME/.cache/downloads/unite.tgz -C /
+  - export UNITED_BINARY=/opt/unite/bin/united
 
 script:
   - echo 'Build Dist' && echo -en 'travis_fold:start:script.build\\r'
@@ -46,6 +65,10 @@ script:
   - echo 'Test Codebase' && echo -en 'travis_fold:start:script.test\\r'
   - yarn run travis:test
   - echo -en 'travis_fold:end:script.test\\r'
+
+  - echo 'End-to-end Tests' && echo -en 'travis_fold:start:script.e2e\\r'
+  - yarn run travis:e2e
+  - echo -en 'travis_fold:end:script.e2e\\r'
 
   - if [[ $TRUE_COMMIT_MESSAGES == *"+build"* ]]; then ./nightly.sh; fi;
 

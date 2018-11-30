@@ -7,17 +7,6 @@
 
   <!--TX confirmation-->
   <div class="tx-confirmation">
-    <div class="tx-info">
-      <!-- if public -->
-      <div class="public" *ngIf="transactionType === TxType.PUBLIC">
-        <mat-icon class="icon public" fontSet="uniteIcon" fontIcon="unite-public"></mat-icon>
-        <div class="title">Public transaction</div>
-        <p class="help-text">
-          Sender, Receiver & transaction amount will be publicly visible on the blockchain
-        </p>
-      </div>
-    </div>
-
     <div class="tx-amount">
       <span class="big">{{ sendAmount.getIntegerPart() }}</span>
       <span *ngIf="sendAmount.ifDotExist()">
@@ -37,10 +26,23 @@
     </div>
 
     <p class="fee-info">
-      Transaction fee:<span class="amount">{{ transactionAmount.getFee() }} UTE</span><span class="fiat">&asymp; 0.05 USD</span><br>
-      Total amount:<span
-      class="amount">{{ transactionAmount.getAmountWithFee(sendAmount.getAmount()) }} UTE</span><span class="fiat">&asymp; 3.47 USD</span>
+      Transaction fee:<span class="amount">{{ transactionAmount.getFee() }} UTE</span><span class="fiat">&asymp; 0.05 USD</span>
+      <button mat-button color="primary"
+              (click)="showAdvancedFeeOptions = !showAdvancedFeeOptions" matTooltip="Edit fee"
+              *ngIf="!showAdvancedFeeOptions">
+        <mat-icon fontSet="uniteIcon" fontIcon="unite-pen-1"></mat-icon>
+        Edit
+      </button>
     </p>
+
+    <div class="section advanced" fxLayout="column" fxLayoutGap="8px" *ngIf="showAdvancedFeeOptions">
+      <app-fee-options [send]="send" (updateFee)="setTransactionFee($event)"></app-fee-options>
+    </div><!-- .section.advanced -->
+
+    <div class="total-amount-info">
+      Total amount:<span
+      class="amount">{{ getAmountWithFee() }} UTE</span><span class="fiat">&asymp; 3.47 USD</span>
+    </div>
   </div><!-- TX confirmation -->
 
 </div><!-- .dialog-content -->

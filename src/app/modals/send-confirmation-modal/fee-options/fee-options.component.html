@@ -1,0 +1,44 @@
+<div class="fee-options" fxLayout="column" fxLayoutGap="10px">
+
+  <mat-checkbox name="subtract_fee"
+                [(ngModel)]="send.subtractFeeFromAmount"
+                (change)="updateSelectedFee()" >
+    Subtract fee from amount
+  </mat-checkbox>
+
+  <mat-radio-group name="fee_determination" [(ngModel)]="send.feeDetermination" fxLayout="column" (change)="updateSelectedFee()">
+    <div class="input-height align-children">
+      <mat-radio-button value="default">
+        Default fee
+      </mat-radio-button>
+    </div>
+
+    <div class="align-children">
+      <mat-radio-button value="confirmation">
+        Confirmation target:
+      </mat-radio-button>
+      <mat-form-field class="spaced">
+        <mat-select name="confirmation_target"
+                    [(ngModel)]="send.confirmationTarget"
+                    [disabled]="send.feeDetermination !== 'confirmation'">
+          <mat-option *ngFor="let confTarget of CONFIRMATION_TARGETS" [value]="confTarget">
+            {{confTarget}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <span>blocks</span>
+    </div>
+
+    <div class="align-children">
+      <mat-radio-button value="custom">Custom fee:</mat-radio-button>
+      <mat-form-field class="spaced">
+        <input matInput type="number" name="custom_fee"
+               [(ngModel)]="send.customFee" [disabled]="send.feeDetermination !== 'custom'"
+               step="0.00001">
+      </mat-form-field>
+      <span>UTE/kbyte</span>
+    </div>
+
+  </mat-radio-group>
+
+</div>

@@ -37,7 +37,7 @@ export class ReceiveComponent implements OnInit {
 
   @ViewChild('paginator') paginator: any;
 
-  @ViewChild('previous_addresses') previousAddresses: any;
+  @ViewChild('previousAddresses') previousAddresses: any;
 
   log: any = Log.create('receive.component');
 

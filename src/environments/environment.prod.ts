@@ -24,5 +24,5 @@ export const environment = {
   releasesUrl: 'https://api.github.com/repos/dtr-org/unit-e-desktop/releases/latest',
   envName: 'prod',
   uniteHost: 'localhost',
-  unitePort: 8332
+  unitePort: 7181,
 };

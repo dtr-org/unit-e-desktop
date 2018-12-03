@@ -28,5 +28,5 @@ export const environment = {
   version: require('../../package.json').version,
   releasesUrl: 'https://api.github.com/repos/dtr-org/unit-e-desktop/releases/latest',
   uniteHost: 'localhost',
-  unitePort: 18332
+  unitePort: 17181,
 };

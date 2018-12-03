@@ -90,10 +90,10 @@ exports.parse = function() {
   options.port = options.rpcport
     ? options.rpcport // custom rpc port
     : options.testnet
-      ? 18332  // default testnet port
+      ? 17181  // default testnet port
       : options.regtest
-        ? 18443  // default regtest port
-        : 8332 ; // default mainnet port
+        ? 17291  // default regtest port
+        : 7181 ; // default mainnet port
 
   // Angular development server port
   options.devport = options.devport || 4200;

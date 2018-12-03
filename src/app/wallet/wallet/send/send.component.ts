@@ -273,7 +273,8 @@ export class SendComponent implements OnInit {
   }
 
   sendAllBalance(): void {
-    this.send.amount = (!this.send.subtractFeeFromAmount) ? this.getBalance(this.send.input) : null;
+    this.send.amount = (!this.send.sendAll) ? this.getBalance(this.send.input) : null;
+    this.send.subtractFeeFromAmount = this.send.sendAll;
   }
 
 }

@@ -21,6 +21,12 @@ export enum TxType {
   PUBLIC = 'ute',
 }
 
+export enum FeeDetermination {
+  DEFAULT = 'default',
+  CONFIRMATION = 'confirmation',
+  CUSTOM = 'custom',
+}
+
 export class TransactionBuilder {
   input: TxType = TxType.PUBLIC;
   output: TxType = TxType.PUBLIC;
@@ -36,7 +42,14 @@ export class TransactionBuilder {
   isMine: boolean;
   currency: string = 'ute';
   ringsize: number = 8;
+  sendAll: boolean = false;
   subtractFeeFromAmount: boolean = false;
+
+  feeDetermination: string = FeeDetermination.DEFAULT;
+  selectedFee: number;
+  customFee: number = 0.00001;
+  confirmationTarget: number = 2;
+
   estimateFeeOnly: boolean = true;
 
   constructor() {

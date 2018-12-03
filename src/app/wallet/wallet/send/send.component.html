@@ -53,31 +53,37 @@
       </mat-card><!-- .pay-to -->
 
       <!-- Send amount % buttons -->
-      <mat-card class="send-amount" fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="start center">
-        <mat-form-field fxFlex="0 0 150px">
-          <!-- Send amount -->
-          <input matInput type="text" name="sendAmount" placeholder="Amount to send" [(ngModel)]="send.amount"
-                 (input)="verifyAmount()"
-                 [ngClass]="{'verify-sucess': checkAmount() === true, 'verify-error': checkAmount() === false }"
-                 [disabled]="send.subtractFeeFromAmount">
-        </mat-form-field>
-        <mat-checkbox name="send_all" [(ngModel)]="send.subtractFeeFromAmount" (click)="sendAllBalance()"
-                      class="send-all">
-          Send All
-        </mat-checkbox>
-        <!-- Choose currency -->
-        <mat-select class="underliningSelect" fxFlex="0 0 70px" name="currency" [(ngModel)]="send.currency"
-                    placeholder="Currency">
-          <mat-option value="ute">UTE</mat-option>
-        </mat-select>
-        <!-- Send buttons -->
-        <div class="actions" fxFlex="1 1 100%">
-          <button mat-raised-button color="primary" class="validate" (click)="onSubmit()"
-                  [disabled]="!checkAddress() || !checkAmount()">
-            <mat-icon fontSet="uniteIcon" fontIcon="unite-check"></mat-icon>
-            Make payment
-          </button>
-        </div><!-- .actions -->
+      <mat-card class="send-amount">
+        <div class="title">
+          Amount
+        </div>
+
+        <div class="section" fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="start center">
+          <mat-form-field fxFlex="0 0 150px">
+            <!-- Send amount -->
+            <input matInput type="text" name="sendAmount" placeholder="Amount to send" [(ngModel)]="send.amount"
+                   (input)="verifyAmount()"
+                   [ngClass]="{'verify-sucess': checkAmount() === true, 'verify-error': checkAmount() === false }"
+                   [disabled]="send.sendAll">
+          </mat-form-field>
+          <mat-checkbox name="send_all" [(ngModel)]="send.sendAll" (click)="sendAllBalance()"
+                        class="send-all">
+            Send All
+          </mat-checkbox>
+          <!-- Choose currency -->
+          <mat-select class="underliningSelect" fxFlex="0 0 70px" name="currency" [(ngModel)]="send.currency"
+                      placeholder="Currency">
+            <mat-option value="ute">UTE</mat-option>
+          </mat-select>
+          <!-- Send buttons -->
+          <div class="actions" fxFlex="1 1 100%">
+            <button mat-raised-button color="primary" class="validate" (click)="onSubmit()"
+                    [disabled]="!checkAddress() || !checkAmount()">
+              <mat-icon fontSet="uniteIcon" fontIcon="unite-check"></mat-icon>
+              Make payment
+            </button>
+          </div><!-- .actions -->
+        </div>
       </mat-card><!-- .send-amount -->
 
 

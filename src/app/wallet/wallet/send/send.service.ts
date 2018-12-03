@@ -27,7 +27,8 @@ import { SnackbarService } from '../../../core/snackbar/snackbar.service';
 
 /* fix wallet */
 import { FixWalletModalComponent } from 'app/wallet/wallet/send/fix-wallet-modal/fix-wallet-modal.component';
-import { TransactionBuilder } from './transaction-builder.model';
+import { TransactionBuilder, FeeDetermination } from './transaction-builder.model';
+import { CoinControl } from 'app/core/rpc/rpc-types';
 
 /*
   Note: due to upcoming multiwallet, we should never ever store addresses in the GUI for transaction purposes.
@@ -64,11 +65,20 @@ export class SendService {
    * Estimates if estimateFeeOnly === true.
    */
   private send(tx: TransactionBuilder): Observable<any> {
+    const coinControl: CoinControl = {};
+
+    if (tx.feeDetermination === FeeDetermination.CONFIRMATION) {
+      coinControl.conf_target = tx.confirmationTarget;
+    }
+    if (tx.feeDetermination === FeeDetermination.CUSTOM) {
+      coinControl.fee_rate = tx.customFee;
+    }
+
     return this._rpc.sendtypeto(tx.input, tx.output, [{
       address: tx.toAddress,
       amount: tx.amount,
       subfee: tx.subtractFeeFromAmount,
-    }], tx.comment, tx.commentTo, tx.estimateFeeOnly);
+    }], tx.comment, tx.commentTo, tx.estimateFeeOnly, coinControl);
   }
 
   private rpc_send_success(json: any, address: string, amount: number) {

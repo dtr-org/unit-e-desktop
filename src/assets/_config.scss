@@ -103,6 +103,12 @@ $break-xhd: 2200px;
   cursor: text;
 }
 
+// help text
+%help-text {
+  @extend %disable-select;
+  color: $text-muted;
+  font-size: 11px;
+}
 
 // Transition effects
 %tfx {

@@ -42,6 +42,7 @@ import { PasswordComponent } from './shared/password/password.component';
 import { SnackbarService } from '../core/snackbar/snackbar.service';
 import { ManageWidgetsComponent } from './manage-widgets/manage-widgets.component';
 import { SendConfirmationModalComponent } from 'app/modals/send-confirmation-modal/send-confirmation-modal.component';
+import { FeeOptionsComponent } from './send-confirmation-modal/fee-options/fee-options.component';
 
 @NgModule({
   imports: [
@@ -62,7 +63,8 @@ import { SendConfirmationModalComponent } from 'app/modals/send-confirmation-mod
     EncryptwalletComponent,
     AlertComponent,
     ManageWidgetsComponent,
-    SendConfirmationModalComponent
+    SendConfirmationModalComponent,
+    FeeOptionsComponent,
   ],
   exports: [
     ClipboardModule

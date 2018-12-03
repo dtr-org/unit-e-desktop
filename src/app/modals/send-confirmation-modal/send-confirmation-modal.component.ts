@@ -41,6 +41,7 @@ export class SendConfirmationModalComponent implements OnInit {
   sendAddress: string = '';
   receiverName: string = '';
   transactionAmount: Fee = new Fee(0);
+  showAdvancedFeeOptions: boolean = false;
 
   constructor(private dialogRef: MatDialogRef<SendConfirmationModalComponent>,
               private sendService: SendService) {
@@ -63,7 +64,7 @@ export class SendConfirmationModalComponent implements OnInit {
     * Set the confirmation modal data for tx
     */
   setTxDetails(): void {
-    this.getTransactionFee();
+    this.updateTransactionFee();
 
     this.sendAddress = this.send.toAddress;
     this.transactionType = this.send.input;
@@ -71,10 +72,22 @@ export class SendConfirmationModalComponent implements OnInit {
     this.receiverName = this.send.toLabel;
   }
 
-  getTransactionFee() {
+  updateTransactionFee(): void {
     this.sendService.getTransactionFee(this.send).subscribe(fee => {
       this.transactionAmount = new Fee(fee.fee);
     });
+  }
+
+  getAmountWithFee(): number {
+    if (this.send.subtractFeeFromAmount) {
+      return this.sendAmount.getAmount();
+    }
+
+    return this.transactionAmount.getAmountWithFee(this.sendAmount.getAmount());
+  }
+
+  setTransactionFee(fee: number): void {
+    this.transactionAmount = new Fee(fee);
   }
 
 }

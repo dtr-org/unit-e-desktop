@@ -1,0 +1,18 @@
+<div mat-dialog-title class="title">Increase transaction fee</div>
+
+<mat-dialog-content class="modal-content">
+  <p>
+    Do you want to increase the fee for this transaction<span *ngIf="newFee"> to {{ newFee }} UTE</span>?
+  </p>
+</mat-dialog-content>
+
+<mat-dialog-actions fxLayoutAlign="end center">
+  <button type="button" mat-button mat-dialog-close>
+    <mat-icon fontSet="uniteIcon" fontIcon="unite-cross"></mat-icon>
+    Cancel
+  </button>
+  <button mat-raised-button color="primary" (click)="bumpFee()">
+    <mat-icon fontSet="uniteIcon" fontIcon="unite-check"></mat-icon>
+    Increase
+  </button>
+</mat-dialog-actions>

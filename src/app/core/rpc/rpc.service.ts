@@ -27,7 +27,12 @@ import { map, catchError } from 'rxjs/operators';
 import { IpcService } from '../ipc/ipc.service';
 import { environment } from '../../../environments/environment';
 import { Commands } from './commands';
-import { Outputs, CoinControl, ProposerStatus } from './rpc-types';
+import {
+  BumpFeeResult,
+  CoinControl,
+  Outputs,
+  ProposerStatus,
+} from './rpc-types';
 
 const MAINNET_PORT = 51735;
 const TESTNET_PORT = 51935;
@@ -139,6 +144,12 @@ export class RpcService implements OnDestroy {
 
   addressBookInfo() {
     return this.call(Commands.ADDRESSBOOKINFO);
+  }
+
+  bumpFee(txid: string, options?: any, testFee?: boolean): Observable<BumpFeeResult> {
+    options = options || null;
+    testFee = testFee || false;
+    return this.call(Commands.BUMPFEE, [txid, options, testFee]);
   }
 
   filterAddresses(offset?: number, count?: number, sort_code?: 0 | 1, search?: string, match_owned?: 0 | 1 | 2) {

@@ -1,0 +1,53 @@
+<div fxLayout="column" fxLayoutGap="8px">
+  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="15px">
+    <mat-form-field fxFlex="1 1 100%" class="full-width larger">
+      <input #address name="toAddress" matInput
+             [ngClass]="{'verify-sucess': txo.validAddress === true, 'verify-error': txo.validAddress === false }"
+             type="text" placeholder="Receiver's address" [(ngModel)]="txo.toAddress"
+             (ngModelChange)="verifyAddress()"/>
+    </mat-form-field>
+    <span fxFlex="0 0 16px">
+      <mat-icon class="cursor-pointer" matTooltip="Pick from Address Book" (click)="this.openLookup.emit()"
+                fontSet="uniteIcon" fontIcon="unite-people"></mat-icon>
+    </span>
+    <span fxFlex="0 0 16px">
+      <mat-icon class="cursor-pointer" matTooltip="Paste" fontSet="uniteIcon" fontIcon="unite-past"
+                (click)="pasteAddress()"></mat-icon>
+    </span>
+    <span fxFlex="0 0 16px">
+      <mat-icon class="cursor-pointer" matTooltip="Clear all" (click)="txo.clearReceiver()"
+                color="warn" fontSet="uniteIcon" fontIcon="unite-clear-all"></mat-icon>
+    </span>
+  </div>
+  <mat-form-field class="full-width larger no-top-padding" floatPlaceholder="never">
+    <input name="toLabel" matInput type="text" placeholder="Receiver's name (optional)"
+           [(ngModel)]="txo.toLabel">
+  </mat-form-field>
+  <p class="widget-help" *ngIf="first">
+    You can save Receiver's address to your Address book by labeling it here.
+  </p>
+  <div class="section" fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="start center">
+    <mat-form-field fxFlex="0 0 150px">
+      <!-- Send amount -->
+      <input matInput type="text" name="sendAmount" placeholder="Amount to send" [(ngModel)]="txo.amount"
+             (input)="txo.verifyAmount()"
+             [ngClass]="{'verify-sucess': txo.validAmount === true, 'verify-error': txo.validAmount === false }"
+             [disabled]="txo.sendAll">
+    </mat-form-field>
+    <mat-checkbox name="send_all" [(ngModel)]="txo.sendAll" (change)="this.sendAllBalance.emit()"
+                  class="send-all">
+      Send All
+    </mat-checkbox>
+    <mat-checkbox name="subtract_fee"
+                  [(ngModel)]="txo.subtractFeeFromAmount">
+      Subtract fee from amount
+    </mat-checkbox>
+
+    <div fxFlex="1 1 auto"></div>
+    <button mat-button (click)="this.remove.emit()" color="warn"
+            *ngIf="!first">
+      <mat-icon fontSet="uniteIcon" fontIcon="unite-cross"></mat-icon>
+      Remove
+    </button>
+  </div>
+</div>

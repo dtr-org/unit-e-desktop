@@ -28,6 +28,9 @@ import mockgetwalletinfo from './mock-data/getwalletinfo.mock'
 import mockaddressbookinfo from './mock-data/addressbookinfo.mock'
 import mockfilteraddresses from './mock-data/filteraddresses.mock'
 import mockfiltertransactions from './mock-data/filtertransactions.mock';
+import { OUR_ADDRESS, THEIR_ADDRESS, mock_our_addrinfo, mock_their_addrinfo } from './mock-data/validateaddress.mock';
+import mockwalletinfo from './mock-data/getwalletinfo.mock';
+
 import { RpcService } from '../../../core/core.module';
 
 // TODO: create & move into the testing module
@@ -38,7 +41,7 @@ export class RpcMockService extends RpcService {
 
   constructor() { super(null, null); }
 
-  private getMock(method: string): any {
+  private getMock(method: string, params?: Array<any> | null): any {
       switch (method) {
         case 'getpeerinfo':
           return mockgetpeerinfo;
@@ -56,6 +59,12 @@ export class RpcMockService extends RpcService {
           return mockfiltertransactions;
         case 'listunspent':
           return mocklistunspent;
+        case 'validateaddress':
+          if (params[0] === OUR_ADDRESS) {
+            return mock_our_addrinfo;
+          } else {
+            return mock_their_addrinfo;
+          }
       }
 
       return true;
@@ -65,10 +74,12 @@ export class RpcMockService extends RpcService {
     return Observable.create(observer => {
       // Return the result asynchronously to simulate real RPC
       setTimeout(() => {
-        observer.next(this.getMock(method));
+        observer.next(this.getMock(method, params));
         observer.complete();
       });
     });
   }
 
 }
+
+export { OUR_ADDRESS, THEIR_ADDRESS };

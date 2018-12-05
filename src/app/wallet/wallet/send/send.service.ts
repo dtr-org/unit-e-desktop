@@ -73,6 +73,9 @@ export class SendService {
     if (tx.feeDetermination === FeeDetermination.CUSTOM) {
       coinControl.fee_rate = tx.customFee;
     }
+    if (tx.replaceable) {
+      coinControl.replaceable = tx.replaceable;
+    }
 
     return this._rpc.sendtypeto(tx.input, tx.output, [{
       address: tx.toAddress,

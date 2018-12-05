@@ -128,6 +128,12 @@
         <input fxFlex="1 1 calc(100% - 80px)" value="{{tx.getNarration()}}" class="narration input">
       </div>
 
+      <div fxLayout="row" fxFlex="1 1 100%" fxLayoutAlign="end" *ngIf="tx.canBumpFee()">
+        <button mat-raised-button color="primary" (click)="bumpFee(tx.txid)">
+          Increase fee
+        </button>
+      </div>
+
     </div><!-- .history_cointainer -->
   </mat-expansion-panel>
 </ng-container>

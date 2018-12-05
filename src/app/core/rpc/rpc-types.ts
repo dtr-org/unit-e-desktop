@@ -31,6 +31,13 @@ export enum EstimateMode {
   CONSERVATIVE = 'CONSERVATIVE',
 }
 
+export class BumpFeeResult {
+  txid?: string;
+  origfee: number;
+  fee: number;
+  errors: string[];
+}
+
 export class CoinControl {
   changeaddress?: string;
   inputs?: any;

@@ -54,6 +54,11 @@ export class Transaction {
     blocktime: number;
     confirmations: number;
 
+    replaceable: boolean;
+    abandoned: boolean;
+    replacedByTxid: string;
+    replacesTxid: string;
+
   constructor(json: any) {
     /* transactions */
     this.txid = json.txid;
@@ -74,6 +79,11 @@ export class Transaction {
 
     /* conflicting txs */
     this.walletconflicts = json.walletconflicts;
+
+    this.replaceable = (json['bip125-replaceable'] === 'yes');
+    this.abandoned = !!json.abandoned;
+    this.replacesTxid = json.replaces_txid;
+    this.replacedByTxid = json.replaced_by_txid;
 
     /* block info */
     this.blockhash = json.blockhash;
@@ -170,5 +180,11 @@ export class Transaction {
     return false
   }
 
-
+  /** Shows whether we can increase the fee for this transaction */
+  public canBumpFee(): boolean {
+    return (
+      this.category === 'send' && this.confirmations === 0 && this.replaceable &&
+      !this.abandoned && !this.replacedByTxid
+    );
+  }
 }

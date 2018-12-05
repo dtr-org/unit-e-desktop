@@ -17,12 +17,14 @@
  */
 
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { PageEvent } from '@angular/material';
+import { MatDialog, MatSnackBar, PageEvent } from '@angular/material';
 import { Log } from 'ng2-logger'
 
 import { slideDown } from 'app/core-ui/core.animations';
+import { RpcService } from 'app/core/core.module';
 import { Transaction } from '../transaction.model';
 import { TransactionService } from '../transaction.service';
+import { BumpFeeModalComponent } from './bump-fee-modal/bump-fee-modal.component';
 
 @Component({
   selector: 'transaction-table',
@@ -65,8 +67,12 @@ export class TransactionsTableComponent implements OnInit {
   pageEvent: PageEvent; /* MatPaginator output */
   log: any = Log.create('transaction-table.component');
 
-  constructor(public txService: TransactionService) {
-
+  constructor(
+    public txService: TransactionService,
+    public dialog: MatDialog,
+    public rpc: RpcService,
+    private snackBar: MatSnackBar,
+  ) {
   }
 
   ngOnInit(): void {
@@ -125,6 +131,21 @@ export class TransactionsTableComponent implements OnInit {
       this.paginator.resetPagination(0)
       this.txService.changePage(0);
     }
+  }
+
+  public async bumpFee(txid: string) {
+    let bumpResult = {fee: null};
+    try {
+      // Try estimating the bumped fee, ignore errors
+      bumpResult = await this.rpc.bumpFee(txid, null, true).toPromise();
+    } catch {}
+
+    const dialogRef = this.dialog.open(BumpFeeModalComponent);
+    dialogRef.componentInstance.txid = txid;
+    dialogRef.componentInstance.newFee = bumpResult.fee;
+    dialogRef.afterClosed().subscribe(() => {
+      this.txService.loadTransactions();
+    });
   }
 
 }

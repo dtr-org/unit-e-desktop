@@ -45,6 +45,7 @@ import { QrCodeModalComponent } from './shared/qr-code-modal/qr-code-modal.compo
 import { SignatureAddressModalComponent } from './shared/signature-address-modal/signature-address-modal.component';
 import { FixWalletModalComponent } from './send/fix-wallet-modal/fix-wallet-modal.component';
 import { WalletFixedConfirmationComponent } from './send/fix-wallet-modal/wallet-fixed-confirmation/wallet-fixed-confirmation.component';
+import { BumpFeeModalComponent } from './shared/transaction-table/bump-fee-modal/bump-fee-modal.component';
 
 
 
@@ -69,7 +70,8 @@ import { WalletFixedConfirmationComponent } from './send/fix-wallet-modal/wallet
     QrCodeModalComponent,
     SignatureAddressModalComponent,
     FixWalletModalComponent,
-    WalletFixedConfirmationComponent
+    WalletFixedConfirmationComponent,
+    BumpFeeModalComponent,
   ],
   exports: [
     TransactionsTableComponent,
@@ -90,7 +92,8 @@ import { WalletFixedConfirmationComponent } from './send/fix-wallet-modal/wallet
     SignatureAddressModalComponent,
     /* modals for wallet fix */
     FixWalletModalComponent,
-    WalletFixedConfirmationComponent
+    WalletFixedConfirmationComponent,
+    BumpFeeModalComponent,
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

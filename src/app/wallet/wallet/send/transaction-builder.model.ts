@@ -44,6 +44,7 @@ export class TransactionBuilder {
   ringsize: number = 8;
   sendAll: boolean = false;
   subtractFeeFromAmount: boolean = false;
+  replaceable: boolean = false;
 
   feeDetermination: string = FeeDetermination.DEFAULT;
   selectedFee: number;

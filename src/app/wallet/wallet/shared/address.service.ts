@@ -55,6 +55,9 @@ export class AddressService {
   constructor(private _rpc: RpcService) {
     this._addresses = Observable.create(observer => this._observerAddresses = observer).publishReplay(1).refCount();
 
+    // Force initialization of _observerAddresses
+    this._addresses.subscribe().unsubscribe();
+
     this.updateAddressList();
   }
 

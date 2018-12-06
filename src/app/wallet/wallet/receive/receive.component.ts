@@ -18,6 +18,7 @@
 
 import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material';
+import { Subject } from 'rxjs';
 import { Log } from 'ng2-logger';
 
 import { RpcService, RpcStateService, Commands } from '../../../core/core.module';
@@ -40,6 +41,9 @@ export class ReceiveComponent implements OnInit {
   @ViewChild('previousAddresses') previousAddresses: any;
 
   log: any = Log.create('receive.component');
+
+  // Used in unit tests
+  addressUpdates: Subject<any> = new Subject<any>();
 
   MAX_ADDRESSES_PER_PAGE: number = 10;
   PAGE_SIZE_OPTIONS: Array<number> = [10, 25, 50];
@@ -273,6 +277,7 @@ export class ReceiveComponent implements OnInit {
       this.checkIfUnusedAddress();
     }
 
+    this.addressUpdates.next(this.addresses);
   }
 
   /**

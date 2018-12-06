@@ -24,6 +24,7 @@ import { Log } from 'ng2-logger';
 
 import { ModalsHelperService } from 'app/modals/modals.module';
 import { RpcService, Commands } from '../../../core/rpc/rpc.service';
+import { WalletInfo } from '../../../core/rpc/rpc-types';
 import { RpcStateService } from '../../../core/rpc/rpc-state/rpc-state.service';
 
 import { SendService } from './send.service';
@@ -87,13 +88,11 @@ export class SendComponent implements OnInit {
 
   /** Get current account balance */
   getBalance(account: TxType): number {
-    const balance = this.txTypeToBalanceType(account);
-    return this._rpcState.get('getwalletinfo')[balance] || 0;
-  }
-
-  getBalanceString(account: TxType): string {
-    const balance = this.txTypeToBalanceType(account);
-    return this._rpcState.get('getwalletinfo')[balance];
+    const walletInfo: WalletInfo = this._rpcState.get('getwalletinfo');
+    if (!walletInfo) {
+      return 0;
+    }
+    return walletInfo.balance || 0;
   }
 
   private txTypeToBalanceType(type: TxType): string {

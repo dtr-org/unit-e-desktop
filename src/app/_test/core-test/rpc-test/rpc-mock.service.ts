@@ -22,6 +22,11 @@ import { Observable } from 'rxjs';
 
 import mockgetpeerinfo from './mock-data/getpeerinfo.mock';
 import mockproposerstatus from './mock-data/proposerstatus.mock';
+import mockgetnetworkinfo from './mock-data/getnetworkinfo.mock'
+import mockgetwalletinfo from './mock-data/getwalletinfo.mock'
+import mockaddressbookinfo from './mock-data/addressbookinfo.mock'
+import mockfilteraddresses from './mock-data/filteraddresses.mock'
+import mockfiltertransactions from './mock-data/filtertransactions.mock';
 import { RpcService } from '../../../core/core.module';
 
 // TODO: create & move into the testing module
@@ -34,16 +39,29 @@ export class RpcMockService extends RpcService {
 
   call(method: string, params?: Array<any> | null): Observable<any> {
     return Observable.create(observer => {
+      let result: any = true;
 
       if (method === 'getpeerinfo') {
-        observer.next(mockgetpeerinfo);
+        result = mockgetpeerinfo;
       } else if (method === 'proposerstatus') {
-        observer.next(mockproposerstatus);
-      } else {
-        observer.next(true)
+        result = mockproposerstatus;
+      } else if (method === 'getnetworkinfo') {
+        result = mockgetnetworkinfo;
+      } else if (method === 'getwalletinfo') {
+        result = mockgetwalletinfo;
+      } else if (method === 'addressbookinfo') {
+        result = mockaddressbookinfo;
+      } else if (method === 'filteraddresses') {
+        result = mockfilteraddresses;
+      } else if (method === 'filtertransactions') {
+        result = mockfiltertransactions;
       }
 
-      observer.complete();
+      // Return the result asynchronously
+      setTimeout(() => {
+        observer.next(result);
+        observer.complete();
+      });
     });
   }
 

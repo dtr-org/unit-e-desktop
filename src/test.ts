@@ -24,11 +24,17 @@ import 'zone.js/dist/sync-test';
 import 'zone.js/dist/jasmine-patch';
 import 'zone.js/dist/async-test';
 import 'zone.js/dist/fake-async-test';
-import { getTestBed } from '@angular/core/testing';
+import { TestBed, getTestBed } from '@angular/core/testing';
 import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting
 } from '@angular/platform-browser-dynamic/testing';
+
+import { RpcService } from 'app/core/core.module';
+import { RpcMockService } from 'app/_test/core-test/rpc-test/rpc-mock.service';
+
+import { TransactionService } from 'app/wallet/wallet/shared/transaction.service';
+import { MockTransactionService } from 'app/wallet/wallet/shared/transaction.mockservice';
 
 import { Log } from 'ng2-logger';
 
@@ -46,6 +52,20 @@ getTestBed().initTestEnvironment(
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting()
 );
+
+// We make sure our mock services are used in all unit tests
+const oldConfigureTestingModule = TestBed.prototype.configureTestingModule;
+getTestBed().configureTestingModule = function (moduleDef: any) {
+  if (!('providers' in moduleDef)) {
+    moduleDef.providers = [];
+  }
+  moduleDef.providers.push(
+    { provide: RpcService, useClass: RpcMockService },
+    { provide: TransactionService, useClass: MockTransactionService },
+  );
+  oldConfigureTestingModule.call(this, moduleDef);
+}
+
 // Then we find all the tests.
 const context = require.context('./', true, /\.spec\.ts$/);
 // And load the modules.

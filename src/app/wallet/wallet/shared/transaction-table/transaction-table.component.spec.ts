@@ -44,16 +44,6 @@ describe('TransactionTableComponent', () => {
         BrowserAnimationsModule
       ]
     })
-
-  // Override TransactionsTableComponent's TransactionService
-  .overrideComponent(TransactionsTableComponent, {
-    set: {
-      providers: [
-        { provide: TransactionService, useClass: MockTransactionService }
-      ]
-    }
-  })
-
     .compileComponents();
   }));
 

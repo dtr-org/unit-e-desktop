@@ -25,7 +25,6 @@ import { CoreModule } from '../../../../core/core.module';
 import { CoreUiModule } from '../../../../core-ui/core-ui.module';
 import { ModalsModule } from '../../../../modals/modals.module';
 
-
 import { QrCodeModalComponent } from './qr-code-modal.component';
 
 describe('QrCodeModalComponent', () => {

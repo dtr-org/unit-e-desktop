@@ -60,18 +60,15 @@ describe('ReceiveComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should addAddress', () => {
-    const address = {
-      label: 'test address label',
-      address: 'test address address',
-      path: 'm/0/0'
-    };
-    component.addAddress(address, 'public');
-    expect(component.addresses.public.length).toBe(1);
-  });
-
   it('should get addresses', () => {
     expect(component.addresses).toBeDefined();
+  });
+
+  it('should load the right number of addresses', () => {
+    expect(component.addresses.public.length).toBe(0);
+    component.addressUpdates.first().subscribe((addresses) => {
+      expect(addresses.public.length).toBe(3);
+    })
   });
 
   // it('should get defaultAddress', () => {
@@ -79,7 +76,10 @@ describe('ReceiveComponent', () => {
   // });
 
   it('should get initialized', () => {
-    expect(component.initialized).toBeFalsy()
+    expect(component.initialized).toBeFalsy();
+    component.addressUpdates.first().subscribe(() => {
+      expect(component.initialized).toBeTruthy();
+    })
   });
 
   it('should get page', () => {

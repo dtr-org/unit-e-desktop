@@ -43,6 +43,33 @@
       </mat-card>
     </div>
 
+    <div class="section search-sorting">
+      <div class="subtitle first">Restrict by date</div>
+      <mat-card class="filter-card">
+        <mat-form-field class="filter-input" floatPlaceholder="never">
+          <mat-select placeholder="Restrict by date" [(ngModel)]="dateRange" (change)="filter()">
+            <mat-option *ngFor="let filter of dateFilters" [value]="filter.value">
+              {{ filter.title }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div *ngIf="dateRange === 'custom'">
+          <mat-form-field>
+            <input matInput [matDatepicker]="fromDatepicker" placeholder="Start date" [(ngModel)]="fromDate" (dateChange)="filter()">
+            <mat-datepicker-toggle matSuffix [for]="fromDatepicker"></mat-datepicker-toggle>
+            <mat-datepicker #fromDatepicker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput [matDatepicker]="toDatepicker" placeholder="End date" [(ngModel)]="toDate" (dateChange)="filter()">
+            <mat-datepicker-toggle matSuffix [for]="toDatepicker"></mat-datepicker-toggle>
+            <mat-datepicker #toDatepicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </mat-card>
+    </div>
+
     <p class="widget-help">
       Transaction filter gives you the most granular control over displayed transactions.
     </p>

@@ -26,7 +26,7 @@ import { WalletModule } from '../../wallet/wallet.module';
 import { RpcModule } from '../../../core/rpc/rpc.module';
 import { CoreModule } from '../../../core/core.module';
 
-import { HistoryComponent } from './history.component';
+import { HistoryComponent, DateRange } from './history.component';
 import { TransactionService } from 'app/wallet/wallet/shared/transaction.service';
 
 import { TransactionsTableComponent } from 'app/wallet/wallet/shared/transaction-table/transaction-table.component';
@@ -62,6 +62,12 @@ describe('HistoryComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should clear all filters', () => {
+    component.dateRange = DateRange.THIS_MONTH;
+    component.clear();
+    expect(component.dateRange).toEqual(DateRange.ALL);
+  })
 
   it('should filter by category', () => {
     // component.filterByCategory('all');

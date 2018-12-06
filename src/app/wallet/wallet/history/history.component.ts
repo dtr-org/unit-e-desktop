@@ -19,14 +19,29 @@
 
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Log } from 'ng2-logger';
+
+import { Dates } from 'app/core/util/dates';
+
+
+export enum DateRange {
+  ALL = 'all',
+  TODAY = 'today',
+  THIS_WEEK = 'this_week',
+  THIS_MONTH = 'this_month',
+  LAST_MONTH = 'last_month',
+  THIS_YEAR = 'this_year',
+  CUSTOM = 'custom',
+};
 
 @Component({
   selector: 'app-history',
   templateUrl: './history.component.html',
   styleUrls: ['./history.component.scss']
 })
-
 export class HistoryComponent implements OnInit {
+
+  private log: any = Log.create('history.component');
 
   @ViewChild('transactions') transactions: any;
 
@@ -48,6 +63,16 @@ export class HistoryComponent implements OnInit {
     { title: 'By transaction ID (txid)', value: 'txid'          }
   ];
 
+  dateFilters: Array<any> = [
+    { title: 'All',        value: DateRange.ALL,        },
+    { title: 'Today',      value: DateRange.TODAY,      },
+    { title: 'This week',  value: DateRange.THIS_WEEK,  },
+    { title: 'This month', value: DateRange.THIS_MONTH, },
+    { title: 'Last month', value: DateRange.LAST_MONTH, },
+    { title: 'This year',  value: DateRange.THIS_YEAR,  },
+    { title: 'Custom...',  value: DateRange.CUSTOM,     },
+  ];
+
   types: Array<any> = [
     { title: 'All types', value: 'all'      },
     { title: 'Public',  value: 'standard'   },
@@ -59,6 +84,10 @@ export class HistoryComponent implements OnInit {
     sort:     undefined,
     type:     undefined
   };
+
+  dateRange: DateRange = DateRange.ALL;
+  fromDate: Date;
+  toDate: Date;
 
   public selectedTab: number = 0;
 
@@ -81,6 +110,10 @@ export class HistoryComponent implements OnInit {
       sort:     'time',
       search:   ''
     };
+
+    this.dateRange = DateRange.ALL;
+    this.fromDate = Dates.today();
+    this.toDate = new Date(this.fromDate.getFullYear(), this.fromDate.getMonth(), this.fromDate.getDate() + 1);
   }
 
   changeCategory(index: number): void {
@@ -96,11 +129,44 @@ export class HistoryComponent implements OnInit {
   }
 
   filter(): void {
+    const dateFilters = this.getDateFilters();
+    this.filters.from = dateFilters.from;
+    this.filters.to = dateFilters.to;
+
     this.transactions.filter(this.filters);
   }
 
   clear(): void {
     this.default();
     this.filter();
+  }
+
+  getDateFilters() {
+    let from: Date = Dates.epoch(), to: Date = Dates.now();
+
+    switch (this.dateRange) {
+      case DateRange.TODAY:
+        from = Dates.today();
+        break;
+      case DateRange.THIS_WEEK:
+        from = Dates.startOfWeek();
+        break;
+      case DateRange.THIS_MONTH:
+        from = Dates.startOfMonth()
+        break;
+      case DateRange.LAST_MONTH:
+        [from, to] = [Dates.startOfLastMonth(), Dates.startOfMonth()];
+        break;
+      case DateRange.THIS_YEAR:
+        from = Dates.startOfYear();
+        break;
+      case DateRange.CUSTOM:
+        [from, to] = [this.fromDate, this.toDate];
+        break;
+    }
+
+    this.log.d(`displaying transactions from ${from} to ${to}`);
+
+    return { from: Math.floor(from.getTime() / 1000), to: Math.floor(to.getTime() / 1000) };
   }
 }

@@ -68,7 +68,7 @@ export class HistoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    /* may be used if we concatenate some filters http://bit.ly/2Buav9B */
+    /* may be used if we concatenate some filters https://stackoverflow.com/a/47797083 */
     if (this.filters.search) {
       this.filter();
     }

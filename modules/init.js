@@ -28,12 +28,15 @@ const daemonWarner  = require('./daemon/update');
 const daemonManager = require('./daemon/daemonManager');
 const multiwallet   = require('./multiwallet');
 
+const osInterface   = require('./os-interface');
 
 exports.start = function (mainWindow) {
   // Initialize IPC listeners
   rpc.init();
 
   daemon.init();
+
+  osInterface.init();
 
   /* Initialize ZMQ */
   zmq.init(mainWindow);

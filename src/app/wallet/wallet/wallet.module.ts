@@ -27,6 +27,7 @@ import { CoreUiModule } from '../../core-ui/core-ui.module';
 import { TransactionService } from './shared/transaction.service';
 import { AddressService } from './shared/address.service';
 import { SendService } from './send/send.service';
+import { SettingsService } from './settings/settings.service';
 
 import { TransactionsTableComponent } from './shared/transaction-table/transaction-table.component';
 import { AddressTableComponent } from './shared/address-table/address-table.component';
@@ -47,6 +48,7 @@ import { FixWalletModalComponent } from './send/fix-wallet-modal/fix-wallet-moda
 import { WalletFixedConfirmationComponent } from './send/fix-wallet-modal/wallet-fixed-confirmation/wallet-fixed-confirmation.component';
 import { BumpFeeModalComponent } from './shared/transaction-table/bump-fee-modal/bump-fee-modal.component';
 import { CoinSelectionComponent } from './send/coin-selection/coin-selection.component';
+import { SettingsComponent } from './settings/settings.component';
 
 
 @NgModule({
@@ -73,6 +75,7 @@ import { CoinSelectionComponent } from './send/coin-selection/coin-selection.com
     WalletFixedConfirmationComponent,
     BumpFeeModalComponent,
     CoinSelectionComponent,
+    SettingsComponent,
   ],
   exports: [
     TransactionsTableComponent,
@@ -82,8 +85,8 @@ import { CoinSelectionComponent } from './send/coin-selection/coin-selection.com
     ReceiveComponent,
     SendComponent,
     HistoryComponent,
-    AddressBookComponent
-
+    AddressBookComponent,
+    SettingsComponent,
   ],
   entryComponents: [
     AddAddressLabelComponent,
@@ -106,6 +109,7 @@ export class WalletModule {
       providers: [
         AddressService,
         SendService,
+        SettingsService,
       ]
     };
   }
@@ -117,3 +121,4 @@ export { ReceiveComponent } from './receive/receive.component';
 export { SendComponent } from './send/send.component';
 export { BalanceComponent } from './balances/balance.component';
 export { HistoryComponent } from './history/history.component';
+export { SettingsComponent } from './settings/settings.component';

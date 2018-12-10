@@ -67,6 +67,13 @@ export class SendService {
   private send(tx: TransactionBuilder): Observable<any> {
     const coinControl: CoinControl = {};
 
+    if (tx.selectedCoins) {
+      coinControl.inputs = tx.selectedCoins.map((c) => ({
+        tx: c.txid,
+        n: c.vout,
+      }));
+    }
+
     if (tx.feeDetermination === FeeDetermination.CONFIRMATION) {
       coinControl.conf_target = tx.confirmationTarget;
     }

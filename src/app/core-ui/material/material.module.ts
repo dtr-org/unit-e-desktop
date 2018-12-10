@@ -28,6 +28,7 @@ import {
   MatSnackBarModule, MatTabsModule, MatToolbarModule, MatRadioModule, MatInputModule,
   MatTooltipModule,
   MatSelectModule, MatPaginatorModule, MatProgressSpinnerModule, MatDialogModule,
+  MatTableModule,
   MatStepperModule, MatSlideToggleModule
 } from '@angular/material';
 
@@ -66,6 +67,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatPaginatorModule,
     MatProgressSpinnerModule,
     MatStepperModule,
+    MatTableModule,
     MatSlideToggleModule
   ],
   exports: [
@@ -94,6 +96,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatProgressSpinnerModule,
     MatDialogModule,
     MatStepperModule,
+    MatTableModule,
     MatSlideToggleModule
   ],
   declarations: []

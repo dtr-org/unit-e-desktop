@@ -28,6 +28,7 @@ const routes: Routes = [
   { path: 'overview', component: OverviewComponent, data: { title: 'Overview' } },
   { path: 'receive', component: ReceiveComponent, data: { title: 'Receive' } },
   { path: 'send', component: SendComponent, data: { title: 'Send' } },
+  { path: 'history/:search', component: HistoryComponent, data: { title: 'History' } },
   { path: 'history', component: HistoryComponent, data: { title: 'History' } },
   { path: 'address-book', component: AddressBookComponent, data: { title: 'Address Book' } },
 ];

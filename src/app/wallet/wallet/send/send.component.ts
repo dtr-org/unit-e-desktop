@@ -26,6 +26,7 @@ import { ModalsHelperService } from 'app/modals/modals.module';
 import { RpcService, Commands } from '../../../core/rpc/rpc.service';
 import { WalletInfo } from '../../../core/rpc/rpc-types';
 import { RpcStateService } from '../../../core/rpc/rpc-state/rpc-state.service';
+import { UnspentOutput } from 'app/core/rpc/rpc-types';
 
 import { SendService } from './send.service';
 import { SnackbarService } from '../../../core/snackbar/snackbar.service';
@@ -37,7 +38,6 @@ import { AddressHelper } from '../../../core/util/utils';
 import { TransactionBuilder, TxType } from './transaction-builder.model';
 import { SendConfirmationModalComponent } from 'app/modals/send-confirmation-modal/send-confirmation-modal.component';
 
-
 @Component({
   selector: 'app-send',
   templateUrl: './send.component.html',
@@ -46,15 +46,18 @@ import { SendConfirmationModalComponent } from 'app/modals/send-confirmation-mod
 })
 export class SendComponent implements OnInit {
 
-
   // General
   log: any = Log.create('send.component');
   private addressHelper: AddressHelper;
   testnet: boolean = false;
+
   // UI logic
   @ViewChild('address') address: ElementRef;
   type: string = 'sendPayment';
   progress: number = 10;
+  paymentSource: string = 'default';
+  selectedBalance: number;
+
   // TODO: Create proper Interface / type
   public send: TransactionBuilder;
 
@@ -78,12 +81,14 @@ export class SendComponent implements OnInit {
 
   setFormDefaultValue() {
     this.send = new TransactionBuilder();
+    this.paymentSource = 'default';
   }
 
   ngOnInit() {
     /* check if testnet */
      this._rpcState.observe('getblockchaininfo', 'chain').take(1)
      .subscribe(chain => this.testnet = chain === 'test');
+     this.selectedBalance = this.getBalance(TxType.PUBLIC);
   }
 
   /** Get current account balance */
@@ -276,4 +281,15 @@ export class SendComponent implements OnInit {
     this.send.subtractFeeFromAmount = this.send.sendAll;
   }
 
+  onChangePaymentSource(): void {
+    if (this.paymentSource === 'default') {
+      this.send.selectedCoins = null;
+      this.selectedBalance = this.getBalance(TxType.PUBLIC);
+    }
+  }
+
+  updateSelection(coins: UnspentOutput[]) {
+    this.send.selectedCoins = coins;
+    this.selectedBalance = coins.reduce((sum, coin) => sum + coin.amount, 0);
+  }
 }

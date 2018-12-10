@@ -1,0 +1,27 @@
+ @import "./src/assets/_config"; // import shared colors etc.
+
+.mat-checkbox {
+  display: inline-flex;
+  margin: 15px;
+}
+
+.mat-column-select {
+  flex: 0 0 50px;
+}
+
+.vout {
+  color: $text-muted;
+}
+
+.search-address-link {
+  cursor: pointer;
+  color: $text-muted;
+  font-family: monospace;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  &:hover {
+    color: $color;
+  }
+}

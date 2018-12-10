@@ -21,6 +21,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import mockgetpeerinfo from './mock-data/getpeerinfo.mock';
+import mocklistunspent from './mock-data/listunspent.mock';
 import mockproposerstatus from './mock-data/proposerstatus.mock';
 import mockgetnetworkinfo from './mock-data/getnetworkinfo.mock'
 import mockgetwalletinfo from './mock-data/getwalletinfo.mock'
@@ -53,6 +54,8 @@ export class RpcMockService extends RpcService {
           return mockfilteraddresses;
         case 'filtertransactions':
           return mockfiltertransactions;
+        case 'listunspent':
+          return mocklistunspent;
       }
 
       return true;

@@ -18,6 +18,8 @@
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 
 import { SharedModule } from '../../shared/shared.module';
 import { WalletModule } from '../../wallet/wallet.module';
@@ -43,6 +45,9 @@ describe('HistoryComponent', () => {
         WalletModule.forRoot(),
         RpcModule.forRoot(),
         CoreModule.forRoot()
+      ],
+      providers: [
+        { provide: ActivatedRoute, useValue: { snapshot: { paramMap: { get: () => null }  } } },
       ]
     })
     .compileComponents();

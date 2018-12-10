@@ -5,8 +5,21 @@
       <div class="title">Pay from</div>
 
       <div class="balance">
-        <div class="desc">Available balance:<span class="amount">{{ getBalance(TxType.PUBLIC) }}</span></div>
+        <div class="desc">Selected amount: <span class="amount">{{ selectedBalance }}</span></div>
       </div>
+
+      <form>
+        <mat-radio-group class="payment-source" name="payment_source" [(ngModel)]="paymentSource" (change)="onChangePaymentSource()" fxLayout="column">
+          <mat-radio-button value="default">
+              Any available coins
+          </mat-radio-button>
+          <mat-radio-button value="coin_control">
+            Specific coins (advanced)
+          </mat-radio-button>
+        </mat-radio-group>
+      </form>
+
+      <app-coin-selection *ngIf="paymentSource === 'coin_control'" (selectCoins)="updateSelection($event)"></app-coin-selection>
     </mat-card>
   </div><!-- .from-box -->
 

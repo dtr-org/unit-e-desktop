@@ -66,7 +66,7 @@ describe('ReceiveComponent', () => {
 
   it('should load the right number of addresses', () => {
     expect(component.addresses.public.length).toBe(0);
-    component.addressUpdates.first().subscribe((addresses) => {
+    component.addressUpdates.subscribe((addresses) => {
       expect(addresses.public.length).toBe(3);
     })
   });
@@ -77,7 +77,7 @@ describe('ReceiveComponent', () => {
 
   it('should get initialized', () => {
     expect(component.initialized).toBeFalsy();
-    component.addressUpdates.first().subscribe(() => {
+    component.addressUpdates.subscribe(() => {
       expect(component.initialized).toBeTruthy();
     })
   });

@@ -18,7 +18,7 @@
 
 import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { Subject } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 import { Log } from 'ng2-logger';
 
 import { RpcService, RpcStateService, Commands } from '../../../core/core.module';
@@ -42,8 +42,8 @@ export class ReceiveComponent implements OnInit {
 
   log: any = Log.create('receive.component');
 
-  // Used in unit tests
-  addressUpdates: Subject<any> = new Subject<any>();
+  // Used in unit tests to signal that addresses were loaded from backend
+  addressUpdates: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   MAX_ADDRESSES_PER_PAGE: number = 10;
   PAGE_SIZE_OPTIONS: Array<number> = [10, 25, 50];
@@ -278,6 +278,7 @@ export class ReceiveComponent implements OnInit {
     }
 
     this.addressUpdates.next(this.addresses);
+    this.addressUpdates.complete();
   }
 
   /**

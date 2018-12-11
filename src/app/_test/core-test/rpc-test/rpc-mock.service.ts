@@ -57,7 +57,7 @@ export class RpcMockService extends RpcService {
         result = mockfiltertransactions;
       }
 
-      // Return the result asynchronously
+      // Return the result asynchronously to simulate real RPC
       setTimeout(() => {
         observer.next(result);
         observer.complete();

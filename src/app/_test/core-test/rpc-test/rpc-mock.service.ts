@@ -37,29 +37,32 @@ export class RpcMockService extends RpcService {
 
   constructor() { super(null, null); }
 
-  call(method: string, params?: Array<any> | null): Observable<any> {
-    return Observable.create(observer => {
-      let result: any = true;
-
-      if (method === 'getpeerinfo') {
-        result = mockgetpeerinfo;
-      } else if (method === 'proposerstatus') {
-        result = mockproposerstatus;
-      } else if (method === 'getnetworkinfo') {
-        result = mockgetnetworkinfo;
-      } else if (method === 'getwalletinfo') {
-        result = mockgetwalletinfo;
-      } else if (method === 'addressbookinfo') {
-        result = mockaddressbookinfo;
-      } else if (method === 'filteraddresses') {
-        result = mockfilteraddresses;
-      } else if (method === 'filtertransactions') {
-        result = mockfiltertransactions;
+  private getMock(method: string): any {
+      switch (method) {
+        case 'getpeerinfo':
+          return mockgetpeerinfo;
+        case 'proposerstatus':
+          return mockproposerstatus;
+        case 'getnetworkinfo':
+          return mockgetnetworkinfo;
+        case 'getwalletinfo':
+          return mockgetwalletinfo;
+        case 'addressbookinfo':
+          return mockaddressbookinfo;
+        case 'filteraddresses':
+          return mockfilteraddresses;
+        case 'filtertransactions':
+          return mockfiltertransactions;
       }
 
+      return true;
+  }
+
+  call(method: string, params?: Array<any> | null): Observable<any> {
+    return Observable.create(observer => {
       // Return the result asynchronously to simulate real RPC
       setTimeout(() => {
-        observer.next(result);
+        observer.next(this.getMock(method));
         observer.complete();
       });
     });

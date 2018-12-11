@@ -45,17 +45,7 @@ describe('HistoryComponent', () => {
         CoreModule.forRoot()
       ]
     })
-
-  // Override TransactionsTableComponent's TransactionService
-  .overrideComponent(TransactionsTableComponent, {
-    set: {
-      providers: [
-        { provide: TransactionService, useClass: MockTransactionService }
-      ]
-    }
-  })
-
-  .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {

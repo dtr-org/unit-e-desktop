@@ -22,6 +22,11 @@ import { Observable } from 'rxjs';
 
 import mockgetpeerinfo from './mock-data/getpeerinfo.mock';
 import mockproposerstatus from './mock-data/proposerstatus.mock';
+import mockgetnetworkinfo from './mock-data/getnetworkinfo.mock'
+import mockgetwalletinfo from './mock-data/getwalletinfo.mock'
+import mockaddressbookinfo from './mock-data/addressbookinfo.mock'
+import mockfilteraddresses from './mock-data/filteraddresses.mock'
+import mockfiltertransactions from './mock-data/filtertransactions.mock';
 import { RpcService } from '../../../core/core.module';
 
 // TODO: create & move into the testing module
@@ -32,18 +37,34 @@ export class RpcMockService extends RpcService {
 
   constructor() { super(null, null); }
 
-  call(method: string, params?: Array<any> | null): Observable<any> {
-    return Observable.create(observer => {
-
-      if (method === 'getpeerinfo') {
-        observer.next(mockgetpeerinfo);
-      } else if (method === 'proposerstatus') {
-        observer.next(mockproposerstatus);
-      } else {
-        observer.next(true)
+  private getMock(method: string): any {
+      switch (method) {
+        case 'getpeerinfo':
+          return mockgetpeerinfo;
+        case 'proposerstatus':
+          return mockproposerstatus;
+        case 'getnetworkinfo':
+          return mockgetnetworkinfo;
+        case 'getwalletinfo':
+          return mockgetwalletinfo;
+        case 'addressbookinfo':
+          return mockaddressbookinfo;
+        case 'filteraddresses':
+          return mockfilteraddresses;
+        case 'filtertransactions':
+          return mockfiltertransactions;
       }
 
-      observer.complete();
+      return true;
+  }
+
+  call(method: string, params?: Array<any> | null): Observable<any> {
+    return Observable.create(observer => {
+      // Return the result asynchronously to simulate real RPC
+      setTimeout(() => {
+        observer.next(this.getMock(method));
+        observer.complete();
+      });
     });
   }
 

@@ -27,10 +27,8 @@ import { CoreUiModule } from '../../core-ui/core-ui.module';
 
 import { OverviewComponent } from './overview.component';
 import { StakingInfoComponent } from './widgets/stakinginfo/stakinginfo.component';
-import { TransactionService } from 'app/wallet/wallet/shared/transaction.service';
 
 import { TransactionsTableComponent } from 'app/wallet/wallet/shared/transaction-table/transaction-table.component';
-import { MockTransactionService } from 'app/wallet/wallet/shared/transaction.mockservice';
 
 
 describe('OverviewComponent', () => {
@@ -51,17 +49,7 @@ describe('OverviewComponent', () => {
         StakingInfoComponent,
       ]
     })
-
-  // Override TransactionsTableComponent's TransactionService
-  .overrideComponent(TransactionsTableComponent, {
-    set: {
-      providers: [
-        { provide: TransactionService, useClass: MockTransactionService }
-      ]
-    }
-  })
-
-      .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {

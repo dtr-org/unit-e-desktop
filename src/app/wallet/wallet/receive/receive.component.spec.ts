@@ -74,12 +74,22 @@ describe('ReceiveComponent', () => {
     expect(component.addresses).toBeDefined();
   });
 
+  it('should load the right number of addresses', async () => {
+    expect(component.addresses.public.length).toBe(0);
+
+    await component.addressUpdates.toPromise();
+    expect(component.addresses.public.length).toBe(3);
+  });
+
   // it('should get defaultAddress', () => {
   //   expect(component.defaultAddress).toBeDefined();
   // });
 
-  it('should get initialized', () => {
-    expect(component.initialized).toBeFalsy()
+  it('should get initialized', async () => {
+    expect(component.initialized).toBeFalsy();
+
+    await component.addressUpdates.toPromise();
+    expect(component.initialized).toBeTruthy();
   });
 
   it('should get page', () => {

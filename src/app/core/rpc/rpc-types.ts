@@ -84,6 +84,21 @@ export class ProposerStatus {
   }[]
 }
 
+export class UnspentOutput {
+  txid: string;
+  vout: number;
+  address: string;
+  account?: string;
+  scriptPubKey: string;
+  amount: number;
+  confirmations: number;
+  redeemScript: number;
+  spendable: boolean;
+  solvable: boolean;
+  safe: boolean;
+  date?: string;
+}
+
 export enum EncryptionState {
   UNENCRYPTED = 'UNENCRYPTED',
   LOCKED = 'LOCKED',

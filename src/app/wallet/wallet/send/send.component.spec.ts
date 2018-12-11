@@ -28,6 +28,7 @@ import { SharedModule } from '../../shared/shared.module'; // is this even neede
 
 
 import { SendComponent } from './send.component';
+import { CoinSelectionComponent } from './coin-selection/coin-selection.component';
 import { SendService } from 'app/wallet/wallet/send/send.service';
 
 import { RpcService } from '../../../core/core.module';
@@ -39,7 +40,10 @@ describe('SendComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SendComponent ],
+      declarations: [
+        SendComponent,
+        CoinSelectionComponent,
+      ],
       imports: [
         SharedModule,
         CoreModule.forRoot(),
@@ -52,7 +56,6 @@ describe('SendComponent', () => {
         SendService,
         {provide: RpcService, useClass: RpcMockService},
         { provide: MatDialogRef },
-
       ]
     })
       .compileComponents();

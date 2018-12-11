@@ -18,6 +18,7 @@
  */
 
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-history',
@@ -61,12 +62,16 @@ export class HistoryComponent implements OnInit {
 
   public selectedTab: number = 0;
 
-  constructor() {
+  constructor(private route: ActivatedRoute) {
     this.default();
+    this.filters.search = route.snapshot.paramMap.get('search') || '';
   }
 
   ngOnInit(): void {
-    /* may be used if we concatenate some filters http://bit.ly/2Buav9B */
+    /* may be used if we concatenate some filters https://stackoverflow.com/a/47797083 */
+    if (this.filters.search) {
+      this.filter();
+    }
   }
 
   default(): void {

@@ -32,6 +32,7 @@ import {
   CoinControl,
   Outputs,
   ProposerStatus,
+  UnspentOutput,
 } from './rpc-types';
 
 const MAINNET_PORT = 51735;
@@ -160,6 +161,12 @@ export class RpcService implements OnDestroy {
     return this.call(Commands.FILTERADDRESSES, [
       offset, count, sort_code, search, match_owned
     ]);
+  }
+
+  listUnspent(
+    minconf: number = 1, maxconf: number = 9999999, addresses: any[] = [], includeUnsafe: boolean = false, queryOptions: any = null
+  ): Observable<UnspentOutput[]> {
+    return this.call(Commands.LISTUNSPENT, [minconf, maxconf, addresses, includeUnsafe, queryOptions]);
   }
 
   proposerStatus(): Observable<ProposerStatus> {

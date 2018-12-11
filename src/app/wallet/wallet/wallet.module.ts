@@ -46,7 +46,7 @@ import { SignatureAddressModalComponent } from './shared/signature-address-modal
 import { FixWalletModalComponent } from './send/fix-wallet-modal/fix-wallet-modal.component';
 import { WalletFixedConfirmationComponent } from './send/fix-wallet-modal/wallet-fixed-confirmation/wallet-fixed-confirmation.component';
 import { BumpFeeModalComponent } from './shared/transaction-table/bump-fee-modal/bump-fee-modal.component';
-
+import { CoinSelectionComponent } from './send/coin-selection/coin-selection.component';
 
 
 @NgModule({
@@ -72,6 +72,7 @@ import { BumpFeeModalComponent } from './shared/transaction-table/bump-fee-modal
     FixWalletModalComponent,
     WalletFixedConfirmationComponent,
     BumpFeeModalComponent,
+    CoinSelectionComponent,
   ],
   exports: [
     TransactionsTableComponent,

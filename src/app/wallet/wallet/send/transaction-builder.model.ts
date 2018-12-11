@@ -17,6 +17,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+import { UnspentOutput } from 'app/core/rpc/rpc-types';
+
 export enum TxType {
   PUBLIC = 'ute',
 }
@@ -45,6 +47,7 @@ export class TransactionBuilder {
   sendAll: boolean = false;
   subtractFeeFromAmount: boolean = false;
   replaceable: boolean = false;
+  selectedCoins: UnspentOutput[];
 
   feeDetermination: string = FeeDetermination.DEFAULT;
   selectedFee: number;

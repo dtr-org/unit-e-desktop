@@ -30,7 +30,6 @@ enum Commands {
   GETNEWADDRESS = 'getnewaddress',
   GETPEERINFO = 'getpeerinfo',
   GETRECEIVEDBYADDRESS = 'getreceivedbyaddress',
-  GETTRANSACTION = 'gettransaction',
   GETWALLETINFO = 'getwalletinfo',
   IMPORTMASTERKEY = 'importmasterkey',
   LISTUNSPENT = 'listunspent',

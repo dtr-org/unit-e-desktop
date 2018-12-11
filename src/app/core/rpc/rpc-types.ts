@@ -106,7 +106,6 @@ export enum EncryptionState {
   UNLOCKED_FOR_STAKING_ONLY = 'UNLOCKED_FOR_STAKING_ONLY',
 }
 
-
 export class WalletInfo {
   walletname: string;
   walletversion: number;

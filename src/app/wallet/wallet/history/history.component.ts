@@ -19,6 +19,8 @@
 
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { SnackbarService } from 'app/core/core.module';
+
 
 @Component({
   selector: 'app-history',
@@ -62,7 +64,10 @@ export class HistoryComponent implements OnInit {
 
   public selectedTab: number = 0;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(
+    private route: ActivatedRoute,
+    private snackbar: SnackbarService,
+  ) {
     this.default();
     this.filters.search = route.snapshot.paramMap.get('search') || '';
   }
@@ -102,5 +107,12 @@ export class HistoryComponent implements OnInit {
   clear(): void {
     this.default();
     this.filter();
+  }
+
+  exportHistory(): void {
+    this.transactions.export(this.filters).subscribe(
+      (path) => this.snackbar.open(`Transactions exported to ${path}`, 'info'),
+      (error) => this.snackbar.open(error, 'err'),
+    );
   }
 }

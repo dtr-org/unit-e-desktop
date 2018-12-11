@@ -76,6 +76,7 @@ window.ipc = new SafeIpcRenderer([
 
   'zmq',
   'rpc-channel',
+  'hl-rpc-channel',
 
   'rx-ipc-check-reply',
   'rx-ipc-check-reply:rpc-channel',

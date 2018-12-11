@@ -167,7 +167,9 @@ export class RpcService implements OnDestroy {
     return this.call(Commands.GETTRANSACTION, [txid]);
   }
 
-  listUnspent(minconf: number = 1, maxconf: number = 9999999, addresses: any[] = [], includeUnsafe: boolean = false, queryOptions: any = null): Observable<UnspentOutput[]> {
+  listUnspent(
+    minconf: number = 1, maxconf: number = 9999999, addresses: any[] = [], includeUnsafe: boolean = false, queryOptions: any = null
+  ): Observable<UnspentOutput[]> {
     return this.call(Commands.LISTUNSPENT, [minconf, maxconf, addresses, includeUnsafe, queryOptions]);
   }
 

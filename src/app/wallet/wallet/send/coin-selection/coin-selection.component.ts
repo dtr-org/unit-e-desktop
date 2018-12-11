@@ -7,6 +7,28 @@ import { RpcService } from 'app/core/rpc/rpc.service';
 import { UnspentOutput } from 'app/core/rpc/rpc-types';
 
 
+class TransactionSource extends MatTableDataSource<UnspentOutput> {
+
+  private dataStream: BehaviorSubject<any>;
+
+  constructor() {
+    super();
+    this.dataStream = new BehaviorSubject([]);
+  }
+
+  update(data: UnspentOutput[]) {
+    this.dataStream.next(data);
+  }
+
+  connect(): BehaviorSubject<UnspentOutput[]> {
+    return this.dataStream;
+  }
+
+  disconnect() {
+    this.dataStream.unsubscribe();
+  }
+}
+
 @Component({
   selector: 'app-coin-selection',
   templateUrl: './coin-selection.component.html',
@@ -53,27 +75,5 @@ export class CoinSelectionComponent implements AfterViewInit {
 
   searchAddress(address: string) {
     this.router.navigateByUrl(`/wallet/history/${address}`);
-  }
-}
-
-class TransactionSource extends MatTableDataSource<UnspentOutput> {
-
-  private dataStream: BehaviorSubject<any>;
-
-  constructor() {
-    super();
-    this.dataStream = new BehaviorSubject([]);
-  }
-
-  update(data: UnspentOutput[]) {
-    this.dataStream.next(data);
-  }
-
-  connect(): BehaviorSubject<UnspentOutput[]> {
-    return this.dataStream;
-  }
-
-  disconnect() {
-    this.dataStream.unsubscribe();
   }
 }

@@ -21,6 +21,11 @@
 	font-family: $font;
 	overflow-y: scroll;
 	background: $bg;
+  border-top: 1px solid $bg-shadow;
+}
+
+.title {
+  padding-left: 24px;
 }
 
 .content-modal {

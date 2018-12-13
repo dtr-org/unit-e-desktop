@@ -86,10 +86,10 @@ export class TransactionOutput {
     const request = this._rpc.call(Commands.VALIDATEADDRESS, [this.toAddress]);
     request.subscribe(response => {
       this.validAddress = response.isvalid;
-      if (!!response.account) {
+      if ('account' in response) {
         this.toLabel = response.account;
       }
-      if (!!response.ismine) {
+      if ('ismine' in response) {
         this.isMine = response.ismine;
       }
     });

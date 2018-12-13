@@ -25,7 +25,7 @@ export class SettingsService {
    * Prompt the user to back up the wallet; return the path on success.
    */
   backupWallet(): Observable<string> {
-    return this._ipc.runCommand('os-if', null, {
+    return this._ipc.runCommand('os-interface', null, {
       command: 'file-picker',
       params: {
         title: 'Backup wallet',

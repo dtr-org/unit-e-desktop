@@ -24,7 +24,7 @@ const { Observable } = require('rxjs/Observable');
 // Exposes RPC methods that access the OS and windowing interface
 
 exports.init = function () {
-  rxIpc.registerListener('os-if', (data) => {
+  rxIpc.registerListener('os-interface', (data) => {
     if (!data) {
       return Observable.empty();
     }

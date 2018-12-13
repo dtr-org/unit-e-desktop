@@ -73,7 +73,7 @@ window.ipc = new SafeIpcRenderer([
   'front-walletready',
 
   'daemon',
-  'os-if',
+  'os-interface',
 
   'zmq',
   'rpc-channel',

@@ -15,8 +15,10 @@ export class SettingsService {
   }
 
   getWalletBackupName(): string {
-    const unixTime = Math.floor(Date.now() / 1000);
-    return `wallet.bak~${unixTime}`;
+    const now = new Date();
+    const dateString = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+
+    return `unit-e-wallet-${dateString}.bak`;
   }
 
   /**

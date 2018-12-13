@@ -1,7 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { Observable } from 'rxjs';
 
-import { IpcService } from 'app/core/ipc/ipc.service';
 import { RpcService } from 'app/core/rpc/rpc.service';
 
 import { SettingsService } from './settings.service';
@@ -15,9 +14,13 @@ describe('SettingsService', () => {
     TestBed.configureTestingModule({
       providers: [
         SettingsService,
-        { provide: IpcService, useValue: { runCommand: () => Observable.of(WALLET_PATH) } },
       ]
     });
+    window['remote'] = {
+      dialog: {
+        showSaveDialog: (options, callback) => callback(WALLET_PATH),
+      },
+    };
   });
 
   it('should be created', inject([SettingsService], (service: SettingsService) => {

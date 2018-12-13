@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { IpcService } from 'app/core/ipc/ipc.service';
 import { RpcService } from 'app/core/rpc/rpc.service';
 
 
@@ -9,7 +8,6 @@ import { RpcService } from 'app/core/rpc/rpc.service';
 export class SettingsService {
 
   constructor(
-    private _ipc: IpcService,
     private _rpc: RpcService,
   ) {
   }
@@ -25,15 +23,24 @@ export class SettingsService {
    * Prompt the user to back up the wallet; return the path on success.
    */
   backupWallet(): Observable<string> {
-    return this._ipc.runCommand('os-interface', null, {
-      command: 'file-picker',
-      params: {
-        title: 'Backup wallet',
-        defaultPath: this.getWalletBackupName(),
-      }
-    }).flatMap((path) => {
-      return this._rpc.backupWallet(path)
-        .flatMap(() => Observable.of(path));
+    return Observable.create((observer) => {
+      window['remote'].dialog.showSaveDialog({
+          title: 'Backup wallet',
+          defaultPath: this.getWalletBackupName(),
+        },
+        (path) => {
+          if (!path) {
+            observer.complete();
+            return;
+          }
+
+          this._rpc.backupWallet(path)
+            .subscribe(() => {
+              observer.next(path);
+              observer.complete();
+            });
+        }
+      );
     });
   }
 }

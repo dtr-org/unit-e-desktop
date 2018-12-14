@@ -1,11 +1,5 @@
 <div class="fee-options" fxLayout="column" fxLayoutGap="10px">
 
-  <mat-checkbox name="subtract_fee"
-                [(ngModel)]="send.subtractFeeFromAmount"
-                (change)="updateSelectedFee()" >
-    Subtract fee from amount
-  </mat-checkbox>
-
   <mat-radio-group name="fee_determination" [(ngModel)]="send.feeDetermination" fxLayout="column" (change)="updateSelectedFee()">
     <div class="input-height align-children">
       <mat-radio-button value="default">

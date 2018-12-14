@@ -16,7 +16,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { MatDialogRef } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -29,10 +29,13 @@ import { SharedModule } from '../../shared/shared.module'; // is this even neede
 
 import { SendComponent } from './send.component';
 import { CoinSelectionComponent } from './coin-selection/coin-selection.component';
+import { SendOutputComponent } from './send-output/send-output.component';
 import { SendService } from 'app/wallet/wallet/send/send.service';
 
-import { RpcService } from '../../../core/core.module';
-import { RpcMockService } from '../../../_test/core-test/rpc-test/rpc-mock.service';
+import { RpcStateService, Commands } from '../../../core/core.module';
+import { OUR_ADDRESS, THEIR_ADDRESS } from '../../../_test/core-test/rpc-test/rpc-mock.service';
+import mockwalletinfo from '../../../_test/core-test/rpc-test/mock-data/getwalletinfo.mock';
+
 
 describe('SendComponent', () => {
   let component: SendComponent;
@@ -43,6 +46,7 @@ describe('SendComponent', () => {
       declarations: [
         SendComponent,
         CoinSelectionComponent,
+        SendOutputComponent,
       ],
       imports: [
         SharedModule,
@@ -54,18 +58,19 @@ describe('SendComponent', () => {
       ],
       providers: [
         SendService,
-        {provide: RpcService, useClass: RpcMockService},
         { provide: MatDialogRef },
       ]
     })
       .compileComponents();
   }));
 
-  beforeEach(() => {
+  beforeEach(inject([RpcStateService], (svc: RpcStateService) => {
     fixture = TestBed.createComponent(SendComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+
+    svc.set(Commands.GETWALLETINFO, mockwalletinfo);
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -79,9 +84,43 @@ describe('SendComponent', () => {
   */
 
   it('should verify amount no balance service', () => {
-    component.send.amount = 555.555555;
-    expect(component.checkAmount()).toBeFalsy();
+    component.send.outputs[0].amount = 555.555555;
+    component.send.outputs[0].verifyAmount();
+
+    expect(component.send.outputs[0].validAmount).toBeFalsy();
   });
+
+  it('should return the proper labels for one recipient', () => {
+    component.send.outputs[0].toLabel = 'Bob';
+    expect(component.send.toLabel).toEqual('Bob');
+
+    component.send.addOutput();
+    component.send.outputs[1].toLabel = 'Joe';
+    expect(component.send.toLabel).toEqual('multiple recipients');
+  });
+
+  it('should validate proper outputs', async () => {
+    console.log(OUR_ADDRESS, THEIR_ADDRESS);
+
+    component.send.outputs[0].toAddress = OUR_ADDRESS;
+    component.send.outputs[0].amount = 0;
+    await component.send.outputs[0].verifyAddress().toPromise();
+    component.send.outputs[0].verifyAmount();
+
+    component.send.addOutput();
+    component.send.outputs[1].toAddress = THEIR_ADDRESS;
+    component.send.outputs[1].amount = 0.01;
+    await component.send.outputs[1].verifyAddress().toPromise();
+    component.send.outputs[1].verifyAmount();
+
+    expect(component.send.validAddress).toBeTruthy();
+    expect(component.send.validAmount).toBeFalsy();
+
+    component.send.outputs[0].amount = 0.1;
+    component.send.outputs[0].verifyAmount();
+    expect(component.send.outputs[0].validAmount).toBeTruthy();
+  });
+
 /*
 
     it('should open lookup', () => {

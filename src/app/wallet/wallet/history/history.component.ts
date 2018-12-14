@@ -133,6 +133,8 @@ export class HistoryComponent implements OnInit {
     this.filters.from = dateFilters.from;
     this.filters.to = dateFilters.to;
 
+    this.log.d(`displaying transactions from ${dateFilters.from} to ${dateFilters.to}`);
+
     this.transactions.filter(this.filters);
   }
 
@@ -164,8 +166,6 @@ export class HistoryComponent implements OnInit {
         [from, to] = [this.fromDate, this.toDate];
         break;
     }
-
-    this.log.d(`displaying transactions from ${from} to ${to}`);
 
     return { from: Math.floor(from.getTime() / 1000), to: Math.floor(to.getTime() / 1000) };
   }

@@ -147,6 +147,10 @@ export class RpcService implements OnDestroy {
     return this.call(Commands.ADDRESSBOOKINFO);
   }
 
+  backupWallet(destination: string) {
+    return this.call(Commands.BACKUPWALLET, [destination]);
+  }
+
   bumpFee(txid: string, options: any = null, testFee: boolean = false): Observable<BumpFeeResult> {
     return this.call(Commands.BUMPFEE, [txid, options, testFee]);
   }

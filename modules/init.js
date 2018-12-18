@@ -21,6 +21,7 @@ const log           = require('electron-log');
 
 const ipc           = require('./ipc/ipc');
 const rpc           = require('./rpc/rpc');
+const highLevelRpc  = require('./rpc/highLevelRpc');
 const zmq           = require('./zmq/zmq');
 
 const daemon        = require('./daemon/daemon');
@@ -34,6 +35,8 @@ exports.start = function (mainWindow) {
   rpc.init();
 
   daemon.init();
+
+  highLevelRpc.init();
 
   /* Initialize ZMQ */
   zmq.init(mainWindow);

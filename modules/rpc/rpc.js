@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2017-2018 The Particl developers
+ * Copyright (C) 2018 The Unit-e developers
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -161,6 +162,27 @@ exports.call = function(method, params, callback) {
 exports.getTimeoutDelay = () => { return TIMEOUT }
 exports.setTimeoutDelay = function(timeout) { TIMEOUT = timeout }
 
+// A reactive interface to the `rpc.call` function
+exports.callRx = function (method, params) {
+  return Observable.create(observer => {
+    exports.call(method, params, (error, response) => {
+      try {
+        if(error) {
+          observer.error(error);
+        } else {
+          observer.next(response || undefined);
+          observer.complete();
+        }
+      } catch (err) {
+        if (err.message == 'Object has been destroyed') {
+          // suppress error
+        } else {
+          log.error(err);
+        }
+      }
+    });
+  });
+};
 
 /*
  * All IPC-related stuff, below here.
@@ -173,26 +195,7 @@ function initIpcListener() {
   destroyIpcListener();
 
   // Register new listener
-  rxIpc.registerListener('rpc-channel', (method, params) => {
-    return Observable.create(observer => {
-      exports.call(method, params, (error, response) => {
-        try {
-          if(error) {
-            observer.error(error);
-          } else {
-            observer.next(response || undefined);
-            observer.complete();
-          }
-        } catch (err) {
-          if (err.message == 'Object has been destroyed') {
-            // suppress error
-          } else {
-            log.error(err);
-          }
-        }
-      });
-    });
-  });
+  rxIpc.registerListener('rpc-channel', exports.callRx);
 }
 
 function destroyIpcListener() {

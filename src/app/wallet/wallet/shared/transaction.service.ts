@@ -21,8 +21,9 @@ import { Log } from 'ng2-logger'
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash'
 import { Transaction } from './transaction.model';
+import { map, flatMap } from 'rxjs/operators';
 
-import { RpcService, RpcStateService, Commands } from '../../../core/core.module';
+import { RpcService, RpcStateService, Commands, IpcService } from '../../../core/core.module';
 
 @Injectable()
 export class TransactionService implements OnDestroy {
@@ -58,7 +59,8 @@ export class TransactionService implements OnDestroy {
 
   constructor(
     private rpc: RpcService,
-    private rpcState: RpcStateService
+    private rpcState: RpcStateService,
+    private ipc: IpcService,
   ) {
   }
 
@@ -201,4 +203,34 @@ export class TransactionService implements OnDestroy {
     setTimeout(this.loadTransactions.bind(this), 1000);
   }
 
+  getExportBaseName(): string {
+    const now = new Date();
+    const dateString = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+
+    return `unit-e-transactions-${dateString}.csv`;
+  }
+
+  /**
+   * Prompt the user to export the transaction history
+   */
+  export(filters: any): Observable<any> {
+    return Observable.create((observer) => {
+      window['remote'].dialog.showSaveDialog({
+          title: 'Export transactions',
+          defaultPath: this.getExportBaseName(),
+        },
+        (path) => {
+          if (!path) {
+            observer.complete();
+            return;
+          }
+
+          this.ipc.runCommand('hl-rpc-channel', null, {
+            command: 'export-transactions',
+            params: [filters, path],
+          }).subscribe(observer);
+        }
+      );
+    });
+  }
 }

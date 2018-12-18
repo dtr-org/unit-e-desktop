@@ -37,7 +37,8 @@ class CsvTxWriter {
   }
 
   getCsvRow(t) {
-    // const confirmed = t.trusted.toString();  // UNIT-E: TODO: RPC output doesn't have this field yet
+    // UNIT-E: TODO: RPC output doesn't have the 'trusted' field yet
+    // const confirmed = (t.trusted && t.category !== 'immature').toString();
     const confirmed = (t.confirmations > 0 || t.category === 'coinbase' || t.category === 'generate').toString();
 
     const dateString = new Date(t.time * 1000).toISOString();

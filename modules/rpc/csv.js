@@ -50,7 +50,8 @@ class CsvTxWriter {
     const label = t.outputs.map(o => o.label).join(';');
     const address = t.outputs.map(o => o.address).join(';');
 
-    const amount = t.amount;
+    // Total expenditure in Satoshis
+    const amount = (t.amount + (t.fee || 0)).toFixed(8);
     const txid = t.txid;
 
     return [confirmed, dateString, type, label, address, amount, txid];

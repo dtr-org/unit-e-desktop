@@ -33,7 +33,9 @@ class CsvTxWriter {
   }
 
   getCsvHeader() {
-    return ['Confirmed', 'Date', 'Type', 'Label', 'Address', 'Amount (UTE)', 'ID'];
+    const localTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    return ['Confirmed', `Date (${localTimeZone})`, 'Type', 'Label', 'Address', 'Amount (UTE)', 'ID'];
   }
 
   getCsvRow(t) {
@@ -41,7 +43,7 @@ class CsvTxWriter {
     // const confirmed = (t.trusted && t.category !== 'immature').toString();
     const confirmed = (t.confirmations > 0 || t.category === 'coinbase' || t.category === 'generate').toString();
 
-    const dateString = new Date(t.time * 1000).toISOString();
+    const dateString = formatLocalDate(t.time);
     const type = this.getDisplayCategory(t.category);
 
     // Different outputs are concatenated into one
@@ -93,3 +95,25 @@ class CsvTxWriter {
 
 
 exports.CsvTxWriter = CsvTxWriter;
+
+
+/**
+ * Format given Unix timestamp as `YYYY-mm-dd HH:MM:SS`
+ */
+function formatLocalDate(unixTime) {
+  const date = new Date(unixTime * 1000);
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1, 2)}-${pad(date.getDate(), 2)} ` +
+         `${pad(date.getHours(), 2)}:${pad(date.getMinutes(), 2)}:${pad(date.getSeconds(), 2)}`;
+}
+
+
+/**
+ * Left-pad the given object with zeroes up to a given length
+ */
+function pad(what, length) {
+  const chars = `${what}`.split('');
+  while (chars.length < length) {
+    chars.splice(0, 0, '0');
+  }
+  return chars.join('');
+}

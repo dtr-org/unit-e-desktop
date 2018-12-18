@@ -21,7 +21,7 @@ const stringify = require('csv-stringify');
 
 
 /**
- * Serializes transaction JSON objects to a given stream
+ * Writes selected transaction fields as CSV to a given stream
  */
 class CsvTxWriter {
 
@@ -37,7 +37,7 @@ class CsvTxWriter {
   }
 
   getCsvRow(t) {
-    // const confirmed = t.trusted.toString();  // RPC output doesn't have this field yet
+    // const confirmed = t.trusted.toString();  // UNIT-E: TODO: RPC output doesn't have this field yet
     const confirmed = (t.confirmations > 0 || t.category === 'coinbase' || t.category === 'generate').toString();
 
     const dateString = new Date(t.time * 1000).toISOString();

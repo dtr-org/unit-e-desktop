@@ -56,7 +56,7 @@ class CsvTxWriter {
   getDisplayCategory(category) {
     switch (category) {
       case 'send':
-        return 'Send to';
+        return 'Sent to';
       case 'receive':
         return 'Received from';
       case 'immature':

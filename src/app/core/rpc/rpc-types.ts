@@ -1,3 +1,5 @@
+import { Amount } from '../util/amount';
+
 /*
  * Copyright (C) 2017-2018 The Particl developers
  * Copyright (C) 2018 The Unit-e developers
@@ -19,7 +21,7 @@
 
 export class Outputs {
   address: string;
-  amount: number | string;
+  amount: Amount | number | string;
   subfee?: boolean;
   script?: string;
   narr?: string;
@@ -33,8 +35,8 @@ export enum EstimateMode {
 
 export class BumpFeeResult {
   txid?: string;
-  origfee: number;
-  fee: number;
+  origfee: Amount;
+  fee: Amount;
   errors: string[];
 }
 
@@ -44,7 +46,7 @@ export class CoinControl {
   replaceable?: boolean;
   conf_target?: number;
   estimate_mode?: EstimateMode;
-  fee_rate?: number;
+  fee_rate?: Amount;
 }
 
 export enum SyncStatus {
@@ -76,8 +78,8 @@ export class ProposerStatus {
   sync_status: SyncStatus;
   wallets: {
     wallet: string;
-    balance: number;
-    stakeable_balance: number;
+    balance: Amount;
+    stakeable_balance: Amount;
     status: ProposerState;
     searches: number;
     searches_attempted: number;
@@ -90,7 +92,7 @@ export class UnspentOutput {
   address: string;
   account?: string;
   scriptPubKey: string;
-  amount: number;
+  amount: Amount;
   confirmations: number;
   redeemScript: number;
   spendable: boolean;
@@ -109,16 +111,16 @@ export enum EncryptionState {
 export class WalletInfo {
   walletname: string;
   walletversion: number;
-  balance: number;
-  unconfirmed_balance: number;
-  immature_balance: number;
+  balance: Amount;
+  unconfirmed_balance: Amount;
+  immature_balance: Amount;
   txcount: number;
   keypoololdest: number;
   keypoolsize: number;
   keypoolsize_hd_internal: number;
   unlocked_until?: number;
   encryption_state: EncryptionState;
-  paytxfee: number;
+  paytxfee: Amount;
   hdmasterkeyid?: string;
 }
 
@@ -144,4 +146,27 @@ export class ValidateAddress {
   timestamp?: number;
   hdkeypath?: string;
   hdmasterkeyid?: string;
+}
+
+export class TransactionOutput {
+  address: string;
+  vout: number;
+  amount: Amount;
+  label: string;
+}
+
+// Transaction information, as returned by `filtertransactions`
+export class TransactionInfo {
+  confirmations: number;
+  generated?: boolean;
+  blockhash: string;
+  blockindex: number;
+  blocktime: number;
+  txid: string;
+  walletconflicts: Array<any>;
+  time: number;
+  timereceived: number;
+  'bip125-replaceable': string;
+  category: string;
+  outputs: Array<TransactionOutput>;
 }

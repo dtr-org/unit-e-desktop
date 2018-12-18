@@ -90,7 +90,9 @@ export class SyncingComponent implements OnDestroy {
   }
 
   close() {
-    this._dialogRef.close();
+    if (this._dialogRef) {
+      this._dialogRef.close();
+    }
   }
 
   ngOnDestroy() {

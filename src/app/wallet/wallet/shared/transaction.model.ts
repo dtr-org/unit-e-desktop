@@ -35,9 +35,9 @@ export class Transaction {
     address: string ;
     label: string;
     category: TransactionCategory;
-    amount: number;
-    reward: number;
-    fee: number;
+    amount: Amount;
+    reward: Amount;
+    fee: Amount;
     time: number;
     comment: string;
     n0: string;
@@ -67,9 +67,9 @@ export class Transaction {
       this.label = json.outputs[0].label;
     }
     this.category = json.category;
-    this.amount = json.amount;
-    this.reward = json.reward;
-    this.fee = json.fee;
+    this.amount = Amount.fromNumber(json.amount);
+    this.reward = json.reward && Amount.fromNumber(json.reward);
+    this.fee = json.fee && Amount.fromNumber(json.fee);
     this.time = json.time;
     this.comment = json.comment;
     this.n0 = json.n0;
@@ -97,14 +97,16 @@ export class Transaction {
   }
 
   private getAddressType(): AddressType {
-    if (this.address && this.address.startsWith('r')) {
-      return AddressType.MULTISIG;
-    }
+    // UNIT-E: TODO: See comment for isMultiSig method
     return AddressType.NORMAL;
   }
 
   public isMultiSig(): boolean {
-    return this.getAddressType() === AddressType.MULTISIG;
+    // UNIT-E: TODO: Particl used to distinguish between regular and multisig addresses
+    // by checking the address prefix. All P2SH addresses (starting with 'r') were
+    // considered multisig. Since all Unit-e addresses are P2SH-SegWit at the moment,
+    // we need another way to distinguish between address types.
+    return false;
   }
 
   public isListingFee(): boolean {
@@ -122,7 +124,7 @@ export class Transaction {
   }
 
   public getExpandedTransactionID(): string {
-    return this.txid + this.getAmountObject().getAmount() + this.category;
+    return this.txid + this.getAmountObject().toString() + this.category;
   }
 
 
@@ -135,33 +137,29 @@ export class Transaction {
 
 
   /* Amount stuff */
-  public getAmount(): number {
-    if (this.getCategory() === 'multisig') {
-      const amount: number = this.outputs.find(output => output.address.startsWith('r')).amount;
-      return amount;
-    } else {
-      return +this.amount;
-    }
+  public getAmount(): Amount {
+    // UNIT-E: TODO: See comment for isMultiSig method
+    return this.amount;
   }
 
   /** Turns amount into an Amount Object */
   public getAmountObject(): Amount {
-    return new Amount(this.getAmount());
+    return this.getAmount();
   }
 
   /** Calculates the actual amount that was transfered, including the fee */
   /* todo: fee is not defined in normal receive tx, wut? */
-  public getNetAmount(): number {
-    const amount: number = +this.getAmountObject().getAmount();
+  public getNetAmount(): Amount {
+    const amount = this.amount;
     // @ TODO: the fee for multisig transaction includes the change
     /* If fee undefined then just return amount */
     if (this.fee === undefined) {
       return amount;
     /* sent */
-    } else if (amount < 0) {
-      return new Amount(+amount + (+this.fee)).getAmount();
+    } else if (amount.lessOrEqualTo(Amount.ZERO)) {
+      return this.amount.add(this.fee);
     } else {
-      return new Amount(+amount - (+this.fee)).getAmount();
+      return this.amount.sub(this.fee);
     }
   }
 

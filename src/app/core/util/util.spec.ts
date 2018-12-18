@@ -18,7 +18,9 @@
 
 import { TestBed, inject } from '@angular/core/testing';
 
-import { AddressHelper, Amount, Duration, DateFormatter } from './utils';
+import { AddressHelper, Duration, DateFormatter } from './utils';
+import { Amount } from './amount';
+
 
 describe('AddressHelper', () => {
   beforeEach(() => {
@@ -51,34 +53,64 @@ describe('Amount', () => {
       providers: [Amount]
     });
   });
-  const mockAmount = 5.6;
-  const mockDescimalDigits = 10
-  const amount = new Amount(mockAmount, mockDescimalDigits);
+  const mockAmount = '5.6';
+  const amount = new Amount(mockAmount);
 
-  const mockAmountTwo = 0.006;
-  const amountTwo = new Amount(mockAmountTwo, 8);
+  const mockAmountTwo = '0.006';
+  const amountTwo = new Amount(mockAmountTwo);
 
   it('should be created', () => {
     expect(amount).toBeTruthy();
   });
 
-  it('should return amount', () => {
-    expect(amount.getAmount()).toEqual(mockAmount);
-    expect(amount.getIntegerPart()).toEqual(5);
+  it('should validate fractional amounts', () => {
+    expect(amount.toString()).toEqual(mockAmount);
+    expect(amount.getIntegerPart()).toEqual('5');
     expect(amount.getFractionalPart()).toEqual('6');
-    expect(amount.positiveOrZero(-5)).toBe('0');
     expect(amount.dot()).toBe('.');
-    expect(amount.truncateToDecimals(-25.99999, 3)).toEqual(-25.999);
-  });
 
-
-  it('should validate 0.001', () => {
-    expect(amountTwo.getAmount()).toEqual(mockAmountTwo);
-    expect(amountTwo.getIntegerPart()).toEqual(0);
+    expect(amountTwo.toString()).toEqual(mockAmountTwo);
+    expect(amountTwo.getIntegerPart()).toEqual('0');
     expect(amountTwo.getFractionalPart()).toEqual('006');
     expect(amountTwo.dot()).toBe('.');
   });
 
+  it('should allow representing maximum amount of UTE', () => {
+    const a = new Amount('2718281828');
+    expect(a.getIntegerPart()).toEqual('2718281828');
+    expect(a.getFractionalPart()).toEqual('');
+
+    for (let i = 1; i < 10; i++) {
+      const b = new Amount(`2718281827.9999999${i}`);
+      expect(b.getIntegerPart()).toEqual('2718281827');
+      expect(b.getFractionalPart()).toEqual(`9999999${i}`);
+    }
+  });
+
+  it('should detect if number contain a dot', () => {
+    expect(new Amount('27').dot()).toEqual('');
+    expect(new Amount('27.5').dot()).toEqual('.');
+    expect(new Amount('-27').dot()).toEqual('');
+    expect(new Amount('-27.5').dot()).toEqual('.');
+  });
+
+  it('should allow adding two amounts', () => {
+    const sum = new Amount('33.2').add(new Amount('0.90000001'));
+    expect(sum.getIntegerPart()).toEqual('34');
+    expect(sum.getFractionalPart()).toEqual('10000001');
+  });
+
+  it('should allow negating amounts', () => {
+    const negative = new Amount('33.2').negate();
+    expect(negative.toString()).toEqual('-33.2');
+    expect(negative.getIntegerPart()).toEqual('-33');
+  });
+
+  it('should allow adding negative amounts', () => {
+    const sum = new Amount('33.2').add(new Amount('-0.90000001'));
+    expect(sum.getIntegerPart()).toEqual('32');
+    expect(sum.getFractionalPart()).toEqual('29999999');
+  });
 });
 
 describe('Duration', () => {

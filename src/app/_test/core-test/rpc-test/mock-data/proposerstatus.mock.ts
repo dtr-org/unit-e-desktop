@@ -18,13 +18,14 @@
  */
 
 import { ProposerStatus, SyncStatus, ProposerState } from 'app/core/rpc/rpc-types';
+import { Amount } from 'app/core/util/amount';
 
 const mockproposerstatus: ProposerStatus = {
   'wallets': [
     {
       'wallet': 'wallet.dat',
-      'balance': 12.50000000,
-      'stakeable_balance': 12.50000000,
+      'balance': Amount.fromNumber(12.5),
+      'stakeable_balance': Amount.fromNumber(12.5),
       'status': ProposerState.NOT_PROPOSING_NO_PEERS,
       'searches': 0,
       'searches_attempted': 239

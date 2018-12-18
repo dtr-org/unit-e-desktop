@@ -48,7 +48,7 @@ export class StakingInfoComponent implements OnInit {
   // UI
   public proposerStatus: string;
   public severity: Severity = 'success';
-  public stakeableBalance: Amount = new Amount(0);
+  public stakeableBalance: Amount = Amount.ZERO;
 
   constructor(private _rpcState: RpcStateService) { }
 
@@ -56,7 +56,7 @@ export class StakingInfoComponent implements OnInit {
     this._rpcState.observe(Commands.PROPOSERSTATUS)
       .subscribe((proposer: ProposerStatus) => {
         if (proposer && proposer.wallets) {
-          this.stakeableBalance = new Amount(proposer.wallets[0].stakeable_balance);
+          this.stakeableBalance = proposer.wallets[0].stakeable_balance;
           [this.proposerStatus, this.severity] = this.getStatusString(proposer.wallets[0].status);
         }
       });

@@ -50,7 +50,7 @@ describe('BalanceComponent', () => {
   });
 
   it('should return a balance equal to 0 (getIntegerPart)', () => {
-    expect(component.balance.getIntegerPart()).toBe(0);
+    expect(component.balance.getIntegerPart()).toBe('0');
   });
 
   it('should return a balance equal to 0 (getFractionalPart)', () => {

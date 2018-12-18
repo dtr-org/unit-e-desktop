@@ -84,7 +84,7 @@ describe('SendComponent', () => {
   */
 
   it('should verify amount no balance service', () => {
-    component.send.outputs[0].amount = 555.555555;
+    component.send.outputs[0].amount = '555.555555';
     component.send.outputs[0].verifyAmount();
 
     expect(component.send.outputs[0].validAmount).toBeFalsy();
@@ -103,20 +103,20 @@ describe('SendComponent', () => {
     console.log(OUR_ADDRESS, THEIR_ADDRESS);
 
     component.send.outputs[0].toAddress = OUR_ADDRESS;
-    component.send.outputs[0].amount = 0;
+    component.send.outputs[0].amount = '0';
     await component.send.outputs[0].verifyAddress().toPromise();
     component.send.outputs[0].verifyAmount();
 
     component.send.addOutput();
     component.send.outputs[1].toAddress = THEIR_ADDRESS;
-    component.send.outputs[1].amount = 0.01;
+    component.send.outputs[1].amount = '0.01';
     await component.send.outputs[1].verifyAddress().toPromise();
     component.send.outputs[1].verifyAmount();
 
     expect(component.send.validAddress).toBeTruthy();
     expect(component.send.validAmount).toBeFalsy();
 
-    component.send.outputs[0].amount = 0.1;
+    component.send.outputs[0].amount = '0.1';
     component.send.outputs[0].verifyAmount();
     expect(component.send.outputs[0].validAmount).toBeTruthy();
   });

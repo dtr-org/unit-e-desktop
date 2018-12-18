@@ -79,10 +79,10 @@
       <mat-panel-title fxFlex="1 0 155px" fxFlex.lt-md="100" *ngIf="display.amount" class="history_amount">
         <span mat-line>
           <span class="amount"
-                [ngClass]="{'positive': tx.getAmountObject().getAmount() > 0, 'negative': tx.getAmountObject().getAmount() < 0 }">
-            <span class="big number">{{ tx.getAmountObject().getIntegerPart() }}</span><!-- inline element comment hack
-            --><span class="point">{{ tx.getAmountObject().dot() }}</span><!--
-            --><small class="small number">{{ tx.getAmountObject().getFractionalPart() || '' }}</small>
+                [ngClass]="{'positive': tx.amount.toNumber() > 0, 'negative': tx.amount.toNumber() < 0 }">
+            <span class="big number">{{ tx.amount.getIntegerPart() }}</span><!-- inline element comment hack
+            --><span class="point">{{ tx.amount.dot() }}</span><!--
+            --><small class="small number">{{ tx.amount.getFractionalPart() || '' }}</small>
             <span class="currency">UTE</span>
           </span>
         </span>

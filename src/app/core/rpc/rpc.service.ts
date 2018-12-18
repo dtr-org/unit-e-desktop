@@ -33,7 +33,11 @@ import {
   Outputs,
   ProposerStatus,
   UnspentOutput,
+  TransactionInfo,
+  WalletInfo,
 } from './rpc-types';
+import { Amount } from '../util/amount';
+import { amountConverter } from './rpc-conversions';
 
 const MAINNET_PORT = 51735;
 const TESTNET_PORT = 51935;
@@ -107,7 +111,8 @@ export class RpcService implements OnDestroy {
           return response && (response.result !== undefined)
                       ? response.result
                       : response;
-        })
+        }),
+        map(amountConverter(method))
       );
     } else {
       // Running in browser, delete?
@@ -128,6 +133,7 @@ export class RpcService implements OnDestroy {
       return this._http
         .post(`http://${this.hostname}:${this.port}`, postData, { headers: headers })
           .map((response: any) => response.result)
+          .map(amountConverter(method))
           .catch(error => {
             let err: string;
             if (typeof error._body === 'object') {

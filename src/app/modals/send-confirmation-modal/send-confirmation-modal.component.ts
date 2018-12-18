@@ -20,7 +20,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { TransactionBuilder, TxType } from 'app/wallet/wallet/send/transaction-builder.model';
 
-import { Amount, Fee } from 'app/core/util/utils';
+import { Amount } from 'app/core/util/utils';
 import { SendService } from 'app/wallet/wallet/send/send.service';
 
 @Component({
@@ -37,10 +37,10 @@ export class SendConfirmationModalComponent implements OnInit {
 
   TxType: any = TxType;
   transactionType: TxType;
-  sendAmount: Amount = new Amount(0);
+  sendAmount: Amount = Amount.ZERO;
   sendAddress: string = '';
   receiverName: string = '';
-  transactionAmount: Fee = new Fee(0);
+  transactionFee: Amount = Amount.ZERO;
   showAdvancedFeeOptions: boolean = false;
 
   constructor(private dialogRef: MatDialogRef<SendConfirmationModalComponent>,
@@ -68,26 +68,26 @@ export class SendConfirmationModalComponent implements OnInit {
 
     this.sendAddress = this.send.toAddress;
     this.transactionType = this.send.input;
-    this.sendAmount = new Amount(this.send.amount);
+    this.sendAmount = this.send.amount;
     this.receiverName = this.send.toLabel;
   }
 
   updateTransactionFee(): void {
     this.sendService.getTransactionFee(this.send).subscribe(fee => {
-      this.transactionAmount = new Fee(fee.fee);
+      this.transactionFee = Amount.fromNumber(fee.fee);
     });
   }
 
-  getAmountWithFee(): number {
+  getAmountWithFee(): Amount {
     if (this.send.subtractFeeFromAmount) {
-      return this.sendAmount.getAmount();
+      return this.sendAmount;
     }
 
-    return this.transactionAmount.getAmountWithFee(this.sendAmount.getAmount());
+    return this.sendAmount.add(this.transactionFee);
   }
 
   setTransactionFee(fee: number): void {
-    this.transactionAmount = new Fee(fee);
+    this.transactionFee = Amount.fromNumber(fee);
   }
 
 }

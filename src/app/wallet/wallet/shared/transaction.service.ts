@@ -207,7 +207,7 @@ export class TransactionService implements OnDestroy {
     const now = new Date();
     const dateString = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
 
-    return `transactions-${dateString}.csv`;
+    return `unit-e-transactions-${dateString}.csv`;
   }
 
   /**

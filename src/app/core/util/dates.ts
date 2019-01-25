@@ -64,6 +64,10 @@ export class Dates {
 
   static startOfYear(): Date {
     const now = Dates.now();
-    return new Date(now.getFullYear());
+    return new Date(now.getFullYear(), 0);
+  }
+
+  static formatUnixDate(ts: number): string {
+    return new Date(ts * 1000).toLocaleDateString();
   }
 }

@@ -133,7 +133,7 @@ export class HistoryComponent implements OnInit {
     this.filters.from = dateFilters.from;
     this.filters.to = dateFilters.to;
 
-    this.log.d(`displaying transactions from ${dateFilters.from} to ${dateFilters.to}`);
+    this.log.d(`filtering transactions from ${Dates.formatUnixDate(dateFilters.from)} to ${Dates.formatUnixDate(dateFilters.to)}`);
 
     this.transactions.filter(this.filters);
   }

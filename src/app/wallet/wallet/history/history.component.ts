@@ -21,6 +21,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Log } from 'ng2-logger';
 
+import { SnackbarService } from 'app/core/core.module';
 import { Dates } from 'app/core/util/dates';
 
 
@@ -33,6 +34,7 @@ export enum DateRange {
   THIS_YEAR = 'this_year',
   CUSTOM = 'custom',
 };
+
 
 @Component({
   selector: 'app-history',
@@ -91,7 +93,10 @@ export class HistoryComponent implements OnInit {
 
   public selectedTab: number = 0;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(
+    private route: ActivatedRoute,
+    private snackbar: SnackbarService,
+  ) {
     this.default();
     this.filters.search = route.snapshot.paramMap.get('search') || '';
   }
@@ -168,5 +173,12 @@ export class HistoryComponent implements OnInit {
     }
 
     return { from: Math.floor(from.getTime() / 1000), to: Math.floor(to.getTime() / 1000) };
+  }
+
+  exportHistory(): void {
+    this.transactions.export(this.filters).subscribe(
+      (path) => this.snackbar.open(`Transactions exported to ${path}`, 'info'),
+      (error) => this.snackbar.open(error, 'err'),
+    );
   }
 }

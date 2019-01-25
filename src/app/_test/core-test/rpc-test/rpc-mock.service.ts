@@ -19,6 +19,7 @@
 
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import * as assert from 'assert';
 
 import mockgetpeerinfo from './mock-data/getpeerinfo.mock';
 import mocklistunspent from './mock-data/listunspent.mock';
@@ -28,6 +29,9 @@ import mockgetwalletinfo from './mock-data/getwalletinfo.mock'
 import mockaddressbookinfo from './mock-data/addressbookinfo.mock'
 import mockfilteraddresses from './mock-data/filteraddresses.mock'
 import mockfiltertransactions from './mock-data/filtertransactions.mock';
+import { OUR_ADDRESS, THEIR_ADDRESS, mock_our_addrinfo, mock_their_addrinfo } from './mock-data/validateaddress.mock';
+import mockwalletinfo from './mock-data/getwalletinfo.mock';
+
 import { RpcService } from '../../../core/core.module';
 
 // TODO: create & move into the testing module
@@ -38,24 +42,39 @@ export class RpcMockService extends RpcService {
 
   constructor() { super(null, null); }
 
-  private getMock(method: string): any {
+  private getMock(method: string, params?: Array<any> | null): any {
       switch (method) {
         case 'getpeerinfo':
+          assertNoParameters(method, params);
           return mockgetpeerinfo;
         case 'proposerstatus':
+          assertNoParameters(method, params);
           return mockproposerstatus;
         case 'getnetworkinfo':
+          assertNoParameters(method, params);
           return mockgetnetworkinfo;
         case 'getwalletinfo':
+          assertNoParameters(method, params);
           return mockgetwalletinfo;
         case 'addressbookinfo':
+          assertNoParameters(method, params);
           return mockaddressbookinfo;
         case 'filteraddresses':
+          assertArrayElementCount(method, params, 0, 5);
           return mockfilteraddresses;
         case 'filtertransactions':
+          assertArrayElementCount(method, params, 0, 1);
           return mockfiltertransactions;
         case 'listunspent':
+          assertArrayElementCount(method, params, 0, 5);
           return mocklistunspent;
+        case 'validateaddress':
+          assertArrayElementCount(method, params, 1);
+          if (params[0] === OUR_ADDRESS) {
+            return mock_our_addrinfo;
+          } else {
+            return mock_their_addrinfo;
+          }
       }
 
       return true;
@@ -65,10 +84,34 @@ export class RpcMockService extends RpcService {
     return Observable.create(observer => {
       // Return the result asynchronously to simulate real RPC
       setTimeout(() => {
-        observer.next(this.getMock(method));
+        observer.next(this.getMock(method, params));
         observer.complete();
       });
     });
   }
-
 }
+
+
+function assertNoParameters(method: string, params: Array<any> | null | undefined): void {
+  assert.ok(
+    (params instanceof Array && params.length === 0) || params === null || typeof params === 'undefined',
+    `${method} takes no parameters`
+  );
+}
+
+
+function assertArrayElementCount(
+  method: string, params: Array<any> | null | undefined, minParams: number, maxParams?: number
+): void {
+  if (maxParams === undefined) {
+    maxParams = minParams;
+  }
+
+  assert.ok(params instanceof Array, `${method} was not passed any parameters`);
+  assert.ok(
+    (minParams <= params.length && params.length <= maxParams),
+    `${method} was passed ${params.length} paramers, must be between ${minParams} and ${maxParams}`
+  );
+}
+
+export { OUR_ADDRESS, THEIR_ADDRESS };

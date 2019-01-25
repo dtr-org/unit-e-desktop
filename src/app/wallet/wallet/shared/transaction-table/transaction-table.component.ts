@@ -19,6 +19,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { MatDialog, MatSnackBar, PageEvent } from '@angular/material';
 import { Log } from 'ng2-logger'
+import { Observable } from 'rxjs';
 
 import { slideDown } from 'app/core-ui/core.animations';
 import { RpcService } from 'app/core/core.module';
@@ -86,6 +87,10 @@ export class TransactionsTableComponent implements OnInit {
       this.resetPagination();
     }
     this.txService.filter(filters);
+  }
+
+  public export(filters: any): Observable<any> {
+    return this.txService.export(filters);
   }
 
   public pageChanged(event: any): void {

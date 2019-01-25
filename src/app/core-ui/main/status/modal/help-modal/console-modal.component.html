@@ -1,15 +1,10 @@
 <div class="console-modal">
+  <div mat-dialog-title class="title">Console</div>
+
   <button class="small-close_button" (click)="close()">
     <mat-icon fontSet="uniteIcon" fontIcon="unite-circle-remove"></mat-icon>
   </button>
 
-  <div mat-dialog-container>
-    <mat-tab-group (selectChange)="selectTab($event.index)">
-      <mat-tab label="Console">
-
-      </mat-tab>
-    </mat-tab-group>
-  </div>
   <div #debug class="console-modal-form" (scroll)="onScroll()">
     <div class="intro-text">
       <p class="console-info">

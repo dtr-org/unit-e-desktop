@@ -20,6 +20,7 @@
 enum Commands {
   INVALID = '',
   ADDRESSBOOKINFO = 'addressbookinfo',
+  BACKUPWALLET = 'backupwallet',
   BUMPFEE = 'bumpfee',
   ENCRYPTWALLET = 'encryptwallet',
   FILTERADDRESSES = 'filteraddresses',

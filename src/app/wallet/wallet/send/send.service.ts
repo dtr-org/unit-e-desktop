@@ -27,7 +27,7 @@ import { SnackbarService } from '../../../core/snackbar/snackbar.service';
 
 /* fix wallet */
 import { FixWalletModalComponent } from 'app/wallet/wallet/send/fix-wallet-modal/fix-wallet-modal.component';
-import { TransactionBuilder, FeeDetermination } from './transaction-builder.model';
+import { TransactionBuilder, TransactionOutput, FeeDetermination } from './transaction-builder.model';
 import { CoinControl } from 'app/core/rpc/rpc-types';
 
 /*
@@ -84,11 +84,12 @@ export class SendService {
       coinControl.replaceable = tx.replaceable;
     }
 
-    return this._rpc.sendtypeto(tx.input, tx.output, [{
-      address: tx.toAddress,
-      amount: tx.amount,
-      subfee: tx.subtractFeeFromAmount,
-    }], tx.comment, tx.commentTo, tx.estimateFeeOnly, coinControl);
+    const outputs = tx.outputs.map(txo => ({
+      address: txo.toAddress,
+      amount: txo.amount,
+      subfee: txo.subtractFeeFromAmount,
+    }));
+    return this._rpc.sendtypeto(tx.input, tx.output, outputs, tx.comment, tx.commentTo, tx.estimateFeeOnly, coinControl);
   }
 
   private rpc_send_success(json: any, address: string, amount: number) {

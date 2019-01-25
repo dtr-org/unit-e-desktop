@@ -121,3 +121,27 @@ export class WalletInfo {
   paytxfee: number;
   hdmasterkeyid?: string;
 }
+
+export class ValidateAddress {
+  isvalid: boolean;
+  address: string;
+  scriptPubKey: string;
+  ismine: boolean;
+  iswatchonly: boolean;
+  isscript: boolean;
+  iswitness: boolean;
+  witness_version?: number;
+  witness_program?: string;
+  script?: string;
+  hex?: string;
+  addresses?: string[];
+  pubkeys?: string;
+  sigsrequired?: number;
+  pubkey?: string;
+  embedded?: any;
+  iscompressed?: boolean;
+  account: string;
+  timestamp?: number;
+  hdkeypath?: string;
+  hdmasterkeyid?: string;
+}

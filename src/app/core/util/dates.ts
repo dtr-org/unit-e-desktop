@@ -70,4 +70,34 @@ export class Dates {
   static formatUnixDate(ts: number): string {
     return new Date(ts * 1000).toLocaleDateString();
   }
+
+  static todayStr(): string {
+    return new Intl.DateTimeFormat(undefined, {
+      day: 'numeric', month: 'short'
+    }).format(Dates.today());
+  }
+
+  static startOfWeekStr(): string {
+    return new Intl.DateTimeFormat(undefined, {
+      day: 'numeric', month: 'short'
+    }).format(Dates.startOfWeek());
+  }
+
+  static startOfMonthStr(): string {
+    return new Intl.DateTimeFormat(undefined, {
+      month: 'short'
+    }).format(Dates.startOfMonth());
+  }
+
+  static startOfLastMonthStr(): string {
+    return new Intl.DateTimeFormat(undefined, {
+      month: 'short'
+    }).format(Dates.startOfLastMonth());
+  }
+
+  static startOfYearStr(): string {
+    return new Intl.DateTimeFormat(undefined, {
+      year: 'numeric'
+    }).format(Dates.startOfYear());
+  }
 }

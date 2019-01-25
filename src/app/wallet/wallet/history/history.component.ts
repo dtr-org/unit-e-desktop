@@ -64,13 +64,13 @@ export class HistoryComponent implements OnInit {
   ];
 
   dateFilters: Array<any> = [
-    { title: 'All',        value: DateRange.ALL,        },
-    { title: 'Today',      value: DateRange.TODAY,      },
-    { title: 'This week',  value: DateRange.THIS_WEEK,  },
-    { title: 'This month', value: DateRange.THIS_MONTH, },
-    { title: 'Last month', value: DateRange.LAST_MONTH, },
-    { title: 'This year',  value: DateRange.THIS_YEAR,  },
-    { title: 'Custom...',  value: DateRange.CUSTOM,     },
+    { title: 'All',                                         value: DateRange.ALL,        },
+    { title: `Today (${Dates.todayStr()})`,                 value: DateRange.TODAY,      },
+    { title: `This week (${Dates.startOfWeekStr()}–${Dates.todayStr()})`, value: DateRange.THIS_WEEK,  },
+    { title: `This month (${Dates.startOfMonthStr()})`,     value: DateRange.THIS_MONTH, },
+    { title: `Last month (${Dates.startOfLastMonthStr()})`, value: DateRange.LAST_MONTH, },
+    { title: `This year (${Dates.startOfYearStr()})`,       value: DateRange.THIS_YEAR,  },
+    { title: 'Custom...',                                   value: DateRange.CUSTOM,     },
   ];
 
   types: Array<any> = [

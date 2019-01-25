@@ -29,7 +29,8 @@ import {
   MatTooltipModule,
   MatSelectModule, MatPaginatorModule, MatProgressSpinnerModule, MatDialogModule,
   MatTableModule,
-  MatStepperModule, MatSlideToggleModule
+  MatStepperModule, MatSlideToggleModule,
+  MatDatepickerModule, MatNativeDateModule,
 } from '@angular/material';
 
 import {A11yModule} from '@angular/cdk/a11y';
@@ -49,6 +50,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     A11yModule, /* focus monitor */
     MatButtonModule,
     MatCheckboxModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatListModule,
     MatExpansionModule,
     MatTooltipModule,
@@ -77,6 +80,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     A11yModule, /* focus monitor */
     MatButtonModule,
     MatCheckboxModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatListModule,
     MatExpansionModule,
     MatTooltipModule,

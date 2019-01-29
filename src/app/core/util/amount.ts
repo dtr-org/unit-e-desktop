@@ -48,10 +48,6 @@ export class Amount {
     return parts.join('');
   }
 
-  public getAmountWithFee(fee: Amount): Amount {
-    return this.add(fee);
-  }
-
   /**
    * Returns the integer part for display purposes.
    * e.g:

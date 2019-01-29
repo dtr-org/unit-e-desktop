@@ -36,7 +36,7 @@ export class Amount {
     return new Amount(digits, sign);
   }
 
-  private constructor(digits: number[], sign?: Sign) {
+  private constructor(digits: number[], sign: Sign) {
     this.digits = digits;
     this.sign = sign;
   }

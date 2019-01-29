@@ -1,9 +1,13 @@
+// The number of digits after the decimal point in an Amount
 const PRECISION_DIGITS = 8;
 
 const AMOUNT_REGEX = /^(-?)(\d+)(?:\.(\d+))?$/;
 
+type Digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+
 type Sign = (-1 | 1);
 
+type BigNum = Digit[];
 
 /**
  * Encodes a Unit-e monetary amount (0.00000001 to 2718281828) as an array of
@@ -14,7 +18,7 @@ export class Amount {
 
   static ZERO: Amount  = Amount.fromString('0');
 
-  private digits: number[];
+  private digits: BigNum;
 
   private sign: Sign;
 
@@ -36,14 +40,14 @@ export class Amount {
     return new Amount(digits, sign);
   }
 
-  private constructor(digits: number[], sign: Sign) {
+  private constructor(digits: BigNum, sign: Sign) {
     this.digits = digits;
     this.sign = sign;
   }
 
   public toString() {
     const parts = [
-      this.getIntegerPart(), this.dot(), this.getFractionalPart()
+      this.getIntegralPart(), this.dot(), this.getFractionalPart()
     ];
     return parts.join('');
   }
@@ -53,7 +57,7 @@ export class Amount {
    * e.g:
    * -25.9 -> '-25', 25 -> '25', 25.9 -> '25'
    */
-  public getIntegerPart(): string {
+  public getIntegralPart(): string {
     const parts: any[] = [(this.sign < 0) ? '-' : ''];
     parts.push(...this.digits.slice(PRECISION_DIGITS).reverse());
     return parts.join('');
@@ -73,7 +77,7 @@ export class Amount {
   }
 
   /**
-   * Returns a dot only when it exists in the number.
+   * Returns a dot only when it exists in the number, for display purposes.
    * e.g:
    * -25.9 -> '.', 25 -> '', 25.9 -> '.'
    */
@@ -122,8 +126,8 @@ export class Amount {
 /**
  * Splits a string representation of a number into an array of digits (little-endian).
  */
-function makeSatoshiBignum(integerPart: string, fractionalPart: string): number[] {
-    const chars = integerPart.split('');
+function makeSatoshiBignum(integralPart: string, fractionalPart: string): BigNum {
+    const chars = integralPart.split('');
     chars.reverse();
 
     const digits = new Array(chars.length + PRECISION_DIGITS);
@@ -145,7 +149,7 @@ function makeSatoshiBignum(integerPart: string, fractionalPart: string): number[
 /**
  * Adds two bignums, returns a newly allocated one as the result.
  */
-function addBignums(a: number[], b: number[]): number[] {
+function addBignums(a: BigNum, b: BigNum): BigNum {
   const result = [];
   let carry = 0;
   let i = 0;
@@ -168,7 +172,7 @@ function addBignums(a: number[], b: number[]): number[] {
  * Subtracts the second number from the first. Caller must ensure that the
  * first number is greater in absolute magnitude.
  */
-function subBignums(a: number[], b: number[]): number[] {
+function subBignums(a: BigNum, b: BigNum): BigNum {
   const result = [];
   let borrow = 0;
   let i = 0;
@@ -188,7 +192,7 @@ function subBignums(a: number[], b: number[]): number[] {
 }
 
 
-function bignumLessOrEqualTo(a: number[], b: number[]): boolean {
+function bignumLessOrEqualTo(a: BigNum, b: BigNum): boolean {
   for (let i = Math.max(a.length, b.length) - 1; i >= 0; i--) {
     const x = a[i] || 0;
     const y = b[i] || 0;

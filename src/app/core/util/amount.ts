@@ -7,7 +7,8 @@ type Sign = (-1 | 1);
 
 /**
  * Encodes a Unit-e monetary amount (0.00000001 to 2718281828) as an array of
- * integers representing the amount in Satoshi.
+ * digits (0-9) representing the amount in Satoshi. The digits are stored in
+ * reverse order (least significant one first).
  */
 export class Amount {
 
@@ -29,6 +30,9 @@ export class Amount {
       const matches = value.trim().match(AMOUNT_REGEX);
       if (matches.length < 2) {
         throw new Error(`Argument '${value} does not look like a number!`);
+      }
+      if (matches[3]) {
+        matches[3] = matches[3].substr(0, MAX_ROUNDING_DIGITS);
       }
 
       this.sign = (matches[1].length > 0) ? -1 : 1;
@@ -118,6 +122,9 @@ export class Amount {
 }
 
 
+/**
+ * Splits a string representation of a number into an array of digits (little-endian).
+ */
 function makeSatoshiBignum(integerPart: string, fractionalPart: string): number[] {
     const chars = integerPart.split('');
     chars.reverse();
@@ -135,7 +142,12 @@ function makeSatoshiBignum(integerPart: string, fractionalPart: string): number[
 }
 
 
-// Unsigned arithmetic on bignums (arrays of numbers)
+// Unsigned arithmetic on bignums (arrays of decimal digits, least significant
+// digit first).
+
+/**
+ * Adds two bignums, returns a newly allocated one as the result.
+ */
 function addBignums(a: number[], b: number[]): number[] {
   const result = [];
   let carry = 0;
@@ -155,6 +167,10 @@ function addBignums(a: number[], b: number[]): number[] {
 }
 
 
+/**
+ * Subtracts the second number from the first. Caller must ensure that the
+ * first number is greater in absolute magnitude.
+ */
 function subBignums(a: number[], b: number[]): number[] {
   const result = [];
   let borrow = 0;

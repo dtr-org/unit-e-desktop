@@ -80,7 +80,7 @@
         <span mat-line>
           <span class="amount"
                 [ngClass]="{'positive': tx.amount.toNumber() > 0, 'negative': tx.amount.toNumber() < 0 }">
-            <span class="big number">{{ tx.amount.getIntegerPart() }}</span><!-- inline element comment hack
+            <span class="big number">{{ tx.amount.getIntegralPart() }}</span><!-- inline element comment hack
             --><span class="point">{{ tx.amount.dot() }}</span><!--
             --><small class="small number">{{ tx.amount.getFractionalPart() || '' }}</small>
             <span class="currency">UTE</span>

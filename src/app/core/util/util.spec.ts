@@ -65,24 +65,24 @@ describe('Amount', () => {
 
   it('should validate fractional amounts', () => {
     expect(amount.toString()).toEqual(mockAmount);
-    expect(amount.getIntegerPart()).toEqual('5');
+    expect(amount.getIntegralPart()).toEqual('5');
     expect(amount.getFractionalPart()).toEqual('6');
     expect(amount.dot()).toBe('.');
 
     expect(amountTwo.toString()).toEqual(mockAmountTwo);
-    expect(amountTwo.getIntegerPart()).toEqual('0');
+    expect(amountTwo.getIntegralPart()).toEqual('0');
     expect(amountTwo.getFractionalPart()).toEqual('006');
     expect(amountTwo.dot()).toBe('.');
   });
 
   it('should allow representing maximum amount of UTE', () => {
     const a = Amount.fromString('2718281828');
-    expect(a.getIntegerPart()).toEqual('2718281828');
+    expect(a.getIntegralPart()).toEqual('2718281828');
     expect(a.getFractionalPart()).toEqual('');
 
     for (let i = 1; i < 10; i++) {
       const b = Amount.fromString(`2718281827.9999999${i}`);
-      expect(b.getIntegerPart()).toEqual('2718281827');
+      expect(b.getIntegralPart()).toEqual('2718281827');
       expect(b.getFractionalPart()).toEqual(`9999999${i}`);
     }
   });
@@ -96,19 +96,19 @@ describe('Amount', () => {
 
   it('should allow adding two amounts', () => {
     const sum = Amount.fromString('33.2').add(Amount.fromString('0.90000001'));
-    expect(sum.getIntegerPart()).toEqual('34');
+    expect(sum.getIntegralPart()).toEqual('34');
     expect(sum.getFractionalPart()).toEqual('10000001');
   });
 
   it('should allow negating amounts', () => {
     const negative = Amount.fromString('33.2').negate();
     expect(negative.toString()).toEqual('-33.2');
-    expect(negative.getIntegerPart()).toEqual('-33');
+    expect(negative.getIntegralPart()).toEqual('-33');
   });
 
   it('should allow adding negative amounts', () => {
     const sum = Amount.fromString('33.2').add(Amount.fromString('-0.90000001'));
-    expect(sum.getIntegerPart()).toEqual('32');
+    expect(sum.getIntegralPart()).toEqual('32');
     expect(sum.getFractionalPart()).toEqual('29999999');
   });
 });

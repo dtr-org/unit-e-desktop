@@ -49,8 +49,8 @@ describe('BalanceComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should return a balance equal to 0 (getIntegerPart)', () => {
-    expect(component.balance.getIntegerPart()).toBe('0');
+  it('should return a balance equal to 0 (getIntegralPart)', () => {
+    expect(component.balance.getIntegralPart()).toBe('0');
   });
 
   it('should return a balance equal to 0 (getFractionalPart)', () => {

@@ -156,7 +156,7 @@ export class Transaction {
     if (this.fee === undefined) {
       return amount;
     /* sent */
-    } else if (amount.lessOrEqualTo(Amount.ZERO)) {
+    } else if (amount.lessThanOrEqualTo(Amount.ZERO)) {
       return this.amount.add(this.fee);
     } else {
       return this.amount.sub(this.fee);

@@ -8,7 +8,7 @@
   <!--TX confirmation-->
   <div class="tx-confirmation">
     <div class="tx-amount">
-      <span class="big">{{ sendAmount.getIntegerPart() }}</span>
+      <span class="big">{{ sendAmount.getIntegralPart() }}</span>
       <span *ngIf="sendAmount.hasDot()">
       <span class="point">.</span>
       <span class="small">{{ sendAmount.getFractionalPart() }}</span>&ensp;</span>

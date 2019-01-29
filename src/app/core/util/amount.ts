@@ -102,7 +102,7 @@ export class Amount {
     if (this.sign === other.sign) {
       const newAmount = addBignums(this.digits, other.digits);
       return new Amount(newAmount, this.sign);
-    } else if (bignumLessOrEqualTo(other.digits, this.digits)) {
+    } else if (bignumLessThanOrEqualTo(other.digits, this.digits)) {
       const newAmount = subBignums(this.digits, other.digits);
       return new Amount(newAmount, this.sign);
     } else {
@@ -115,10 +115,10 @@ export class Amount {
     return this.add(other.negate());
   }
 
-  lessOrEqualTo(other: Amount): boolean {
+  lessThanOrEqualTo(other: Amount): boolean {
     return (this.sign > 0 && other.sign < 0) ||
-           (this.sign > 0 && other.sign > 0 && bignumLessOrEqualTo(this.digits, other.digits)) ||
-           (this.sign < 0 && other.sign < 0 && bignumLessOrEqualTo(other.digits, this.digits));
+           (this.sign > 0 && other.sign > 0 && bignumLessThanOrEqualTo(this.digits, other.digits)) ||
+           (this.sign < 0 && other.sign < 0 && bignumLessThanOrEqualTo(other.digits, this.digits));
   }
 }
 
@@ -192,7 +192,7 @@ function subBignums(a: BigNum, b: BigNum): BigNum {
 }
 
 
-function bignumLessOrEqualTo(a: BigNum, b: BigNum): boolean {
+function bignumLessThanOrEqualTo(a: BigNum, b: BigNum): boolean {
   for (let i = Math.max(a.length, b.length) - 1; i >= 0; i--) {
     const x = a[i] || 0;
     const y = b[i] || 0;

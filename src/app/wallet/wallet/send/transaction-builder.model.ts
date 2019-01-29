@@ -149,7 +149,7 @@ export class TransactionBuilder {
       return false;
     }
 
-    return this.amount.lessOrEqualTo(this.getTotalBalance());
+    return this.amount.lessThanOrEqualTo(this.getTotalBalance());
   }
 
   get amount(): Amount {

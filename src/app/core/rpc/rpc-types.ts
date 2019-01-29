@@ -21,7 +21,7 @@ import { Amount } from '../util/amount';
 
 export class Outputs {
   address: string;
-  amount: Amount | number | string;
+  amount: Amount;
   subfee?: boolean;
   script?: string;
   narr?: string;
@@ -152,7 +152,7 @@ export class TransactionOutput {
   address: string;
   vout: number;
   amount: Amount;
-  label: string;
+  label?: string;
 }
 
 // Transaction information, as returned by `filtertransactions`
@@ -163,10 +163,10 @@ export class TransactionInfo {
   blockindex: number;
   blocktime: number;
   txid: string;
-  walletconflicts: Array<any>;
+  walletconflicts: any[];
   time: number;
   timereceived: number;
   'bip125-replaceable': string;
   category: string;
-  outputs: Array<TransactionOutput>;
+  outputs: TransactionOutput[];
 }

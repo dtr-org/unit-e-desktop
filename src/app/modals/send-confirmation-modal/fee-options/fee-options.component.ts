@@ -50,7 +50,7 @@ export class FeeOptionsComponent implements OnInit {
   }
 
   changeCustomFee() {
-    this.send.customFee = new Amount(this.customFee);
+    this.send.customFee = Amount.fromString(this.customFee);
   }
 
 }

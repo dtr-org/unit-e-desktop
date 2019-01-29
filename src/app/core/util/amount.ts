@@ -12,32 +12,33 @@ type Sign = (-1 | 1);
  */
 export class Amount {
 
-  static ZERO: Amount  = new Amount('0');
+  static ZERO: Amount  = Amount.fromString('0');
 
   private digits: number[];
 
   private sign: Sign;
 
   static fromNumber(value: number): Amount {
-    return new Amount(value.toString());
+    return Amount.fromString(value.toString());
   }
 
-  constructor(value: string | number[], sign?: Sign) {
-    if (value instanceof Array) {
-      this.digits = value;
-      this.sign = sign;
-    } else {
-      const matches = value.trim().match(AMOUNT_REGEX);
-      if (matches.length < 2) {
-        throw new Error(`Argument '${value} does not look like a number!`);
-      }
-      if (matches[3]) {
-        matches[3] = matches[3].substr(0, MAX_ROUNDING_DIGITS);
-      }
-
-      this.sign = (matches[1].length > 0) ? -1 : 1;
-      this.digits = makeSatoshiBignum(matches[2], matches[3] || '');
+  static fromString(value: string): Amount {
+    const matches = value.trim().match(AMOUNT_REGEX);
+    if (matches.length < 2) {
+      throw new Error(`Argument '${value} does not look like a number!`);
     }
+    if (matches[3]) {
+      matches[3] = matches[3].substr(0, MAX_ROUNDING_DIGITS);
+    }
+
+    const digits = makeSatoshiBignum(matches[2], matches[3] || '');
+    const sign = (matches[1].length > 0) ? -1 : 1;
+    return new Amount(digits, sign);
+  }
+
+  private constructor(digits: number[], sign?: Sign) {
+    this.digits = digits;
+    this.sign = sign;
   }
 
   public toString() {

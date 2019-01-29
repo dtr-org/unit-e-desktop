@@ -54,10 +54,10 @@ describe('Amount', () => {
     });
   });
   const mockAmount = '5.6';
-  const amount = new Amount(mockAmount);
+  const amount = Amount.fromString(mockAmount);
 
   const mockAmountTwo = '0.006';
-  const amountTwo = new Amount(mockAmountTwo);
+  const amountTwo = Amount.fromString(mockAmountTwo);
 
   it('should be created', () => {
     expect(amount).toBeTruthy();
@@ -76,38 +76,38 @@ describe('Amount', () => {
   });
 
   it('should allow representing maximum amount of UTE', () => {
-    const a = new Amount('2718281828');
+    const a = Amount.fromString('2718281828');
     expect(a.getIntegerPart()).toEqual('2718281828');
     expect(a.getFractionalPart()).toEqual('');
 
     for (let i = 1; i < 10; i++) {
-      const b = new Amount(`2718281827.9999999${i}`);
+      const b = Amount.fromString(`2718281827.9999999${i}`);
       expect(b.getIntegerPart()).toEqual('2718281827');
       expect(b.getFractionalPart()).toEqual(`9999999${i}`);
     }
   });
 
   it('should detect if number contain a dot', () => {
-    expect(new Amount('27').dot()).toEqual('');
-    expect(new Amount('27.5').dot()).toEqual('.');
-    expect(new Amount('-27').dot()).toEqual('');
-    expect(new Amount('-27.5').dot()).toEqual('.');
+    expect(Amount.fromString('27').dot()).toEqual('');
+    expect(Amount.fromString('27.5').dot()).toEqual('.');
+    expect(Amount.fromString('-27').dot()).toEqual('');
+    expect(Amount.fromString('-27.5').dot()).toEqual('.');
   });
 
   it('should allow adding two amounts', () => {
-    const sum = new Amount('33.2').add(new Amount('0.90000001'));
+    const sum = Amount.fromString('33.2').add(Amount.fromString('0.90000001'));
     expect(sum.getIntegerPart()).toEqual('34');
     expect(sum.getFractionalPart()).toEqual('10000001');
   });
 
   it('should allow negating amounts', () => {
-    const negative = new Amount('33.2').negate();
+    const negative = Amount.fromString('33.2').negate();
     expect(negative.toString()).toEqual('-33.2');
     expect(negative.getIntegerPart()).toEqual('-33');
   });
 
   it('should allow adding negative amounts', () => {
-    const sum = new Amount('33.2').add(new Amount('-0.90000001'));
+    const sum = Amount.fromString('33.2').add(Amount.fromString('-0.90000001'));
     expect(sum.getIntegerPart()).toEqual('32');
     expect(sum.getFractionalPart()).toEqual('29999999');
   });

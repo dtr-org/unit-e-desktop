@@ -1,13 +1,17 @@
-import { Commands } from './rpc.service';
+import { Commands } from './commands';
 import { Amount } from '../util/amount';
-import { TransactionInfo, UnspentOutput, ProposerStatus } from './rpc-types';
+import { TransactionInfo, UnspentOutput, ProposerStatus, WalletInfo, BumpFeeResult } from './rpc-types';
 
 
 // Convert numeric values in Unit-e RPC results to Amount objects
 export function amountConverter(command: Commands): (value: any) => any {
   switch (command) {
+    case Commands.BUMPFEE:
+      return convertBumpFee;
     case Commands.FILTERTRANSACTIONS:
       return convertFilterTransactions;
+    case Commands.GETWALLETINFO:
+      return convertWalletInfo;
     case Commands.LISTUNSPENT:
       return convertListUnspent;
     case Commands.PROPOSERSTATUS:
@@ -15,6 +19,12 @@ export function amountConverter(command: Commands): (value: any) => any {
     default:
       return (x) => x;
   }
+}
+
+function convertBumpFee(value: any): BumpFeeResult {
+  value.origfee = Amount.fromNumber(value.origfee);
+  value.fee = Amount.fromNumber(value.fee);
+  return value as BumpFeeResult;
 }
 
 function convertFilterTransactions(value: any[]): TransactionInfo[] {
@@ -25,6 +35,14 @@ function convertFilterTransactions(value: any[]): TransactionInfo[] {
     }
     return tx as TransactionInfo;
   });
+}
+
+function convertWalletInfo(value: any): WalletInfo {
+  value.balance = Amount.fromNumber(value.balance);
+  value.unconfirmed_balance = Amount.fromNumber(value.unconfirmed_balance);
+  value.immature_balance = Amount.fromNumber(value.immature_balance);
+  value.paytxfee = Amount.fromNumber(value.paytxfee);
+  return value as WalletInfo;
 }
 
 function convertListUnspent(value: any[]): UnspentOutput[] {

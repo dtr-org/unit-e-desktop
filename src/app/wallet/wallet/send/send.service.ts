@@ -30,7 +30,7 @@ import { Amount } from 'app/core/util/utils';
 /* fix wallet */
 import { FixWalletModalComponent } from 'app/wallet/wallet/send/fix-wallet-modal/fix-wallet-modal.component';
 import { TransactionBuilder, TransactionOutput, FeeDetermination } from './transaction-builder.model';
-import { CoinControl } from 'app/core/rpc/rpc-types';
+import { CoinControl, Outputs } from 'app/core/rpc/rpc-types';
 
 /*
   Note: due to upcoming multiwallet, we should never ever store addresses in the GUI for transaction purposes.
@@ -86,9 +86,9 @@ export class SendService {
       coinControl.replaceable = tx.replaceable;
     }
 
-    const outputs = tx.outputs.map(txo => ({
+    const outputs: Outputs[] = tx.outputs.map(txo => ({
       address: txo.toAddress,
-      amount: txo.amount,
+      amount: Amount.fromString(txo.amount),
       subfee: txo.subtractFeeFromAmount,
     }));
     return this._rpc.sendtypeto(tx.input, tx.output, outputs, tx.comment, tx.commentTo, tx.estimateFeeOnly, coinControl);

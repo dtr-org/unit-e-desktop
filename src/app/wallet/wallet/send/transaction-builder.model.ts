@@ -113,7 +113,7 @@ export class TransactionBuilder {
 
   feeDetermination: string = FeeDetermination.DEFAULT;
   selectedFee: Amount;
-  customFee: Amount = new Amount('0.00001');
+  customFee: Amount = Amount.fromString('0.00001');
   confirmationTarget: number = 2;
 
   estimateFeeOnly: boolean = true;
@@ -155,7 +155,7 @@ export class TransactionBuilder {
   get amount(): Amount {
     let sum = Amount.ZERO;
     for (const output of this.outputs) {
-      sum = sum.add(new Amount(output.amount));
+      sum = sum.add(Amount.fromString(output.amount));
     }
     return sum;
   }

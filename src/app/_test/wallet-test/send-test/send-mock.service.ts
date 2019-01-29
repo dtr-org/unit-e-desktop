@@ -22,7 +22,7 @@ import { Injectable } from '@angular/core';
 import { Amount } from 'app/core/util/utils';
 
 
-const SendService_OBJECT: any = {file: {}, fee: '0.015'};
+const SendService_OBJECT: any = {file: {}, fee: Amount.fromString('0.015')};
 
 @Injectable()
 export class SendMockService {

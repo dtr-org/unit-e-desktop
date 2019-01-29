@@ -1,4 +1,4 @@
-const MAX_ROUNDING_DIGITS = 8;
+const PRECISION_DIGITS = 8;
 
 const AMOUNT_REGEX = /^(-?)(\d+)(?:\.(\d+))?$/;
 
@@ -28,7 +28,7 @@ export class Amount {
       throw new Error(`Argument '${value} does not look like a number!`);
     }
     if (matches[3]) {
-      matches[3] = matches[3].substr(0, MAX_ROUNDING_DIGITS);
+      matches[3] = matches[3].substr(0, PRECISION_DIGITS);
     }
 
     const digits = makeSatoshiBignum(matches[2], matches[3] || '');
@@ -55,7 +55,7 @@ export class Amount {
    */
   public getIntegerPart(): string {
     const parts: any[] = [(this.sign < 0) ? '-' : ''];
-    parts.push(...this.digits.slice(8).reverse());
+    parts.push(...this.digits.slice(PRECISION_DIGITS).reverse());
     return parts.join('');
   }
 
@@ -64,11 +64,11 @@ export class Amount {
    * e.g:
    * -25.9 -> '9', 25 -> '0', 25.9 -> '9'
    */
-  public getFractionalPart(maxDigits: number = 8): string {
+  public getFractionalPart(maxDigits: number = PRECISION_DIGITS): string {
     if (!this.hasDot()) {
       return '';
     }
-    return this.digits.slice(0, 8).reverse().join('')
+    return this.digits.slice(0, PRECISION_DIGITS).reverse().join('')
       .replace(/0+$/, '').substr(0, maxDigits);
   }
 
@@ -82,7 +82,7 @@ export class Amount {
   }
 
   hasDot(): boolean {
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < PRECISION_DIGITS; i++) {
       if (0 < this.digits[i]) {
         return true;
       }
@@ -126,13 +126,13 @@ function makeSatoshiBignum(integerPart: string, fractionalPart: string): number[
     const chars = integerPart.split('');
     chars.reverse();
 
-    const digits = new Array(chars.length + 8);
+    const digits = new Array(chars.length + PRECISION_DIGITS);
     for (let i = 0; i < chars.length; i++) {
-      digits[i + 8] = parseInt(chars[i], 10);
+      digits[i + PRECISION_DIGITS] = parseInt(chars[i], 10);
     }
 
-    for (let i = 0; i < 8; i++) {
-      digits[7 - i] = (i < fractionalPart.length) ? parseInt(fractionalPart[i], 10) : 0;
+    for (let i = 0; i < PRECISION_DIGITS; i++) {
+      digits[PRECISION_DIGITS - i - 1] = (i < fractionalPart.length) ? parseInt(fractionalPart[i], 10) : 0;
     }
 
     return digits;

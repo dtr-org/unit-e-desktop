@@ -35,8 +35,25 @@ export class Amount {
       matches[3] = matches[3].substr(0, PRECISION_DIGITS);
     }
 
-    const digits = makeSatoshiBignum(matches[2], matches[3] || '');
+    const integralPart = matches[2];
+    const fractionalPart = matches[3] || '';
+
+    const chars = integralPart.split('');
+    chars.reverse();
+
     const sign = (matches[1].length > 0) ? -1 : 1;
+    const digits = new Array(chars.length + PRECISION_DIGITS);
+
+    // 25.037 becomes [0 0 0 0 0 7 3 0 5 2], for example
+
+    for (let i = 0; i < chars.length; i++) {
+      digits[i + PRECISION_DIGITS] = parseInt(chars[i], 10);
+    }
+
+    for (let i = 0; i < PRECISION_DIGITS; i++) {
+      digits[PRECISION_DIGITS - i - 1] = (i < fractionalPart.length) ? parseInt(fractionalPart[i], 10) : 0;
+    }
+
     return new Amount(digits, sign);
   }
 
@@ -120,26 +137,6 @@ export class Amount {
            (this.sign > 0 && other.sign > 0 && bignumLessThanOrEqualTo(this.digits, other.digits)) ||
            (this.sign < 0 && other.sign < 0 && bignumLessThanOrEqualTo(other.digits, this.digits));
   }
-}
-
-
-/**
- * Splits a string representation of a number into an array of digits (little-endian).
- */
-function makeSatoshiBignum(integralPart: string, fractionalPart: string): BigNum {
-    const chars = integralPart.split('');
-    chars.reverse();
-
-    const digits = new Array(chars.length + PRECISION_DIGITS);
-    for (let i = 0; i < chars.length; i++) {
-      digits[i + PRECISION_DIGITS] = parseInt(chars[i], 10);
-    }
-
-    for (let i = 0; i < PRECISION_DIGITS; i++) {
-      digits[PRECISION_DIGITS - i - 1] = (i < fractionalPart.length) ? parseInt(fractionalPart[i], 10) : 0;
-    }
-
-    return digits;
 }
 
 

@@ -86,7 +86,7 @@ export class Amount {
    * -25.9 -> '9', 25 -> '0', 25.9 -> '9'
    */
   public getFractionalPart(maxDigits: number = PRECISION_DIGITS): string {
-    if (!this.hasDot()) {
+    if (this.isIntegral()) {
       return '';
     }
     return this.digits.slice(0, PRECISION_DIGITS).reverse().join('')
@@ -98,17 +98,21 @@ export class Amount {
    * e.g:
    * -25.9 -> '.', 25 -> '', 25.9 -> '.'
    */
-  dot(): string {
-    return this.hasDot() ? '.' : '';
+  public dot(): string {
+    return this.isIntegral() ? '' : '.';
   }
 
-  hasDot(): boolean {
+  /**
+   * Returns `true` if the Amount contains an integral number of UTE, i.e. the
+   * first PRECISION_DIGITS elements of the `digits` array are all zeros.
+   */
+  isIntegral(): boolean {
     for (let i = 0; i < PRECISION_DIGITS; i++) {
       if (0 < this.digits[i]) {
-        return true;
+        return false;
       }
     }
-    return false;
+    return true;
   }
 
   negate(): Amount {

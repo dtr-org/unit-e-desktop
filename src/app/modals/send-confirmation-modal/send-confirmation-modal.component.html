@@ -9,7 +9,7 @@
   <div class="tx-confirmation">
     <div class="tx-amount">
       <span class="big">{{ sendAmount.getIntegralPart() }}</span>
-      <span *ngIf="sendAmount.hasDot()">
+      <span *ngIf="!sendAmount.isIntegral()">
       <span class="point">.</span>
       <span class="small">{{ sendAmount.getFractionalPart() }}</span>&ensp;</span>
       <span class="currency">UTE</span>

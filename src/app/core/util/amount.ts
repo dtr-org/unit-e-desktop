@@ -43,15 +43,15 @@ export class Amount {
 
     const sign = (matches[1].length > 0) ? -1 : 1;
     const digits = new Array(chars.length + PRECISION_DIGITS);
+    digits.fill(0);
 
     // 25.037 becomes [0 0 0 0 0 7 3 0 5 2], for example
 
     for (let i = 0; i < chars.length; i++) {
       digits[i + PRECISION_DIGITS] = parseInt(chars[i], 10);
     }
-
-    for (let i = 0; i < PRECISION_DIGITS; i++) {
-      digits[PRECISION_DIGITS - i - 1] = (i < fractionalPart.length) ? parseInt(fractionalPart[i], 10) : 0;
+    for (let i = 0; i < fractionalPart.length; i++) {
+      digits[PRECISION_DIGITS - i - 1] = parseInt(fractionalPart[i], 10);
     }
 
     return new Amount(digits, sign);

@@ -40,7 +40,7 @@ yarn install
 2. In a terminal, run `ng serve --env=regtest` to start the Angular dev server and keep it running
 3. In another terminal, run `yarn run start:electron:dev -regtest -devtools` to
    start the Electron application.
-   * note: this command will auto-refresh the client on each saved change
+   * Note: this command will auto-refresh the client on each saved change
 
 The command-line flags for the Electron application are:
    * `--v` – enable verbose logging to the terminal.

@@ -23,15 +23,15 @@ let _options = {};
 /*
 ** compose options from arguments
 **
-** exemple:
-** --dev -testnet -reindex -rpcuser=user -rpcpassword=pass
-** strips --dev out of argv (double dash is not a united argument) and returns
+** Example:
+** --testnet --upnp --rpcuser=user --rpcpassword=hunter2 --datadir=/home/user/.united
+** returns
 ** {
-**   dev: true,
 **   testnet: true,
-**   reindex: true,
+**   upnp: true,
 **   rpcuser: user,
-**   rpcpassword: pass
+**   rpcpassword: 'hunter2',
+**   datadir: '/home/user/.united'
 ** }
 */
 

@@ -224,10 +224,15 @@ function askForDeletingCookie() {
 
 function getDaemonArgs(options) {
   let result = [];
-  if (options.testnet) {
-    result.push('-testnet');
-  } else if (options.regtest) {
-    result.push('-regtest');
+  for (let arg of ['regtest', 'testnet', 'upnp', 'proxy', 'datadir', 'rpcuser', 'rpcpassword', 'rpcbind']) {
+    if (!options[arg]) {
+      continue;
+    }
+    if (typeof options[arg] === 'boolean') {
+      result.push(`-${arg}`);
+      continue;
+    }
+    result.push(`-${arg}=${options[arg]}`);
   }
   return result;
 }

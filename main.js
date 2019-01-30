@@ -122,7 +122,7 @@ function initMainWindow() {
   });
 
   // and load the index.html of the app.
-  if (options.dev) {
+  if (options.devport) {
     mainWindow.loadURL(`http://localhost:${options.devport}`);
   } else {
     mainWindow.loadURL(url.format({

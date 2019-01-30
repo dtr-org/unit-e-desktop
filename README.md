@@ -46,8 +46,12 @@ The command-line flags for the Electron application are:
    * `--v` – enable verbose logging to the terminal.
    * `--devtools` – automatically open Chrome Developer Tools on client launch.
    * `--devport=XXX` – connect to the Angular development server on a port other than the default of 4200.
+   * `--datadir=<dir>` – specify the directory to store the wallet and blockchain data
+   * `--rpcuser=<user>`, `--rpcpassword=<password>`, `--rpcbind=<ip>` – set custom Unit-e JSON-RPC connection parameters
+   * `--proxy=<ip:port>` – connect through SOCKS5 proxy
    * `--regtest` – use the testing environment and connect to a daemon launched in regtest mode.
    * `--testnet` – connect to a daemon launched in testnet mode.
+   * `--upnp` – use UPnP to map the listening port
 
 Omitting both the `--regtest` and `--testnet` flags forces the Electron client to connect to a mainnet Unit-e daemon.
 

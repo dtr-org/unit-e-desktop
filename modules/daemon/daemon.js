@@ -224,7 +224,7 @@ function askForDeletingCookie() {
 
 function getDaemonArgs(options) {
   let result = [];
-  for (let arg of ['regtest', 'testnet', 'upnp', 'proxy', 'datadir', 'rpcuser', 'rpcpassword', 'rpcbind']) {
+  for (let arg of ['regtest', 'testnet', 'upnp', 'proxy', 'datadir', 'rpcport', 'rpcuser', 'rpcpassword', 'rpcbind']) {
     if (!options[arg]) {
       continue;
     }

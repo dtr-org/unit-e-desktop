@@ -42,6 +42,11 @@ function isVerboseLevel(arg) {
   return notVerbose ? false : level;
 }
 
+const ALLOWED_ARGS = [
+  'devtools', 'devport', 'regtest', 'testnet', 'mainnet', 'upnp', 'proxy', 'datadir',
+  'rpcport', 'rpcuser', 'rpcpassword', 'rpcbind', 'v', 'vv', 'vvv', 'dev'
+];
+
 exports.parse = function() {
 
   let options = {};
@@ -51,34 +56,41 @@ exports.parse = function() {
     process.argv = process.argv.splice(1); /* striping /path/to/unite from argv */
   }
 
-  // make a copy of process.argv, because we'll be changing it
-  // which messes with the map operator
   const args = process.argv.slice(0);
-
   args.map((arg, index) => {
-    let nDashes = arg.lastIndexOf('-') + 1;
-    const argIndex = process.argv.indexOf(arg);
-    arg = arg.substr(nDashes);
-
-    if (nDashes !== 2) {
-      continue;
+    if (!arg.startsWith('--')) {
+      console.error(`Invalid argument: ${arg}.`);
+      process.exit(1);
     }
+    arg = arg.substr(2);
 
     let verboseLevel = isVerboseLevel(arg);
     if (verboseLevel) {
       options['verbose'] = verboseLevel;
       return;
     }
+
     if (arg.includes('=')) {
       arg = arg.split('=');
       options[arg[0]] = arg[1];
     } else {
       options[arg] = true;
     }
+
+    if (!ALLOWED_ARGS.includes(arg)) {
+      console.error(`Invalid argument: --${arg}.`);
+      process.exit(1);
+    }
   });
 
-  if (options.testnet) {
-    options.regtest = false;
+  // Before the mainnet goes public, testnet is the default
+  if (!options.mainnet && !options.regtest) {
+    options.testnet = true;
+  } else if (options.regtest) {
+    options.testnet = false;
+    options.mainnet = false;
+  } else {
+    options.testnet = false;
   }
 
   options.port = options.rpcport

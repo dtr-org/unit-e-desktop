@@ -47,8 +47,9 @@ The command-line flags for the Electron application are:
    * `--devtools` – automatically open Chrome Developer Tools on client launch.
    * `--devport=XXX` – connect to the Angular development server on a port other than the default of 4200.
    * `-regtest` – use the testing environment and connect to a daemon launched in regtest mode.
-   * `-testnet` – connect to a daemon launched in testnet mode. Omitting both `-regtest` and
-     `-testnet` forces the Electron client to connect to a mainnet Unit-e daemon.
+   * `-testnet` – connect to a daemon launched in testnet mode.
+
+Omitting both the `-regtest` and `-testnet` flags forces the Electron client to connect to a mainnet Unit-e daemon.
 
 Single-dash arguments will be passed to the Unit-e daemon, if it's launched by the Electron application.
 Double-dash arguments are only visible to the application itself.

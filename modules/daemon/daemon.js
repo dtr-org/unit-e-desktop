@@ -110,13 +110,14 @@ exports.start = function (wallets) {
         : daemonManager.getPath();
 
       wallets = wallets.map(wallet => `-wallet=${wallet}`);
-      log.info(`starting daemon ${daemonPath} ${process.argv} ${wallets}`);
+      let daemonArgs = getDaemonArgs(options);
+      log.info(`starting daemon ${daemonPath} ${daemonArgs} ${wallets}`);
 
-      const child = spawn(daemonPath, [...process.argv, `-rpccorsdomain=http://localhost:${options.devport}`, ...wallets])
+      const child = spawn(daemonPath, [...daemonArgs, `-rpccorsdomain=http://localhost:${options.devport}`, ...wallets])
         .on('close', code => {
           if (code !== 0) {
             reject();
-            log.error(`daemon exited with code ${code}.\n${daemonPath}\n${process.argv}`);
+            log.error(`daemon exited with code ${code}.\n${daemonPath}\n${daemonArgs}`);
           }
         });
 
@@ -219,4 +220,14 @@ function askForDeletingCookie() {
       resolve();
     }
   });
+}
+
+function getDaemonArgs(options) {
+  let result = [];
+  if (options.testnet) {
+    result.push('-testnet');
+  } else if (options.regtest) {
+    result.push('-regtest');
+  }
+  return result;
 }

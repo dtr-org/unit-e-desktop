@@ -38,7 +38,7 @@ yarn install
 
 1. Start a Unit-e daemon with `united -regtest`.
 2. In a terminal, run `ng serve --env=regtest` to start the Angular dev server and keep it running
-3. In another terminal, run `yarn run start:electron:dev -regtest --devtools` to
+3. In another terminal, run `yarn run start:electron:dev --regtest --devtools` to
    start the Electron application.
    * Note: this command will auto-refresh the client on each saved change
 
@@ -46,13 +46,10 @@ The command-line flags for the Electron application are:
    * `--v` – enable verbose logging to the terminal.
    * `--devtools` – automatically open Chrome Developer Tools on client launch.
    * `--devport=XXX` – connect to the Angular development server on a port other than the default of 4200.
-   * `-regtest` – use the testing environment and connect to a daemon launched in regtest mode.
-   * `-testnet` – connect to a daemon launched in testnet mode.
+   * `--regtest` – use the testing environment and connect to a daemon launched in regtest mode.
+   * `--testnet` – connect to a daemon launched in testnet mode.
 
-Omitting both the `-regtest` and `-testnet` flags forces the Electron client to connect to a mainnet Unit-e daemon.
-
-Single-dash arguments will be passed to the Unit-e daemon, if it's launched by the Electron application.
-Double-dash arguments are only visible to the application itself.
+Omitting both the `--regtest` and `--testnet` flags forces the Electron client to connect to a mainnet Unit-e daemon.
 
 ### Running the unit tests
 

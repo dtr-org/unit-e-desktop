@@ -60,27 +60,21 @@ exports.parse = function() {
     const argIndex = process.argv.indexOf(arg);
     arg = arg.substr(nDashes);
 
-    if (nDashes === 2) { /* double-dash: desktop-only argument */
-      // delete param, so it doesn't get passed to unite-core
-      process.argv.splice(argIndex, 1);
-      let verboseLevel = isVerboseLevel(arg);
-      if (verboseLevel) {
-        options['verbose'] = verboseLevel;
-        return ;
-      }
-      if (arg.includes('=')) {
-        arg = arg.split('=');
-        options[arg[0]] = arg[1];
-        return ;
-      }
-    } else if (nDashes === 1) { /* single-dash: core argument */
-      if (arg.includes('=')) {
-        arg = arg.split('=');
-        options[arg[0]] = arg[1];
-        return ;
-      }
+    if (nDashes !== 2) {
+      continue;
     }
-    options[arg] = true;
+
+    let verboseLevel = isVerboseLevel(arg);
+    if (verboseLevel) {
+      options['verbose'] = verboseLevel;
+      return;
+    }
+    if (arg.includes('=')) {
+      arg = arg.split('=');
+      options[arg[0]] = arg[1];
+    } else {
+      options[arg] = true;
+    }
   });
 
   if (options.testnet) {

@@ -53,7 +53,6 @@ describe('SendComponent', () => {
         CoreModule.forRoot(),
         CoreUiModule.forRoot(),
         ModalsModule.forRoot(),
-        // WalletModule.forRoot(), // a bit circular here..
         BrowserAnimationsModule
       ],
       providers: [
@@ -75,13 +74,6 @@ describe('SendComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  /* cant do RPC yet
-
-    it('should call back address', () => {
-      // component.rpc_callbackVerifyAddress();
-      expect(component.rpc_callbackVerifyAddress).toBeTruthy();
-    });
-  */
 
   it('should verify amount no balance service', () => {
     component.send.outputs[0].amount = 555.555555;
@@ -120,68 +112,5 @@ describe('SendComponent', () => {
     component.send.outputs[0].verifyAmount();
     expect(component.send.outputs[0].validAmount).toBeTruthy();
   });
-
-/*
-
-    it('should open lookup', () => {
-      component.openLookup();
-      expect(component.openLookup).toBe('true');
-    });
-*/
-/*
-  it('should get balances', () => {
-    // component.getBalance();
-    expect(component.getBalance).toBeTruthy()
-  });
-
-  it('should open validate', () => {
-    component.openValidate();
-    expect(component.openValidate).toBeTruthy();
-  });
-
-  it('should close validate', () => {
-    component.closeValidate();
-    expect(component.closeValidate).toBeTruthy();
-  });
-
-  it('should select address', () => {
-    // component.selectAddress();
-    expect(component.selectAddress).toBeTruthy();
-  });
-
-  it('should clear', () => {
-    component.clear();
-    expect(component.clear).toBeTruthy()
-  });
-
-  it('should pay', () => {
-    component.pay();
-    expect(component.pay).toBeTruthy()
-  });
-
-  it('should toggle advanced', () => {
-    component.toggleAdvanced();
-    expect(component.toggleAdvanced).toBeTruthy();
-  });
-
-  it('should check address', () => {
-    component.checkAddress();
-    expect(component.checkAddress).toBeTruthy();
-  });
-
-  it('should verify amount', () => {
-    component.verifyAmount();
-    expect(component.verifyAmount).toBeTruthy();
-  });
-
-  it('should verify address', () => {
-    component.verifyAddress();
-    expect(component.verifyAddress).toBeTruthy();
-  });
-
-  it('should get send', () => {
-    expect(component.send).toBeTruthy();
-  });
-*/
 
 });

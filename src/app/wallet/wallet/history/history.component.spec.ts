@@ -70,7 +70,7 @@ describe('HistoryComponent', () => {
   })
 
   it('should filter by category', () => {
-    // component.filterByCategory('all');
-    // expect(component.category).toBe('all');
+    component.changeCategory(1);
+    expect(component.filters.category).toBe(component.categories[1].value);
   });
 });

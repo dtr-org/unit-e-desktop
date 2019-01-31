@@ -53,29 +53,10 @@ describe('TransactionTableComponent', () => {
     fixture.detectChanges();
   });
 
-/*
-  it('initializes the component', fakeAsync(() => {
-    let service = fixture.debugElement.injector.get(TransactionService);
-    console.warn("MockTxService");
-    console.warn(service.txs);
-
-    component.ngOnInit(); // call ngOnInit
-    tick(); // simulate a tick
-
-    // expect(service.get.toHaveBeenCalled);
-    // here you could add an expect to validate component state after the service completes
-})); */
-
-it('should create', () => {
-  expect(component).toBeTruthy();
-});
-
-/*
-  it('should change page', () => {
-    // component.pageChanged()
-    expect(component.pageChanged).toBeTruthy();
+  it('should create', () => {
+    expect(component).toBeTruthy();
   });
-*/
+
   it('should get log', () => {
     expect(component.log).toBeDefined();
   });

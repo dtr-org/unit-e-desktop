@@ -52,12 +52,7 @@ describe('AddressTableComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-/*
-  it('should changePage', () => {
-    // component.pageChanged();
-    expect(component.pageChanged).toBeTruthy();
-  });
-*/
+
   it('should get addressService', () => {
     expect(component._addressService).toBeDefined();
   });

@@ -17,7 +17,6 @@
  */
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-// import { BrowserModule } from '@angular/platform-browser';
 
 import { MatDialogRef } from '@angular/material';
 

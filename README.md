@@ -51,10 +51,10 @@ The command-line flags for the Electron application are:
    * `--proxy=<ip:port>` – connect to the P2P network through SOCKS5 proxy
    * `--regtest` – use the testing environment and connect to a daemon launched in regtest mode.
    * `--testnet` – connect to a daemon using the testnet chain.
-   * `--mainnet` – connect to a daemon using the mainnet chain.
    * `--upnp` – use UPnP to map the listening port
 
-Omitting both the `--regtest` and `--mainnet` flags forces the Electron client to connect to a testnet Unit-e daemon.
+Omitting the `--regtest` flag forces the Electron client to connect to a testnet
+Unit-e daemon by default.
 
 ### Running the unit tests
 

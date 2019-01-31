@@ -43,7 +43,7 @@ function isVerboseLevel(arg) {
 }
 
 const ALLOWED_ARGS = [
-  'devtools', 'devport', 'regtest', 'testnet', 'mainnet', 'upnp', 'proxy', 'datadir',
+  'devtools', 'devport', 'regtest', 'testnet', 'upnp', 'proxy', 'datadir',
   'rpcport', 'rpcuser', 'rpcpassword', 'rpcbind', 'v', 'vv', 'vvv', 'dev'
 ];
 
@@ -83,23 +83,15 @@ exports.parse = function() {
     }
   });
 
-  // Before the mainnet goes public, testnet is the default
-  if (!options.mainnet && !options.regtest) {
-    options.testnet = true;
-  } else if (options.regtest) {
-    options.testnet = false;
-    options.mainnet = false;
-  } else {
-    options.testnet = false;
-  }
+  // Testnet is the default
+  options.regtest = !!options.regtest;
+  options.testnet = !options.regtest;
 
   options.port = options.rpcport
     ? options.rpcport // custom rpc port
     : options.testnet
       ? 17181  // default testnet port
-      : options.regtest
-        ? 17291  // default regtest port
-        : 7181 ; // default mainnet port
+      : 17291;  // default regtest port
 
   // Angular development server port
   options.devport = options.devport || 4200;

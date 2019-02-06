@@ -157,7 +157,6 @@ export class CreateWalletComponent implements OnDestroy {
         this.passwordVerify = '';
         break;
       case 3:
-      this.log.d('step 3 execution, password=', this.password)
         this._passphraseService.generateMnemonic(
           this.mnemonicCallback.bind(this), this.password
         );
@@ -197,7 +196,6 @@ export class CreateWalletComponent implements OnDestroy {
     }
 
     this.wordsVerification = Object.assign({}, this.words);
-    this.log.d(`word string: ${this.words.join(' ')}`);
   }
 
   public importMnemonicSeed(): void {

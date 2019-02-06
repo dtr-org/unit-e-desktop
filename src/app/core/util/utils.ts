@@ -16,117 +16,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-export class Amount {
+import { Amount } from './amount';
 
-  constructor(private amount: number, private maxRoundingDigits: number = 8) {
-    this.amount = this.truncateToDecimals(amount, maxRoundingDigits);
-  }
-
-  public getAmount() {
-    return this.amount;
-  }
-
-  public getAmountWithFee(fee: number) {
-    const total = this.amount + fee;
-    return this.truncateToDecimals(total, 8);
-  }
-
-  /**
-   * Returns integer part.
-   * e.g:
-   * -25.9 -> '-25'
-   * 25 -> '25'
-   * 25.9 -> '25'
-   */
-  public getIntegerPart(): number {
-    return Math.trunc(this.amount);
-  }
-
-  /**
-   * Returns fractional part.
-   * e.g:
-   * -25.9 -> '9'
-   * 25 -> '0'
-   * 25.9 -> '9'
-   *
-   * We have to return this as a string, else the leading zero's are gone.
-   */
-  public getFractionalPart(): string {
-    if (this.ifDotExist()) {
-      return (this.getAmount().toString()).split('.')[1];
-    }
-    return '';
-  }
-
-  /**
-   * Returns zero if negative value.
-   * Else return input value.
-   * e.g:
-   * -25.9 -> '0'
-   * 25 -> '25'
-   * 25.9 -> '25.9'
-   */
-  public positiveOrZero(int?: number) {
-    if (int === undefined) {
-      int = this.getAmount();
-    }
-
-    if (int < 0) {
-      return '0';
-    }
-
-    return int;
-  }
-
-  /**
-   * Returns a dot only when it exists in the number.
-   * e.g:
-   * -25.9 -> '.'
-   * 25 -> ''
-   * 25.9 -> '.'
-   */
-  dot(): string {
-    return  this.ifDotExist() ? '.' : '';
-  }
-
-  ifDotExist(): boolean {
-    return (this.getAmount().toString()).indexOf('.') !== -1;
-  }
-
-
-  /**
-   * Properly truncates the value.
-   * e.g:
-   * -25.99999 with dec=2 -> '-25.99'
-   * 25 -> ''
-   * 25.9 with dec=8 -> '25.9'
-   */
-  truncateToDecimals(int: number, dec: number) {
-    const calcDec = Math.pow(10, dec);
-    return Math.trunc(int * calcDec) / calcDec;
-  }
-
-}
-
-export class Fee {
-  constructor(private fee: number) {
-    this.fee = this.truncateToDecimals(fee, 8);
-  }
-
-  public getFee(): number {
-    return this.fee;
-  }
-
-  public getAmountWithFee(amount: number): number {
-    const total = this.fee + amount;
-    return this.truncateToDecimals(total, 8);
-  }
-
-  truncateToDecimals(int: number, dec: number): number {
-    const calcDec = Math.pow(10, dec);
-    return Math.trunc(int * calcDec) / calcDec;
-  }
-}
 
 export class Duration {
 
@@ -240,3 +131,5 @@ export class DateFormatter {
       )
   }
 }
+
+export { Amount };

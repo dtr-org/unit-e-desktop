@@ -20,7 +20,7 @@
 import { UnspentOutput } from 'app/core/rpc/rpc-types';
 import { RpcService, Commands } from '../../../core/rpc/rpc.service';
 import { RpcStateService } from '../../../core/rpc/rpc-state/rpc-state.service';
-import { AddressHelper } from '../../../core/util/utils';
+import { AddressHelper, Amount } from '../../../core/util/utils';
 
 
 export enum TxType {
@@ -37,7 +37,7 @@ export class TransactionOutput {
   toAddress: string;
   toLabel: string;
   address: string;
-  amount: number | string;  // value coming from the GUI
+  amount: string = '0';  // value coming from the GUI
   validAddress: boolean;
   validAmount: boolean;
   isMine: boolean;
@@ -73,7 +73,7 @@ export class TransactionOutput {
       return;
     }
 
-    this.validAmount = (0 < this.amount && this.amount <= this.getTotalBalance());
+    this.validAmount = (0 < +this.amount && +this.amount <= this.getTotalBalance());
   }
 
   verifyAddress() {
@@ -112,8 +112,8 @@ export class TransactionBuilder {
   commentTo: string;
 
   feeDetermination: string = FeeDetermination.DEFAULT;
-  selectedFee: number;
-  customFee: number = 0.00001;
+  selectedFee: Amount;
+  customFee: Amount = Amount.fromString('0.00001');
   confirmationTarget: number = 2;
 
   estimateFeeOnly: boolean = true;
@@ -132,12 +132,12 @@ export class TransactionBuilder {
     ];
   }
 
-  private getTotalBalance(): number {
+  private getTotalBalance(): Amount {
     const walletInfo = this._rpcState.get('getwalletinfo');
     if (!walletInfo) {
-      return 0;
+      return Amount.ZERO;
     }
-    return walletInfo.balance || 0;
+    return Amount.fromNumber(walletInfo.balance || 0);
   }
 
   get validAddress(): boolean {
@@ -149,13 +149,13 @@ export class TransactionBuilder {
       return false;
     }
 
-    return this.amount <= this.getTotalBalance();
+    return this.amount.lessThanOrEqualTo(this.getTotalBalance());
   }
 
-  get amount(): number {
-    let sum = 0;
+  get amount(): Amount {
+    let sum = Amount.ZERO;
     for (const output of this.outputs) {
-      sum += +output.amount;
+      sum = sum.add(Amount.fromString(output.amount));
     }
     return sum;
   }
@@ -202,12 +202,12 @@ export class TransactionBuilder {
   sendAllTo(destination: TransactionOutput) {
     for (const txo of this.outputs) {
       if (txo === destination) {
-        txo.amount = this.getTotalBalance();
+        txo.amount = this.getTotalBalance().toString();
         txo.validAmount = true;
         txo.subtractFeeFromAmount = true;
       } else {
         txo.sendAll = false;
-        txo.amount = 0;
+        txo.amount = '0';
         txo.validAmount = undefined;
         txo.subtractFeeFromAmount = false;
       }

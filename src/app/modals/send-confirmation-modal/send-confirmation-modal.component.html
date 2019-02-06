@@ -8,8 +8,8 @@
   <!--TX confirmation-->
   <div class="tx-confirmation">
     <div class="tx-amount">
-      <span class="big">{{ sendAmount.getIntegerPart() }}</span>
-      <span *ngIf="sendAmount.ifDotExist()">
+      <span class="big">{{ sendAmount.getIntegralPart() }}</span>
+      <span *ngIf="!sendAmount.isIntegral()">
       <span class="point">.</span>
       <span class="small">{{ sendAmount.getFractionalPart() }}</span>&ensp;</span>
       <span class="currency">UTE</span>
@@ -26,7 +26,7 @@
     </div>
 
     <p class="fee-info">
-      Transaction fee:<span class="amount">{{ transactionAmount.getFee() }} UTE</span><span class="fiat">&asymp; 0.05 USD</span>
+      Transaction fee:<span class="amount">{{ transactionFee.toString() }} UTE</span><span class="fiat">&asymp; 0.05 USD</span>
       <button mat-button color="primary"
               (click)="showAdvancedFeeOptions = !showAdvancedFeeOptions" matTooltip="Edit fee"
               *ngIf="!showAdvancedFeeOptions">

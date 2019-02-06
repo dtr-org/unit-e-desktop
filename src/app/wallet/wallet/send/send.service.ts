@@ -20,15 +20,17 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Log } from 'ng2-logger'
 
 import { RpcService, Commands } from '../../../core/core.module';
 import { SnackbarService } from '../../../core/snackbar/snackbar.service';
+import { Amount } from 'app/core/util/utils';
 
 /* fix wallet */
 import { FixWalletModalComponent } from 'app/wallet/wallet/send/fix-wallet-modal/fix-wallet-modal.component';
 import { TransactionBuilder, TransactionOutput, FeeDetermination } from './transaction-builder.model';
-import { CoinControl } from 'app/core/rpc/rpc-types';
+import { CoinControl, Outputs } from 'app/core/rpc/rpc-types';
 
 /*
   Note: due to upcoming multiwallet, we should never ever store addresses in the GUI for transaction purposes.
@@ -57,7 +59,7 @@ export class SendService {
 
   public getTransactionFee(tx: TransactionBuilder): Observable<any> {
     tx.estimateFeeOnly = true;
-    return this.send(tx).map(fee => fee);
+    return this.send(tx);
   }
 
   /**
@@ -84,24 +86,24 @@ export class SendService {
       coinControl.replaceable = tx.replaceable;
     }
 
-    const outputs = tx.outputs.map(txo => ({
+    const outputs: Outputs[] = tx.outputs.map(txo => ({
       address: txo.toAddress,
-      amount: txo.amount,
+      amount: Amount.fromString(txo.amount),
       subfee: txo.subtractFeeFromAmount,
     }));
     return this._rpc.sendtypeto(tx.input, tx.output, outputs, tx.comment, tx.commentTo, tx.estimateFeeOnly, coinControl);
   }
 
-  private rpc_send_success(json: any, address: string, amount: number) {
+  private rpc_send_success(json: any, address: string, amount: Amount) {
     this.log.d(`rpc_send_success, succesfully executed transaction with txid ${json}`);
 
     // Truncate the address to 16 characters only
     const trimAddress = address.substring(0, 16) + '...';
     const txsId = json.substring(0, 45) + '...';
-    this.flashNotification.open(`Succesfully sent ${amount} UTE to ${trimAddress}!\nTransaction id: ${txsId}`, 'warn');
+    this.flashNotification.open(`Succesfully sent ${amount.toString()} UTE to ${trimAddress}!\nTransaction id: ${txsId}`, 'warn');
   }
 
-  private rpc_send_failed(message: string, address?: string, amount?: number) {
+  private rpc_send_failed(message: string, address?: string, amount?: Amount) {
     this.flashNotification.open(`Transaction Failed ${message}`, 'err');
     this.log.er('rpc_send_failed, failed to execute transaction!');
     this.log.er(message);

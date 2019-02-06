@@ -27,7 +27,8 @@
       <mat-radio-button value="custom">Custom fee:</mat-radio-button>
       <mat-form-field class="spaced">
         <input matInput type="number" name="custom_fee"
-               [(ngModel)]="send.customFee" [disabled]="send.feeDetermination !== 'custom'"
+               [(ngModel)]="customFee" [disabled]="send.feeDetermination !== 'custom'"
+               (change)="updateCustomFee()"
                step="0.00001">
       </mat-form-field>
       <span>UTE/kbyte</span>

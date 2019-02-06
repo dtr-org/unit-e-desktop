@@ -19,7 +19,10 @@
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 
-const SendService_OBJECT: any = {file: {}, fee: 0.015};
+import { Amount } from 'app/core/util/utils';
+
+
+const SendService_OBJECT: any = {file: {}, fee: Amount.fromString('0.015')};
 
 @Injectable()
 export class SendMockService {

@@ -36,7 +36,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
   private log: any = Log.create(`balance.component ${this.type}`);
   private destroyed: boolean = false;
 
-  private _balance: Amount = new Amount(0);
+  private _balance: Amount = Amount.ZERO;
 
   get balance() {
     return this._balance;
@@ -48,7 +48,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
     this._rpcState.observe('getwalletinfo', this.type)
     .takeWhile(() => !this.destroyed)
     .subscribe(
-      balance => this._balance = new Amount(balance || 0, 4),
+      balance => this._balance = Amount.fromNumber(balance || 0),
       error => this.log.error('Failed to get balance, ', error));
   }
 

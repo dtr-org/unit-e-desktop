@@ -36,6 +36,7 @@ import { AddressLookUpCopy } from '../models/address-look-up-copy';
 
 import { TransactionBuilder, TransactionOutput, TxType } from './transaction-builder.model';
 import { SendConfirmationModalComponent } from 'app/modals/send-confirmation-modal/send-confirmation-modal.component';
+import { Amount } from 'app/core/util/amount';
 
 @Component({
   selector: 'app-send',
@@ -53,7 +54,7 @@ export class SendComponent implements OnInit {
   type: string = 'sendPayment';
   progress: number = 10;
   paymentSource: string = 'default';
-  selectedBalance: number;
+  selectedBalance: Amount;
 
   // TODO: Create proper Interface / type
   public send: TransactionBuilder;
@@ -88,12 +89,12 @@ export class SendComponent implements OnInit {
   }
 
   /** Get current account balance */
-  getBalance(account: TxType): number {
+  getBalance(account: TxType): Amount {
     const walletInfo: WalletInfo = this._rpcState.get('getwalletinfo');
     if (!walletInfo) {
-      return 0;
+      return Amount.ZERO;
     }
-    return walletInfo.balance || 0;
+    return walletInfo.balance || Amount.ZERO;
   }
 
   private txTypeToBalanceType(type: TxType): string {
@@ -191,6 +192,6 @@ export class SendComponent implements OnInit {
 
   updateSelection(coins: UnspentOutput[]) {
     this.send.selectedCoins = coins;
-    this.selectedBalance = coins.reduce((sum, coin) => sum + coin.amount, 0);
+    this.selectedBalance = coins.reduce((sum, coin) => sum.add(coin.amount), Amount.ZERO);
   }
 }

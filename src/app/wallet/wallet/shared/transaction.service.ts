@@ -24,6 +24,7 @@ import { Transaction } from './transaction.model';
 import { map, flatMap } from 'rxjs/operators';
 
 import { RpcService, RpcStateService, Commands, IpcService } from '../../../core/core.module';
+import { Subject, BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class TransactionService implements OnDestroy {
@@ -133,7 +134,7 @@ export class TransactionService implements OnDestroy {
   }
 
   /** Load transactions over RPC, then parse JSON and call addTransaction to add them to txs array. */
-  loadTransactions(): void {
+  loadTransactions(): Subject<any> {
     this.log.d('loadTransactions() start');
 
     this.countTransactions();
@@ -143,6 +144,9 @@ export class TransactionService implements OnDestroy {
       'skip': +this.MAX_TXS_PER_PAGE * this.currentPage,
     };
     Object.keys(this.filters).map(filter => options[filter] = this.filters[filter]);
+
+    // For testing purposes, to signal async call completion
+    const result: Subject<any> = new Subject();
 
     this.log.d(`loadTransactions, call filtertransactions: ${JSON.stringify(options)}`);
     this.rpc.call(Commands.FILTERTRANSACTIONS, [options])
@@ -168,14 +172,20 @@ export class TransactionService implements OnDestroy {
         this.loading = false;
         this.alreadyRetryingLoadTx = false;
         this.log.d(`loadTransactions, txs array: ${this.txs.length}`);
+
+        result.next(newTxs);
+        result.complete();
       },
       (error) => {
+        result.error(error);
+
         this.log.d(`loadTransactions, failed with error `, error);
         this.log.d(`... retrying every second ... `);
         this.retryLoadTransaction();
       }
     );
 
+    return result;
   }
 
   /** Count the transactions (for a specific filter) */

@@ -16,18 +16,16 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick, inject } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { RpcModule } from '../../../../core/rpc/rpc.module';
+import { RpcModule, RpcService } from '../../../../core/rpc/rpc.module';
 import { SharedModule } from '../../../shared/shared.module';
 import { WalletModule } from '../../../wallet/wallet.module';
 import { CoreModule } from '../../../../core/core.module';
 
 import { TransactionsTableComponent } from './transaction-table.component';
-import { TransactionService } from 'app/wallet/wallet/shared/transaction.service';
-import { MockTransactionService } from 'app/wallet/wallet/shared/transaction.mockservice';
-
+import { RpcMockService } from 'app/_test/core-test/rpc-test/rpc-mock.service';
 
 
 describe('TransactionTableComponent', () => {
@@ -42,6 +40,9 @@ describe('TransactionTableComponent', () => {
         RpcModule.forRoot(),
         CoreModule.forRoot(),
         BrowserAnimationsModule
+      ],
+      providers: [
+        { provide: RpcService, useClass: RpcMockService }
       ]
     })
     .compileComponents();
@@ -63,5 +64,26 @@ describe('TransactionTableComponent', () => {
 
   it('should get txService', () => {
     expect(component.txService).toBeDefined();
+  });
+
+  it('should display a list of transactions', () => {
+
+    const promise = new Promise((resolve, reject) => {
+      const result = component.txService.loadTransactions();
+      result.subscribe(() => {
+          fixture.detectChanges();
+
+          const nav = fixture.nativeElement;
+          const amount = nav.querySelectorAll('.amount')[0];
+          expect(amount.className).toContain('positive');
+          expect(amount.innerText).toBe('50.0002584 UTE');
+
+          resolve();
+        },
+        () => { reject(); }
+      );
+    });
+
+    return promise;
   });
 });

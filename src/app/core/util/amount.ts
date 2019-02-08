@@ -115,6 +115,10 @@ export class Amount {
     return true;
   }
 
+  isNegative() {
+    return this.sign < 0;
+  }
+
   negate(): Amount {
     return new Amount(this.digits, -this.sign as Sign);
   }

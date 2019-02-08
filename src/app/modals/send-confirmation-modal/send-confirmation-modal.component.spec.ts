@@ -19,7 +19,7 @@
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
-import { MatDialogRef, MatFormFieldModule } from '@angular/material';
+import { MatDialogRef, MatFormFieldModule, MAT_DIALOG_DATA } from '@angular/material';
 import { MaterialModule } from '../../core-ui/material/material.module';
 
 
@@ -51,6 +51,11 @@ describe('SendConfirmationModalComponent', () => {
         SnackbarService,
         {provide: SendService, useClass: SendMockService},
         { provide: MatDialogRef},
+        {provide: MAT_DIALOG_DATA, useValue: {
+          service: new SendMockService(),
+          dialogContent: '',
+          send: new TransactionBuilder()
+        }}
       ],
     })
     .compileComponents();
@@ -59,7 +64,6 @@ describe('SendConfirmationModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SendConfirmationModalComponent);
     component = fixture.componentInstance;
-    component.send = new TransactionBuilder();
     fixture.detectChanges();
   });
 

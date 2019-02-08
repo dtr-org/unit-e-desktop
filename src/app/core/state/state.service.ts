@@ -82,8 +82,8 @@ export class StateService {
 
 
   private _clone(object: InternalStateType) {
-    // simple object clone
-    return JSON.parse(JSON.stringify(object));
+    // simple shallow object clone
+    return Object.assign({}, this._state);
   }
 
   private _getObservablePair(prop: string)  {

@@ -19,9 +19,12 @@ import { Amount } from '../util/amount';
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+
+// Types sent to the server (pure JSON)
+
 export class Outputs {
   address: string;
-  amount: Amount;
+  amount: string;
   subfee?: boolean;
   script?: string;
   narr?: string;
@@ -33,20 +36,22 @@ export enum EstimateMode {
   CONSERVATIVE = 'CONSERVATIVE',
 }
 
-export class BumpFeeResult {
-  txid?: string;
-  origfee: Amount;
-  fee: Amount;
-  errors: string[];
-}
-
 export class CoinControl {
   changeaddress?: string;
   inputs?: any;
   replaceable?: boolean;
   conf_target?: number;
   estimate_mode?: EstimateMode;
-  fee_rate?: Amount;
+  fee_rate?: string;
+}
+
+// Types returned from the server (preprocessed)
+
+export class BumpFeeResult {
+  txid?: string;
+  origfee: Amount;
+  fee: Amount;
+  errors: string[];
 }
 
 export enum SyncStatus {

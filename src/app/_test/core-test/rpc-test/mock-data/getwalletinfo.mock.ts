@@ -16,12 +16,14 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+import { Amount } from 'app/core/util/amount';
+
 const mockgetwalletinfo = {
   'walletname': 'wallet.dat',
   'walletversion': 159900,
-  'balance': 249.57959020,
-  'unconfirmed_balance': 0.00000000,
-  'immature_balance': 5000.00044300,
+  'balance': Amount.fromString('249.57959020'),
+  'unconfirmed_balance': Amount.fromString('0'),
+  'immature_balance': Amount.fromString('5000.00044300'),
   'txcount': 125,
   'keypoololdest': 1543853206,
   'keypoolsize': 1000,

@@ -53,8 +53,8 @@ export class SendService {
   }
 
   /**
-   * Executes or estimates the fee for a regular transaction.
-   * Estimates if estimateFeeOnly === true.
+   * Executes a transaction, or estimates the fee for that transaction
+   * if tx.estimateFeeOnly is set to true.
    */
   protected send(tx: TransactionBuilder): Observable<any> {
     const [coinControl, outputs] = this.getSendParameters(tx);

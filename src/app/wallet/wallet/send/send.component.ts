@@ -19,7 +19,7 @@
 
 import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material';
 import { Log } from 'ng2-logger';
 
 import { ModalsHelperService } from 'app/modals/modals.module';
@@ -62,14 +62,14 @@ export class SendComponent implements OnInit {
   TxType: any = TxType;
 
   constructor(
-    private sendService: SendService,
-    private _rpc: RpcService,
-    private _rpcState: RpcStateService,
+    protected sendService: SendService,
+    protected _rpc: RpcService,
+    protected _rpcState: RpcStateService,
 
     // @TODO rename ModalsHelperService to ModalsService after modals service refactoring.
-    private modals: ModalsHelperService,
-    private dialog: MatDialog,
-    private flashNotification: SnackbarService
+    protected modals: ModalsHelperService,
+    protected dialog: MatDialog,
+    protected flashNotification: SnackbarService
   ) {
     this.progress = 50;
 
@@ -111,32 +111,54 @@ export class SendComponent implements OnInit {
     this.modals.unlock({timeout: 30}, (status) => this.openSendConfirmationModal());
   }
 
-  /** Open Send Confirmation Modal */
   openSendConfirmationModal() {
-    const dialogRef = this.dialog.open(SendConfirmationModalComponent);
-
     const txt = `Do you really want to send ${this.send.amount} UTE to ${this.send.toAddress}?`;
-    dialogRef.componentInstance.dialogContent = txt;
-    dialogRef.componentInstance.send = this.send;
 
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      service: this.sendService,
+      dialogContent: txt,
+      send: this.send,
+    };
+
+    const dialogRef = this.dialog.open(SendConfirmationModalComponent, dialogConfig);
     dialogRef.componentInstance.onConfirm.subscribe(() => {
       dialogRef.close();
       this.pay();
     });
-}
+  }
 
   /** Payment function */
   pay(): void {
-    this.modals.unlock({timeout: 30}, (status) => this.sendTransaction());
+    this.modals.unlock({timeout: 30}, (status) => {
+      // edit label of address
+      for (const output of this.send.outputs) {
+        this.addLabelToAddress(output);
+      }
+      this.sendTransaction();
+      this.setFormDefaultValue();
+    });
   }
 
-  private sendTransaction(): void {
-    // edit label of address
-    for (const output of this.send.outputs) {
-      this.addLabelToAddress(output);
-    }
-    this.sendService.sendTransaction(this.send);
-    this.setFormDefaultValue();
+  sendTransaction(): void {
+    const tx = this.send;
+    this.sendService.sendTransaction(tx)
+      .subscribe(
+        (txid) => {
+          this.log.d(`Succesfully executed transaction with txid ${txid}`);
+
+          // Truncate the address to 16 characters
+          const trimAddress = tx.toAddress.substring(0, 16) + '...';
+          const trimTxid = txid.substring(0, 45) + '...';
+          this.flashNotification.open(
+            `Succesfully sent ${tx.amount.toString()} UTE to ${trimAddress}!\nTransaction id: ${trimTxid}`, 'warn'
+          );
+        },
+        (error) => {
+          this.log.er(`Failed to execute transaction: ${error.message}`);
+
+          this.flashNotification.open(`Transaction Failed ${error.message}`, 'err');
+        });
   }
 
   /*

@@ -16,8 +16,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { Component, EventEmitter, OnInit, Output, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { TransactionBuilder, TxType } from 'app/wallet/wallet/send/transaction-builder.model';
 
 import { Amount } from 'app/core/util/utils';
@@ -32,8 +32,9 @@ export class SendConfirmationModalComponent implements OnInit {
 
   @Output() onConfirm: EventEmitter<string> = new EventEmitter<string>();
 
-  public dialogContent: string;
-  public send: TransactionBuilder;
+  private dialogContent: string;
+  private send: TransactionBuilder;
+  private sendService: SendService;
 
   TxType: any = TxType;
   transactionType: TxType;
@@ -44,7 +45,10 @@ export class SendConfirmationModalComponent implements OnInit {
   showAdvancedFeeOptions: boolean = false;
 
   constructor(private dialogRef: MatDialogRef<SendConfirmationModalComponent>,
-              private sendService: SendService) {
+              @Inject(MAT_DIALOG_DATA) data: any) {
+    this.sendService = data.service;
+    this.dialogContent = data.dialogContent;
+    this.send = data.send;
   }
 
   ngOnInit() {

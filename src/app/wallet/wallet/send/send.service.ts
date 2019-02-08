@@ -20,16 +20,12 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { Log } from 'ng2-logger'
 
-import { RpcService, Commands } from '../../../core/core.module';
-import { SnackbarService } from '../../../core/snackbar/snackbar.service';
+import { RpcService } from '../../../core/core.module';
 import { Amount } from 'app/core/util/utils';
 
-/* fix wallet */
-import { FixWalletModalComponent } from 'app/wallet/wallet/send/fix-wallet-modal/fix-wallet-modal.component';
-import { TransactionBuilder, TransactionOutput, FeeDetermination } from './transaction-builder.model';
+import { TransactionBuilder, FeeDetermination } from './transaction-builder.model';
 import { CoinControl, Outputs } from 'app/core/rpc/rpc-types';
 
 /*
@@ -41,20 +37,14 @@ export class SendService {
 
   log: any = Log.create('send.service');
 
-  constructor(private _rpc: RpcService,
-              private flashNotification: SnackbarService,
-              private dialog: MatDialog) {
-
+  constructor(protected _rpc: RpcService,
+              protected dialog: MatDialog) {
   }
 
   /* Sends a transaction */
   public sendTransaction(tx: TransactionBuilder) {
     tx.estimateFeeOnly = false;
-
-    this.send(tx)
-      .subscribe(
-        success => this.rpc_send_success(success, tx.toAddress, tx.amount),
-        error => this.rpc_send_failed(error.message, tx.toAddress, tx.amount));
+    return this.send(tx);
   }
 
   public getTransactionFee(tx: TransactionBuilder): Observable<any> {
@@ -63,10 +53,19 @@ export class SendService {
   }
 
   /**
-   * Executes or estimates a transaction.
-   * Estimates if estimateFeeOnly === true.
+   * Executes a transaction, or estimates the fee for that transaction
+   * if tx.estimateFeeOnly is set to true.
    */
-  private send(tx: TransactionBuilder): Observable<any> {
+  protected send(tx: TransactionBuilder): Observable<any> {
+    const [coinControl, outputs] = this.getSendParameters(tx);
+    if (outputs.length < 1) {
+      return Observable.throw('Transaction has no outputs.');
+    }
+
+    return this._rpc.sendtypeto(tx.input, tx.output, outputs, tx.comment, tx.commentTo, tx.estimateFeeOnly, coinControl);
+  }
+
+  protected getSendParameters(tx: TransactionBuilder): [CoinControl, Outputs[]] {
     const coinControl: CoinControl = {};
 
     if (tx.selectedCoins) {
@@ -80,7 +79,7 @@ export class SendService {
       coinControl.conf_target = tx.confirmationTarget;
     }
     if (tx.feeDetermination === FeeDetermination.CUSTOM) {
-      coinControl.fee_rate = tx.customFee;
+      coinControl.fee_rate = tx.customFee.toString();
     }
     if (tx.replaceable) {
       coinControl.replaceable = tx.replaceable;
@@ -88,25 +87,10 @@ export class SendService {
 
     const outputs: Outputs[] = tx.outputs.map(txo => ({
       address: txo.toAddress,
-      amount: Amount.fromString(txo.amount),
+      amount: txo.amount,
       subfee: txo.subtractFeeFromAmount,
     }));
-    return this._rpc.sendtypeto(tx.input, tx.output, outputs, tx.comment, tx.commentTo, tx.estimateFeeOnly, coinControl);
+
+    return [coinControl, outputs];
   }
-
-  private rpc_send_success(json: any, address: string, amount: Amount) {
-    this.log.d(`rpc_send_success, succesfully executed transaction with txid ${json}`);
-
-    // Truncate the address to 16 characters only
-    const trimAddress = address.substring(0, 16) + '...';
-    const txsId = json.substring(0, 45) + '...';
-    this.flashNotification.open(`Succesfully sent ${amount.toString()} UTE to ${trimAddress}!\nTransaction id: ${txsId}`, 'warn');
-  }
-
-  private rpc_send_failed(message: string, address?: string, amount?: Amount) {
-    this.flashNotification.open(`Transaction Failed ${message}`, 'err');
-    this.log.er('rpc_send_failed, failed to execute transaction!');
-    this.log.er(message);
-  }
-
 }

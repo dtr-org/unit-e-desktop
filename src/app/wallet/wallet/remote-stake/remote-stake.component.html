@@ -1,0 +1,59 @@
+<div class="send container-block disable-select" fxLayout="row" fxLayoutGap="35px">
+
+  <div class="from-box" fxFlex="0 0 320px">
+    <mat-card>
+      <div class="title">Amount to stake</div>
+
+      <div class="balance">
+        <div class="desc">Selected amount: <span class="amount">{{ selectedBalance.toString() }}</span></div>
+      </div>
+
+      <form>
+        <mat-radio-group class="payment-source" name="payment_source" [(ngModel)]="paymentSource" (change)="onChangePaymentSource()" fxLayout="column">
+          <mat-radio-button value="default">
+            Any available coins
+          </mat-radio-button>
+          <mat-radio-button value="coin_control">
+            Specific coins (advanced)
+          </mat-radio-button>
+        </mat-radio-group>
+      </form>
+
+      <app-coin-selection *ngIf="paymentSource === 'coin_control'" (selectCoins)="updateSelection($event)"></app-coin-selection>
+    </mat-card>
+  </div><!-- .from-box -->
+
+
+  <div class="to-box" fxFlex="1 1 100%">
+    <form name="walletSendForm">
+
+      <mat-card class="pay-to" *ngIf="type === 'sendPayment'" fxLayout="column">
+        <div class="title">
+          Staking node
+        </div>
+
+        <!-- Receiver's address/label -->
+        <div class="section receiver-address output-{{i}}" *ngFor="let txo of send.outputs; let i = index">
+          <app-send-output [txo]="txo" [first]="i === 0"
+                           (remove)="this.send.removeOutput(i)"
+                           (sendAllBalance)="this.sendAllBalance(txo)"
+                           (openLookup)="this.openLookup(txo)"
+          ></app-send-output>
+        </div><!-- .receiver-address.section -->
+
+        <!-- Send buttons -->
+        <div class="actions" fxLayout="row" fxFlex="1 1 100%">
+          <div fxFlex="1 1 auto"></div>
+          <button mat-raised-button color="primary" class="validate" (click)="onSubmit()"
+                  [disabled]="!this.send.validAddress || !this.send.validAmount">
+            <mat-icon fontSet="uniteIcon" fontIcon="unite-check"></mat-icon>
+            Stake
+          </button>
+        </div><!-- .actions -->
+
+      </mat-card><!-- .pay-to -->
+
+    </form><!-- walletSendForm -->
+  </div><!-- .to-box -->
+
+</div><!-- .container -->

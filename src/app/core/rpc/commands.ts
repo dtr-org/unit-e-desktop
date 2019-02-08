@@ -41,6 +41,7 @@ enum Commands {
   RUNSTRINGCOMMAND = 'runstringcommand',
   SENDTYPETO = 'sendtypeto',
   SIGNMESSAGE = 'signmessage',
+  STAKEAT = 'stakeat',
   VALIDATEADDRESS = 'validateaddress',
   VERIFYMESSAGE = 'verifymessage',
   WALLETLOCK = 'walletlock',

@@ -20,7 +20,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RpcStateService, Commands } from '../../../../core/core.module';
 import { Amount } from '../../../../core/util/utils';
-import { ProposerState, ProposerStatus } from 'app/core/rpc/rpc-types';
+import { ProposerState, ProposerStatus, WalletInfo } from 'app/core/rpc/rpc-types';
 
 type Severity = 'alert' | 'info' | 'success';
 
@@ -49,6 +49,7 @@ export class StakingInfoComponent implements OnInit {
   public proposerStatus: string;
   public severity: Severity = 'success';
   public stakeableBalance: Amount = Amount.ZERO;
+  public remoteStakingBalance: Amount = Amount.ZERO;
 
   constructor(private _rpcState: RpcStateService) { }
 
@@ -58,6 +59,13 @@ export class StakingInfoComponent implements OnInit {
         if (proposer && proposer.wallets) {
           this.stakeableBalance = proposer.wallets[0].stakeable_balance;
           [this.proposerStatus, this.severity] = this.getStatusString(proposer.wallets[0].status);
+        }
+      });
+
+    this._rpcState.observe(Commands.GETWALLETINFO)
+      .subscribe((walletinfo: WalletInfo) => {
+        if (walletinfo && walletinfo.remote_staking_balance) {
+          this.remoteStakingBalance = walletinfo.remote_staking_balance;
         }
       });
   }

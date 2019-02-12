@@ -63,12 +63,25 @@ describe('StakingInfoComponent', () => {
     expect(component.severity).toBe('success');
   })
 
-  it('should display the correct proposer status after an RPC call', () => {
-    inject([RpcService], (rpc: RpcMockService) => {
+  it('should display the correct proposer status after an RPC call', inject([RpcService], (rpc: RpcMockService) => {
+    return new Promise((resolve, reject) => {
       rpc.proposerStatus()
         .subscribe((x) => {
           expect(component.severity).toBe('alert');
+          resolve();
         });
-    })
-  });
+    });
+  }));
+
+  it('should display the correct remote staking balance', inject([RpcService], (rpc: RpcMockService) => {
+    return new Promise((resolve, reject) => {
+      rpc.call(Commands.GETWALLETINFO)
+        .subscribe((x) => {
+          fixture.detectChanges();
+          let elt = fixture.nativeElement.querySelector('.remote-staking-balance');
+          expect(elt.innerText).toBe('17.045');
+          resolve();
+        });
+    });
+  }));
 });

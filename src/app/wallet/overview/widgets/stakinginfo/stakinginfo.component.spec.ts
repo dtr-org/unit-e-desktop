@@ -78,7 +78,7 @@ describe('StakingInfoComponent', () => {
       rpc.call(Commands.GETWALLETINFO)
         .subscribe((x) => {
           fixture.detectChanges();
-          let elt = fixture.nativeElement.querySelector('.remote-staking-balance');
+          const elt = fixture.nativeElement.querySelector('.remote-staking-balance');
           expect(elt.innerText).toBe('17.045');
           resolve();
         });

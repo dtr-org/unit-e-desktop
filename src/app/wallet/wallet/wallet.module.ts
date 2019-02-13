@@ -50,6 +50,8 @@ import { BumpFeeModalComponent } from './shared/transaction-table/bump-fee-modal
 import { CoinSelectionComponent } from './send/coin-selection/coin-selection.component';
 import { SendOutputComponent } from './send/send-output/send-output.component';
 import { SettingsComponent } from './settings/settings.component';
+import { RemoteStakeComponent } from './remote-stake/remote-stake.component';
+import { RemoteStakeService } from './remote-stake/remote-stake.service';
 
 
 @NgModule({
@@ -78,6 +80,7 @@ import { SettingsComponent } from './settings/settings.component';
     CoinSelectionComponent,
     SendOutputComponent,
     SettingsComponent,
+    RemoteStakeComponent,
   ],
   exports: [
     TransactionsTableComponent,
@@ -110,6 +113,7 @@ export class WalletModule {
       ngModule: WalletModule,
       providers: [
         AddressService,
+        RemoteStakeService,
         SendService,
         SettingsService,
       ]

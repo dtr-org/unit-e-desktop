@@ -196,6 +196,13 @@ export class RpcService implements OnDestroy {
       typein, typeout, outputs, comment, commentTo, testFee, coinControl
     ]);
   }
+
+  stakeat(output: Outputs, testFee?: boolean, coinControl?: CoinControl) {
+    testFee = testFee || false;
+    coinControl = coinControl || null;
+
+    return this.call(Commands.STAKEAT, [output, testFee, coinControl]);
+  }
 }
 
 export { Commands } from './commands';

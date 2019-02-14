@@ -84,6 +84,9 @@ export class SendService {
     if (tx.replaceable) {
       coinControl.replaceable = tx.replaceable;
     }
+    if (tx.ignoreRemoteStaked) {
+      coinControl.ignore_remote_staked = tx.ignoreRemoteStaked;
+    }
 
     const outputs: Outputs[] = tx.outputs.map(txo => ({
       address: txo.toAddress,

@@ -24,6 +24,7 @@ const mockgetwalletinfo = {
   'balance': Amount.fromString('249.57959020'),
   'unconfirmed_balance': Amount.fromString('0'),
   'immature_balance': Amount.fromString('5000.00044300'),
+  'remote_staking_balance': Amount.fromString('0.57959020'),
   'txcount': 125,
   'keypoololdest': 1543853206,
   'keypoolsize': 1000,

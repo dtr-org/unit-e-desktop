@@ -7,6 +7,7 @@ import { CoreUiModule } from 'app/core-ui/core-ui.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RpcService, RpcStateService, IpcService, Commands } from 'app/core/core.module';
 import { RpcMockService } from 'app/_test/core-test/rpc-test/rpc-mock.service';
+import { TransactionBuilder } from '../transaction-builder.model';
 
 describe('SendInputComponent', () => {
   let component: SendInputComponent;
@@ -35,6 +36,7 @@ describe('SendInputComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SendInputComponent);
     component = fixture.componentInstance;
+    component.transaction = new TransactionBuilder();
     fixture.detectChanges();
   });
 
@@ -48,6 +50,20 @@ describe('SendInputComponent', () => {
         fixture.detectChanges();
         const balanceElt = fixture.nativeElement.querySelector('.amount');
         expect(balanceElt.innerText).toBe('249.5795902');
+        resolve();
+      });
+    });
+  }));
+
+  it('should update the available balance if ignoring remotely staked coins', inject([RpcService], (rpc: RpcMockService) => {
+    return new Promise((resolve) => {
+      rpc.call(Commands.GETWALLETINFO).subscribe(() => {
+        component.transaction.ignoreRemoteStaked = true;
+        component.updateSelectedBalance();
+        fixture.detectChanges();
+
+        const balanceElt = fixture.nativeElement.querySelector('.amount');
+        expect(balanceElt.innerText).toBe('249');
         resolve();
       });
     });

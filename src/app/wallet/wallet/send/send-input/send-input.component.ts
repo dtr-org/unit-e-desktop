@@ -16,11 +16,12 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { UnspentOutput, WalletInfo } from 'app/core/rpc/rpc-types';
 import { Amount } from 'app/core/util/utils';
 import { TransactionBuilder } from '../transaction-builder.model';
 import { RpcStateService, Commands } from 'app/core/core.module';
+import { MatCheckbox } from '@angular/material';
 
 @Component({
   selector: 'app-send-input',
@@ -32,10 +33,15 @@ export class SendInputComponent implements OnInit {
   @Input()
   public transaction: TransactionBuilder;
 
+  @ViewChild('ignoreRemoteStaked')
+  ignoreRemoteStaked: MatCheckbox;
+
   // Selected payment source
   paymentSource: ('everything' | 'coin_control') = 'everything';
 
   totalWalletBalance: Amount = Amount.ZERO;
+
+  remoteStakingBalance: Amount = Amount.ZERO;
 
   selectedBalance: Amount = Amount.ZERO;
 
@@ -47,9 +53,8 @@ export class SendInputComponent implements OnInit {
     this._rpcState.observe(Commands.GETWALLETINFO)
       .subscribe((walletInfo: WalletInfo) => {
         this.totalWalletBalance = walletInfo.balance;
-        if (this.paymentSource === 'everything') {
-          this.selectedBalance = this.totalWalletBalance;
-        }
+        this.remoteStakingBalance = walletInfo.remote_staking_balance;
+        this.updateSelectedBalance();
       });
   }
 
@@ -61,12 +66,25 @@ export class SendInputComponent implements OnInit {
         break;
       case 'coin_control':
         this.selectedBalance = Amount.ZERO;
+        this.transaction.ignoreRemoteStaked = false;
         break;
     }
   }
 
-  onUpdateSelection(coins: UnspentOutput[]) {
+  selectCoins(coins: UnspentOutput[]) {
     this.transaction.selectedCoins = coins;
     this.selectedBalance = coins.reduce((sum, coin) => sum.add(coin.amount), Amount.ZERO);
+  }
+
+  updateSelectedBalance() {
+    if (this.paymentSource !== 'everything') {
+      return;
+    }
+
+    if (this.transaction.ignoreRemoteStaked) {
+      this.selectedBalance = this.totalWalletBalance.sub(this.remoteStakingBalance);
+    } else {
+      this.selectedBalance = this.totalWalletBalance;
+    }
   }
 }

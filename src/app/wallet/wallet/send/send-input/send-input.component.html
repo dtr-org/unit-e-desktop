@@ -11,6 +11,13 @@
       Specific coins (advanced)
     </mat-radio-button>
   </mat-radio-group>
+
+  <div class="ignore-checkbox-container" *ngIf="paymentSource == 'everything'">
+    <mat-checkbox #ignoreRemoteStaked name="ignore_remote_staked" [(ngModel)]="transaction.ignoreRemoteStaked"
+                  (change)="updateSelectedBalance()">
+      Ignore coins that are staked remotely
+    </mat-checkbox>
+  </div>
 </form>
 
-<app-coin-selection *ngIf="paymentSource === 'coin_control'" (selectCoins)="onUpdateSelection($event)"></app-coin-selection>
+<app-coin-selection *ngIf="paymentSource === 'coin_control'" (selectCoins)="selectCoins($event)"></app-coin-selection>

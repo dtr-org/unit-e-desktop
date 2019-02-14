@@ -43,6 +43,7 @@ export class CoinControl {
   conf_target?: number;
   estimate_mode?: EstimateMode;
   fee_rate?: string;
+  ignore_remote_staked?: boolean;
 }
 
 // Types returned from the server (preprocessed)
@@ -119,6 +120,7 @@ export class WalletInfo {
   balance: Amount;
   unconfirmed_balance: Amount;
   immature_balance: Amount;
+  remote_staking_balance: Amount;
   txcount: number;
   keypoololdest: number;
   keypoolsize: number;

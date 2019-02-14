@@ -1,0 +1,38 @@
+@import "./src/assets/_config";
+
+.balance { // balance selection radio buttons
+  @extend %tfx;
+  padding: 8px 24px;
+  margin: 0 -24px !important;
+  font-family: $font;
+  &:hover {
+    background: $bg-hover;
+  }
+  .name { // balance type
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 1px;
+  }
+  .desc { // available balance
+    font-weight: 400;
+    font-size: 14px;
+    .amount {
+      @extend %tfx;
+      color: darken($color, 3%);
+      font-weight: 600;
+      margin-left: 5px;
+    }
+    .help-icon {
+      margin-left: 3px;
+      font-size: 14px;
+      color: $color-info;
+      line-height: 0;
+      position: relative;
+      top: 2px;
+    }
+  }
+}
+
+.payment-source mat-radio-button {
+  margin: 5px;
+}

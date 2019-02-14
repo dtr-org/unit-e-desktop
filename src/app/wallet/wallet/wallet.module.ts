@@ -52,6 +52,7 @@ import { SendOutputComponent } from './send/send-output/send-output.component';
 import { SettingsComponent } from './settings/settings.component';
 import { RemoteStakeComponent } from './remote-stake/remote-stake.component';
 import { RemoteStakeService } from './remote-stake/remote-stake.service';
+import { SendInputComponent } from './send/send-input/send-input.component';
 
 
 @NgModule({
@@ -81,6 +82,7 @@ import { RemoteStakeService } from './remote-stake/remote-stake.service';
     SendOutputComponent,
     SettingsComponent,
     RemoteStakeComponent,
+    SendInputComponent,
   ],
   exports: [
     TransactionsTableComponent,

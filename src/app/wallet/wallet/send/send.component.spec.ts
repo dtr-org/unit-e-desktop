@@ -35,6 +35,7 @@ import { SendService } from 'app/wallet/wallet/send/send.service';
 import { RpcStateService, Commands } from '../../../core/core.module';
 import { OUR_ADDRESS, THEIR_ADDRESS } from '../../../_test/core-test/rpc-test/rpc-mock.service';
 import mockwalletinfo from '../../../_test/core-test/rpc-test/mock-data/getwalletinfo.mock';
+import { SendInputComponent } from './send-input/send-input.component';
 
 
 describe('SendComponent', () => {
@@ -46,6 +47,7 @@ describe('SendComponent', () => {
       declarations: [
         SendComponent,
         CoinSelectionComponent,
+        SendInputComponent,
         SendOutputComponent,
       ],
       imports: [

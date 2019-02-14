@@ -18,15 +18,12 @@
  */
 
 import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { Log } from 'ng2-logger';
 
 import { ModalsHelperService } from 'app/modals/modals.module';
 import { RpcService, Commands } from '../../../core/rpc/rpc.service';
-import { WalletInfo } from '../../../core/rpc/rpc-types';
 import { RpcStateService } from '../../../core/rpc/rpc-state/rpc-state.service';
-import { UnspentOutput } from 'app/core/rpc/rpc-types';
 
 import { SendService } from './send.service';
 import { SnackbarService } from '../../../core/snackbar/snackbar.service';
@@ -34,9 +31,8 @@ import { SnackbarService } from '../../../core/snackbar/snackbar.service';
 import { AddressLookupComponent } from '../addresslookup/addresslookup.component';
 import { AddressLookUpCopy } from '../models/address-look-up-copy';
 
-import { TransactionBuilder, TransactionOutput, TxType } from './transaction-builder.model';
+import { TransactionBuilder, TransactionOutput } from './transaction-builder.model';
 import { SendConfirmationModalComponent } from 'app/modals/send-confirmation-modal/send-confirmation-modal.component';
-import { Amount } from 'app/core/util/amount';
 
 @Component({
   selector: 'app-send',
@@ -53,13 +49,9 @@ export class SendComponent implements OnInit {
   // UI logic
   type: string = 'sendPayment';
   progress: number = 10;
-  paymentSource: string = 'default';
-  selectedBalance: Amount;
 
   // TODO: Create proper Interface / type
   public send: TransactionBuilder;
-
-  TxType: any = TxType;
 
   constructor(
     protected sendService: SendService,
@@ -78,33 +70,12 @@ export class SendComponent implements OnInit {
 
   setFormDefaultValue() {
     this.send = new TransactionBuilder(this._rpc, this._rpcState);
-    this.paymentSource = 'default';
   }
 
   ngOnInit() {
     /* check if testnet */
      this._rpcState.observe('getblockchaininfo', 'chain').take(1)
      .subscribe(chain => this.testnet = chain === 'test');
-     this.selectedBalance = this.getBalance(TxType.PUBLIC);
-  }
-
-  /** Get current account balance */
-  getBalance(account: TxType): Amount {
-    const walletInfo: WalletInfo = this._rpcState.get('getwalletinfo');
-    if (!walletInfo) {
-      return Amount.ZERO;
-    }
-    return walletInfo.balance || Amount.ZERO;
-  }
-
-  private txTypeToBalanceType(type: TxType): string {
-    let r: string;
-    switch (type) {
-      case TxType.PUBLIC:
-        r = 'balance';
-        break;
-    }
-    return r;
   }
 
   onSubmit(): void {
@@ -203,17 +174,5 @@ export class SendComponent implements OnInit {
     if (dest.sendAll) {
       this.send.sendAllTo(dest);
     }
-  }
-
-  onChangePaymentSource(): void {
-    if (this.paymentSource === 'default') {
-      this.send.selectedCoins = null;
-      this.selectedBalance = this.getBalance(TxType.PUBLIC);
-    }
-  }
-
-  updateSelection(coins: UnspentOutput[]) {
-    this.send.selectedCoins = coins;
-    this.selectedBalance = coins.reduce((sum, coin) => sum.add(coin.amount), Amount.ZERO);
   }
 }

@@ -12,6 +12,7 @@ import { CoinSelectionComponent } from '../send/coin-selection/coin-selection.co
 import { SendOutputComponent } from '../send/send-output/send-output.component';
 import { RemoteStakeService } from './remote-stake.service';
 import mockgetwalletinfo from 'app/_test/core-test/rpc-test/mock-data/getwalletinfo.mock';
+import { SendInputComponent } from '../send/send-input/send-input.component';
 
 describe('RemoteStakeComponent', () => {
   let component: RemoteStakeComponent;
@@ -22,6 +23,7 @@ describe('RemoteStakeComponent', () => {
       declarations: [
         RemoteStakeComponent,
         CoinSelectionComponent,
+        SendInputComponent,
         SendOutputComponent,
       ],
       imports: [

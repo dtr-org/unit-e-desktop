@@ -18,6 +18,7 @@
 
 const electron      = require('electron');
 const log           = require('electron-log');
+const rxIpc = require('rx-ipc-electron/lib/main').default;
 
 const ipc           = require('./ipc/ipc');
 const rpc           = require('./rpc/rpc');
@@ -34,7 +35,7 @@ exports.start = function (mainWindow) {
   // Initialize IPC listeners
   rpc.init();
 
-  daemon.init();
+  daemon.init({ rxIpc, rpc, daemonManager });
 
   highLevelRpc.init();
 

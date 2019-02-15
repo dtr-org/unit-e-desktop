@@ -19,14 +19,14 @@
 const electron = require('electron');
 const log = require('electron-log');
 const spawn = require('child_process').spawn;
-const rxIpc = require('rx-ipc-electron/lib/main').default;
+var rxIpc;
 const Observable = require('rxjs/Observable').Observable;
 
 const _options = require('../options');
 const removeWalletAuthentication = require('../webrequest/http-auth').removeWalletAuthentication;
-const rpc = require('../rpc/rpc');
+var rpc;
 const cookie = require('../rpc/cookie');
-const daemonManager = require('../daemon/daemonManager');
+var daemonManager;
 const multiwallet = require('../multiwallet');
 
 let daemon = undefined;
@@ -37,7 +37,17 @@ function daemonData(data, logger) {
   logger(data);
 }
 
-exports.init = function () {
+/**
+ * Initialize the daemon module.
+ *
+ * @param deps an object containing the modules on which this one depends:
+ *             rxIpc, rpc, and daemonManager.
+ */
+exports.init = function (deps) {
+  rxIpc = deps.rxIpc;
+  rpc = deps.rpc;
+  daemonManager = deps.daemonManager;
+
   console.log('daemon init listening for reboot')
   rxIpc.registerListener('daemon', (data) => {
     return Observable.create(observer => {
@@ -82,9 +92,6 @@ exports.restart = function (alreadyStopping) {
       });
     }
   }));
-
-
-
 }
 
 exports.start = function (wallets) {
@@ -109,11 +116,10 @@ exports.start = function (wallets) {
         ? options.customdaemon
         : daemonManager.getPath();
 
-      wallets = wallets.map(wallet => `-wallet=${wallet}`);
-      let daemonArgs = getDaemonArgs(options);
+      let daemonArgs = getDaemonArgs(options, wallets);
       log.info(`starting daemon ${daemonPath} ${daemonArgs} ${wallets}`);
 
-      const child = spawn(daemonPath, [...daemonArgs, `-rpccorsdomain=http://localhost:${options.devport}`, ...wallets])
+      const child = spawn(daemonPath, daemonArgs)
         .on('close', code => {
           if (code !== 0) {
             reject();
@@ -127,7 +133,6 @@ exports.start = function (wallets) {
 
       daemon = child;
     });
-
   }));
 }
 
@@ -222,8 +227,14 @@ function askForDeletingCookie() {
   });
 }
 
-function getDaemonArgs(options) {
+/**
+ * Generate the list of command-line arguments for the Unit-e daemon based on
+ * the wallet startup options.
+ */
+function getDaemonArgs(options, wallets) {
   let result = [];
+
+  // Passthrough command-line options
   for (let arg of ['regtest', 'testnet', 'upnp', 'proxy', 'datadir', 'rpcport', 'rpcuser', 'rpcpassword', 'rpcbind']) {
     if (!options[arg]) {
       continue;
@@ -234,5 +245,13 @@ function getDaemonArgs(options) {
     }
     result.push(`-${arg}=${options[arg]}`);
   }
+
+  // Eventual multiwallet support
+  if (wallets) {
+    const walletArgs = wallets.map(wallet => `-wallet=${wallet}`);
+    result.push(...walletArgs);
+  }
+
   return result;
 }
+exports.getDaemonArgs = getDaemonArgs;

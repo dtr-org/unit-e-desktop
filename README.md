@@ -36,7 +36,8 @@ yarn install
 
 ### Development with Electron
 
-1. Start a Unit-e daemon with `united -regtest`.
+1. Start a Unit-e daemon with `united -regtest`, or, alternatively, pass a `--customdaemon` argument
+   to the Electron application on step 3.
 2. In a terminal, run `ng serve --env=regtest` to start the Angular dev server and keep it running
 3. In another terminal, run `yarn run start:electron:dev --regtest --devtools` to
    start the Electron application.
@@ -52,6 +53,8 @@ The command-line flags for the Electron application are:
    * `--regtest` – use the testing environment and connect to a daemon launched in regtest mode.
    * `--testnet` – connect to a daemon using the testnet chain.
    * `--upnp` – use UPnP to map the listening port
+   * `--customdaemon` – use a custom path for the Unit-e daemon started by the wallet GUI, e.g.
+     `--customdaemon=/opt/unite/bin/united`
 
 Omitting the `--regtest` flag forces the Electron client to connect to a testnet
 Unit-e daemon by default.

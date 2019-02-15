@@ -16,20 +16,22 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+/* jshint esversion: 8 */
+
 const electron = require('electron');
 const log = require('electron-log');
 const spawn = require('child_process').spawn;
-var rxIpc;
+let rxIpc;
 const Observable = require('rxjs/Observable').Observable;
 
 const _options = require('../options');
 const removeWalletAuthentication = require('../webrequest/http-auth').removeWalletAuthentication;
-var rpc;
+let rpc;
 const cookie = require('../rpc/cookie');
-var daemonManager;
+let daemonManager;
 const multiwallet = require('../multiwallet');
 
-let daemon = undefined;
+let daemon;
 let chosenWallets = [];
 
 function daemonData(data, logger) {
@@ -48,7 +50,7 @@ exports.init = function (deps) {
   rpc = deps.rpc;
   daemonManager = deps.daemonManager;
 
-  console.log('daemon init listening for reboot')
+  console.log('daemon init listening for reboot');
   rxIpc.registerListener('daemon', (data) => {
     return Observable.create(observer => {
       console.log('got data on daemon channel!');
@@ -61,16 +63,16 @@ exports.init = function (deps) {
       }
     });
   });
-}
+};
 
 exports.restart = function (alreadyStopping) {
-  log.info('restarting daemon...')
+  log.info('restarting daemon...');
   return (new Promise((resolve, reject) => {
     // setup a listener, waiting for the daemon
     // to exit.
     if (daemon) {
       daemon.once('close', code => {
-        log.info('clearing cookie, encrypt wallet')
+        log.info('clearing cookie, encrypt wallet');
         // clear authentication
         removeWalletAuthentication();
 
@@ -88,11 +90,11 @@ exports.restart = function (alreadyStopping) {
       // stop daemon but don't make it quit the app.
       const restarting = true;
       exports.stop(restarting).then(() => {
-        log.debug('waiting for daemon shutdown...')
+        log.debug('waiting for daemon shutdown...');
       });
     }
   }));
-}
+};
 
 exports.start = function (wallets) {
   return (new Promise((resolve, reject) => {
@@ -112,11 +114,8 @@ exports.start = function (wallets) {
       daemon = undefined;
 
       let options = _options.get();
-      const daemonPath = options.customdaemon
-        ? options.customdaemon
-        : daemonManager.getPath();
-
-      let daemonArgs = getDaemonArgs(options, wallets);
+      const daemonPath = options.customdaemon || daemonManager.getPath();
+      const daemonArgs = getDaemonArgs(options, wallets);
       log.info(`starting daemon ${daemonPath} ${daemonArgs} ${wallets}`);
 
       const child = spawn(daemonPath, daemonArgs)
@@ -134,8 +133,7 @@ exports.start = function (wallets) {
       daemon = child;
     });
   }));
-}
-
+};
 
 exports.check = function () {
   return new Promise((resolve, reject) => {
@@ -151,7 +149,7 @@ exports.check = function () {
     rpc.setTimeoutDelay(_timeout);
 
   });
-}
+};
 
 // Note: this will resolve before the daemon has actually quit.
 // do not rely on it. Use daemon.on('close', ...) instead
@@ -181,12 +179,12 @@ exports.stop = function (restarting) {
     }
 
   });
-}
+};
 
 function _stop(attempt = 0) {
   rpc.call('stop', null, (error, response) => {
     if (error) {
-      log.info('daemon errored - trying again in a second..')
+      log.info('daemon errored - trying again in a second..');
       // just kill after 180s
       if (attempt >= 180) {
         log.info('daemon errored to rpc stop - killing it brutally :(');

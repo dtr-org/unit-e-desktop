@@ -23,15 +23,15 @@ let _options = {};
 /*
 ** compose options from arguments
 **
-** exemple:
-** --dev -testnet -reindex -rpcuser=user -rpcpassword=pass
-** strips --dev out of argv (double dash is not a united argument) and returns
+** Example:
+** --testnet --upnp --rpcuser=user --rpcpassword=hunter2 --datadir=/home/user/.united
+** returns
 ** {
-**   dev: true,
 **   testnet: true,
-**   reindex: true,
+**   upnp: true,
 **   rpcuser: user,
-**   rpcpassword: pass
+**   rpcpassword: 'hunter2',
+**   datadir: '/home/user/.united'
 ** }
 */
 
@@ -42,6 +42,11 @@ function isVerboseLevel(arg) {
   return notVerbose ? false : level;
 }
 
+const ALLOWED_ARGS = [
+  'devtools', 'devport', 'regtest', 'testnet', 'upnp', 'proxy', 'datadir',
+  'rpcport', 'rpcuser', 'rpcpassword', 'rpcbind', 'v', 'vv', 'vvv', 'dev'
+];
+
 exports.parse = function() {
 
   let options = {};
@@ -51,49 +56,42 @@ exports.parse = function() {
     process.argv = process.argv.splice(1); /* striping /path/to/unite from argv */
   }
 
-  // make a copy of process.argv, because we'll be changing it
-  // which messes with the map operator
   const args = process.argv.slice(0);
-
   args.map((arg, index) => {
-    let nDashes = arg.lastIndexOf('-') + 1;
-    const argIndex = process.argv.indexOf(arg);
-    arg = arg.substr(nDashes);
-
-    if (nDashes === 2) { /* double-dash: desktop-only argument */
-      // delete param, so it doesn't get passed to unite-core
-      process.argv.splice(argIndex, 1);
-      let verboseLevel = isVerboseLevel(arg);
-      if (verboseLevel) {
-        options['verbose'] = verboseLevel;
-        return ;
-      }
-      if (arg.includes('=')) {
-        arg = arg.split('=');
-        options[arg[0]] = arg[1];
-        return ;
-      }
-    } else if (nDashes === 1) { /* single-dash: core argument */
-      if (arg.includes('=')) {
-        arg = arg.split('=');
-        options[arg[0]] = arg[1];
-        return ;
-      }
+    if (!arg.startsWith('--')) {
+      console.error(`Invalid argument: ${arg}.`);
+      process.exit(1);
     }
-    options[arg] = true;
+    arg = arg.substr(2);
+
+    let verboseLevel = isVerboseLevel(arg);
+    if (verboseLevel) {
+      options['verbose'] = verboseLevel;
+      return;
+    }
+
+    if (arg.includes('=')) {
+      arg = arg.split('=');
+      options[arg[0]] = arg[1];
+    } else {
+      options[arg] = true;
+    }
+
+    if (!ALLOWED_ARGS.includes(arg)) {
+      console.error(`Invalid argument: --${arg}.`);
+      process.exit(1);
+    }
   });
 
-  if (options.testnet) {
-    options.regtest = false;
-  }
+  // Testnet is the default
+  options.regtest = !!options.regtest;
+  options.testnet = !options.regtest;
 
   options.port = options.rpcport
     ? options.rpcport // custom rpc port
     : options.testnet
       ? 17181  // default testnet port
-      : options.regtest
-        ? 17291  // default regtest port
-        : 7181 ; // default mainnet port
+      : 17291;  // default regtest port
 
   // Angular development server port
   options.devport = options.devport || 4200;

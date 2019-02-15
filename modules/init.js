@@ -27,8 +27,11 @@ const zmq           = require('./zmq/zmq');
 
 const daemon        = require('./daemon/daemon');
 const daemonWarner  = require('./daemon/update');
-const daemonManager = require('./daemon/daemonManager');
+const DaemonManager = require('./daemon/daemonManager');
 const multiwallet   = require('./multiwallet');
+
+// Global instance
+const daemonManager = new DaemonManager(electron.app, electron.dialog);
 
 
 exports.start = function (mainWindow) {
@@ -45,7 +48,7 @@ exports.start = function (mainWindow) {
 
   /* Initialize daemonWarner */
   // warns GUI that daemon is downloading
-  daemonWarner.init(mainWindow);
+  daemonWarner.init();
   daemonManager.on('status', (status, msg) => {
     if (status === "download") {
       daemonWarner.send(msg);

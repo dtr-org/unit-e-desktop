@@ -18,7 +18,7 @@
 
 const electron      = require('electron');
 const log           = require('electron-log');
-const rxIpc = require('rx-ipc-electron/lib/main').default;
+const rxIpc         = require('rx-ipc-electron/lib/main').default;
 
 const ipc           = require('./ipc/ipc');
 const rpc           = require('./rpc/rpc');

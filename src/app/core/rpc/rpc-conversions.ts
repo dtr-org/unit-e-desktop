@@ -41,6 +41,7 @@ function convertWalletInfo(value: any): WalletInfo {
   value.balance = Amount.fromNumber(value.balance);
   value.unconfirmed_balance = Amount.fromNumber(value.unconfirmed_balance);
   value.immature_balance = Amount.fromNumber(value.immature_balance);
+  value.remote_staking_balance = Amount.fromNumber(value.remote_staking_balance);
   value.paytxfee = Amount.fromNumber(value.paytxfee);
   return value as WalletInfo;
 }

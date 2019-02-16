@@ -119,6 +119,7 @@ export class WalletInfo {
   balance: Amount;
   unconfirmed_balance: Amount;
   immature_balance: Amount;
+  remote_staking_balance: Amount;
   txcount: number;
   keypoololdest: number;
   keypoolsize: number;

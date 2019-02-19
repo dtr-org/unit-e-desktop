@@ -13,8 +13,12 @@
         </td>
       </tr>
       <tr>
-        <th class="heading">Stakeable balance</th>
+        <th class="heading">Local stakeable balance</th>
         <td class="value">{{ stakeableBalance.getIntegralPart() }}{{ stakeableBalance.dot() }}<small>{{ stakeableBalance.getFractionalPart() }}</small></td>
+      </tr>
+      <tr>
+        <th class="heading">Remotely staked balance</th>
+        <td class="value remote-staking-balance">{{ remoteStakingBalance.getIntegralPart() }}{{ remoteStakingBalance.dot() }}<small>{{ remoteStakingBalance.getFractionalPart() }}</small></td>
       </tr>
     </table>
   </mat-card>

@@ -122,6 +122,9 @@ export class TransactionBuilder {
   selectedCoins: UnspentOutput[];
   outputs: TransactionOutput[];
 
+  /** Omit coins that are staked remotely */
+  ignoreRemoteStaked: boolean = false;
+
   constructor(
     private _rpc?: RpcService,
     private _rpcState?: RpcStateService,

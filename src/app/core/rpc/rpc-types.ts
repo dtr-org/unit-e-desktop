@@ -43,6 +43,7 @@ export class CoinControl {
   conf_target?: number;
   estimate_mode?: EstimateMode;
   fee_rate?: string;
+  ignore_remote_staked?: boolean;
 }
 
 // Types returned from the server (preprocessed)

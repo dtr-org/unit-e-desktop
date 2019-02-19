@@ -79,7 +79,7 @@ describe('StakingInfoComponent', () => {
         .subscribe((x) => {
           fixture.detectChanges();
           const elt = fixture.nativeElement.querySelector('.remote-staking-balance');
-          expect(elt.innerText).toBe('17.045');
+          expect(elt.innerText).toBe('0.5795902');
           resolve();
         });
     });

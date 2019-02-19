@@ -45,7 +45,7 @@ function isVerboseLevel(arg) {
 const ALLOWED_ARGS = [
   'devtools', 'devport', 'regtest', 'testnet', 'upnp', 'proxy', 'datadir',
   'rpcport', 'rpcuser', 'rpcpassword', 'rpcbind', 'v', 'vv', 'vvv', 'dev',
-  'customdaemon',
+  'daemonpath',
 ];
 
 exports.parse = function() {

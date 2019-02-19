@@ -114,7 +114,7 @@ exports.start = function (wallets) {
       daemon = undefined;
 
       let options = _options.get();
-      const daemonPath = options.customdaemon || daemonManager.getPath();
+      const daemonPath = options.daemonpath || daemonManager.getPath();
       const daemonArgs = getDaemonArgs(options, wallets);
       log.info(`starting daemon ${daemonPath} ${daemonArgs} ${wallets}`);
 

@@ -36,12 +36,29 @@ yarn install
 
 ### Development with Electron
 
-1. Start a Unit-e daemon with `united -regtest`, or, alternatively, pass a `--customdaemon` argument
-   to the Electron application on step 3.
+For development, we recommend using the `regtest` environment, which gives you
+full control over the blockchain and allows running various test scenarios.
+
+Assuming you have Unit-e Core installed on your machine, the steps to launch
+the wallet GUI in development mode are:
+
+1. Start the Unit-e daemon with `united -regtest`.
 2. In a terminal, run `ng serve --env=regtest` to start the Angular dev server and keep it running
 3. In another terminal, run `yarn run start:electron:dev --regtest --devtools` to
    start the Electron application.
    * Note: this command will auto-refresh the client on each saved change
+
+You may then interact with the wallet GUI, as well as with the `united` daemon
+directly, using the `unite-cli` program.
+
+Alternatively, if you want the daemon process to be managed by the wallet GUI, you may skip
+step 1 above, and change the `yarn` command in step 3 as follows:
+
+    yarn run start:electron:dev --regtest --devtools --daemonpath=<path/to/united>
+
+This will instruct the wallet GUI to launch a Unit-e daemon in the background.
+
+## Command-line arguments
 
 The command-line flags for the Electron application are:
    * `--v` – enable verbose logging to the terminal.
@@ -53,8 +70,8 @@ The command-line flags for the Electron application are:
    * `--regtest` – use the testing environment and connect to a daemon launched in regtest mode.
    * `--testnet` – connect to a daemon using the testnet chain.
    * `--upnp` – use UPnP to map the listening port
-   * `--customdaemon` – use a custom path for the Unit-e daemon started by the wallet GUI, e.g.
-     `--customdaemon=/opt/unite/bin/united`
+   * `--daemonpath` – use a custom path for the Unit-e daemon started by the wallet GUI, e.g.
+     `--daemonpath=/opt/unite/bin/united`
 
 Omitting the `--regtest` flag forces the Electron client to connect to a testnet
 Unit-e daemon by default.
@@ -70,20 +87,6 @@ ng test
 This will open a browser window where the tests are running and show progress on
 the command line. Keep the window open to continuously run the unit tests when
 changing the code.
-
-### Interact with Unit-e daemon
-
-You need to start a Unit-e daemon so the UI can talk to it.
-
-```
-./united -regtest
-```
-
-You can directly interact with the daemon.
-
-```
-./unite-cli -regtest getblockchaininfo
-```
 
 ## Running
 

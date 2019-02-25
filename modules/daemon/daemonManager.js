@@ -79,7 +79,7 @@ class DaemonManager extends EventEmitter {
     let binariesDownloaded = false;
     let nodeInfo;
 
-    log.debug('Not wasting time checking for nonexistent binaries');
+    this._emit('done');
     return;
 
     /*

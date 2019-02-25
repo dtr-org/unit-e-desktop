@@ -44,7 +44,8 @@ function isVerboseLevel(arg) {
 
 const ALLOWED_ARGS = [
   'devtools', 'devport', 'regtest', 'testnet', 'upnp', 'proxy', 'datadir',
-  'rpcport', 'rpcuser', 'rpcpassword', 'rpcbind', 'v', 'vv', 'vvv', 'dev'
+  'rpcport', 'rpcuser', 'rpcpassword', 'rpcbind', 'v', 'vv', 'vvv', 'dev',
+  'daemonpath',
 ];
 
 exports.parse = function() {
@@ -71,8 +72,9 @@ exports.parse = function() {
     }
 
     if (arg.includes('=')) {
-      arg = arg.split('=');
-      options[arg[0]] = arg[1];
+      const tokens = arg.split('=');
+      options[tokens[0]] = tokens[1];
+      arg = tokens[0];
     } else {
       options[arg] = true;
     }

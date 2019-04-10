@@ -26,7 +26,7 @@ exports.init = function () {
 
   log.transports.file.appName = process.platform == 'linux'
     ? 'unit-e-desktop'
-    : 'UnitE Desktop';
+    : 'Unit-e Desktop';
   let logPath = options.testnet
     ? 'unit-e-desktop-testnet.log'
     : 'unit-e-desktop.log';

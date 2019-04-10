@@ -54,7 +54,7 @@ exports.parse = function() {
   if (process.argv[0].match(/[Ee]lectron/)) {
     process.argv = process.argv.splice(2); /* striping 'electron .' from argv */
   } else {
-    process.argv = process.argv.splice(1); /* striping /path/to/unite from argv */
+    process.argv = process.argv.splice(1); /* striping /path/to/unit-e from argv */
   }
 
   const args = process.argv.slice(0);

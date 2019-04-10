@@ -31,7 +31,7 @@ exports.getPath = function () {
     .replace('sunos',   'linux');
 
   if (platform == 'linux') {
-    return path.join(app.getPath('home'), '.unite');
+    return path.join(app.getPath('home'), '.unit-e');
   } else {
     return app.getPath('userData');
   }

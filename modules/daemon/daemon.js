@@ -208,7 +208,7 @@ function askForDeletingCookie() {
       electron.dialog.showMessageBox({
         type: 'warning',
         buttons: ['Yes', 'No'],
-        message: `It seems like you already have an instance of UnitE running, do you want to connect to that instead?
+        message: `It seems like you already have an instance of Unit-e running, do you want to connect to that instead?
                   If you think you're having issues starting the application, select no.`
       }, (response) => {
         if (response === 1) {

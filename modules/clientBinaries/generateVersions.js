@@ -116,7 +116,7 @@ var getAssetDetails = function (asset, hashes, version) {
       commands: {
         sanity: {
           args: ["-version"],
-          output: ["Unit-e Core Daemon", version]
+          output: ["unit-e daemon", version]
         }
       }
     }
@@ -152,7 +152,7 @@ var getHashesForPlatform = function (platform, path, hashes) {
 
 /*
  * Entry point
- * get Unit-e latest release files
+ * get unit-e latest release files
  */
 got(`${releasesURL}`).then(response => {
   const body = JSON.parse(response.body);

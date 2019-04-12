@@ -73,7 +73,7 @@ function mkDir(dirPath, root) {
 }
 
 /*
-** returns Unit-e config folder
+** returns unit-e config folder
 */
 function getDefaultUniteCorePath() {
     let homeDir = os.homedir ? os.homedir() : process.env['HOME'];

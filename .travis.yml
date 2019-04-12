@@ -6,11 +6,7 @@ node_js:
 
 addons:
   apt:
-    sources:
-      - google-chrome
     packages:
-      # - google-chrome-stable
-      # - google-chrome-beta
       - icnsutils
       - graphicsmagick
       - curl
@@ -44,13 +40,6 @@ before_script:
   - export TRUE_COMMIT=$(echo $TRUE_COMMIT_MESSAGES | awk '{print $1}')
   - echo $TRUE_COMMIT_MESSAGES
   - yarn install
-  - >
-    mkdir -p $HOME/.cache/downloads ;
-    if ! [ -e $HOME/.cache/downloads/unite.tgz ] ; then
-      curl -vLJ -H 'Accept: application/octet-stream' -o $HOME/.cache/downloads/unite.tgz https://api.github.com/repos/dtr-org/unit-e/releases/assets/$UNITE_RELEASE_ID?access_token=$ACCESS_TOKEN ;
-    fi
-  - tar xzf $HOME/.cache/downloads/unite.tgz -C /
-  - export UNITED_BINARY=/opt/unite/bin/united
 
 script:
   - echo 'Build Dist' && echo -en 'travis_fold:start:script.build\\r'
@@ -65,10 +54,6 @@ script:
   - echo 'Test Codebase' && echo -en 'travis_fold:start:script.test\\r'
   - yarn run travis:test
   - echo -en 'travis_fold:end:script.test\\r'
-
-  # - echo 'End-to-end Tests' && echo -en 'travis_fold:start:script.e2e\\r'
-  # - yarn run travis:e2e
-  # - echo -en 'travis_fold:end:script.e2e\\r'
 
   - if [[ $TRUE_COMMIT_MESSAGES == *"+build"* ]]; then ./nightly.sh; fi;
 

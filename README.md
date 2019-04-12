@@ -22,11 +22,23 @@ conduct](CODE_OF_CONDUCT.md).
 
 ### Boostrapping for development:
 
-* Download + Install [Node.js®](https://nodejs.org/) 6.4—7.10
+* Download + Install [Node.js®](https://nodejs.org/) 6.4+
 * Download + Install [git](https://git-scm.com/)
 
-*Note: On MacOS you will need to have the full Xcode installed in order to
-build all dependencies.*
+#### MacOS packages gathering tips
+```bash
+
+# 0. install Xcode application from App Store.
+
+# 1. switch developer directory to xcode one
+$ sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer/
+
+# 2. install node and yarn
+$ brew install node
+$ brew install yarn
+```
+
+#### Clone and install dependecies
 
 ```bash
 git clone https://github.com/dtr-org/unit-e-desktop

@@ -60,7 +60,7 @@ app.on('ready', () => {
   log.debug('argv', process.argv);
   log.debug('options', options);
 
-  app.setAppUserModelId("io.unite.desktop");
+  app.setAppUserModelId("io.unit-e.desktop");
 
   // initialize the authentication filter
   _auth.init();
@@ -238,7 +238,7 @@ function makeTray() {
   // }
 
   // Set the tray icon
-  tray.setToolTip('UnitE ' + app.getVersion());
+  tray.setToolTip('Unit-e ' + app.getVersion());
   tray.setContextMenu(contextMenu)
 
   // Always show window when tray icon clicked

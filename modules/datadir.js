@@ -73,13 +73,13 @@ function mkDir(dirPath, root) {
 }
 
 /*
-** returns UnitE config folder
+** returns unit-e config folder
 */
 function getDefaultUniteCorePath() {
     let homeDir = os.homedir ? os.homedir() : process.env['HOME'];
 
     let dir,
-        appName = 'UnitE';
+        appName = 'Unit-e';
     switch (process.platform) {
       case 'linux': {
         dir = prepareDir(homeDir, '.' + appName.toLowerCase()).result;

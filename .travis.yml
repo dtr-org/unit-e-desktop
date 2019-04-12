@@ -9,8 +9,8 @@ addons:
     sources:
       - google-chrome
     packages:
-      - google-chrome-stable
-      - google-chrome-beta
+      # - google-chrome-stable
+      # - google-chrome-beta
       - icnsutils
       - graphicsmagick
       - curl
@@ -66,9 +66,9 @@ script:
   - yarn run travis:test
   - echo -en 'travis_fold:end:script.test\\r'
 
-  - echo 'End-to-end Tests' && echo -en 'travis_fold:start:script.e2e\\r'
-  - yarn run travis:e2e
-  - echo -en 'travis_fold:end:script.e2e\\r'
+  # - echo 'End-to-end Tests' && echo -en 'travis_fold:start:script.e2e\\r'
+  # - yarn run travis:e2e
+  # - echo -en 'travis_fold:end:script.e2e\\r'
 
   - if [[ $TRUE_COMMIT_MESSAGES == *"+build"* ]]; then ./nightly.sh; fi;
 

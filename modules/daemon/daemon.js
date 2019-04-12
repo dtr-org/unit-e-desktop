@@ -208,7 +208,7 @@ function askForDeletingCookie() {
       electron.dialog.showMessageBox({
         type: 'warning',
         buttons: ['Yes', 'No'],
-        message: `It seems like you already have an instance of UnitE running, do you want to connect to that instead?
+        message: `It seems like you already have an instance of unit-e running, do you want to connect to that instead?
                   If you think you're having issues starting the application, select no.`
       }, (response) => {
         if (response === 1) {
@@ -226,7 +226,7 @@ function askForDeletingCookie() {
 }
 
 /**
- * Generate the list of command-line arguments for the Unit-e daemon based on
+ * Generate the list of command-line arguments for the unit-e daemon based on
  * the wallet startup options.
  */
 function getDaemonArgs(options, wallets) {

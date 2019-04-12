@@ -99,7 +99,7 @@ var getAssetDetails = function (asset, hashes, version) {
   }
 
   // add .exe extension for windows binaries
-  var bin = `united${data.platform === 'win' ? '.exe' : ''}`
+  var bin = `unit-e${data.platform === 'win' ? '.exe' : ''}`
   // return asset only if it is fully compliant
   return (data.platform && data.arch && data.type ? {
     platform: data.platform,
@@ -110,13 +110,13 @@ var getAssetDetails = function (asset, hashes, version) {
         url: asset.browser_download_url,
         type: data.type,
         sha256: data.sha256,
-        bin: `unite-${version}/bin/${bin}`
+        bin: `unit-e-${version}/bin/${bin}`
       },
       bin: bin,
       commands: {
         sanity: {
           args: ["-version"],
-          output: ["UnitE Core Daemon", version]
+          output: ["unit-e daemon", version]
         }
       }
     }
@@ -152,7 +152,7 @@ var getHashesForPlatform = function (platform, path, hashes) {
 
 /*
  * Entry point
- * get UnitE latest release files
+ * get unit-e latest release files
  */
 got(`${releasesURL}`).then(response => {
   const body = JSON.parse(response.body);

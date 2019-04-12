@@ -38,7 +38,7 @@ exports.init = function (mainWindow) {
 
 /*
     Sends a message to the Angular frontend, on the channel "zmq".
-    Subchannels can be anything "wtxhash", "smsg", .. (unite-core)
+    Subchannels can be anything "wtxhash", "smsg", .. (unit-e)
     TODO (maybe): promise structure?
 */
 exports.send = function(subchannel, ...data) {

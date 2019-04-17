@@ -28,7 +28,7 @@
       <mat-form-field class="spaced">
         <input matInput type="number" name="custom_fee"
                [(ngModel)]="customFee" [disabled]="send.feeDetermination !== 'custom'"
-               (change)="updateCustomFee()"
+               (change)="changeCustomFee()"
                step="0.00001">
       </mat-form-field>
       <span>UTE/kbyte</span>

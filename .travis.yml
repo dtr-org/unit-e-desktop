@@ -55,6 +55,10 @@ script:
   - yarn run travis:test
   - echo -en 'travis_fold:end:script.test\\r'
 
+  - echo 'Package Test' && echo -en 'travis_fold:start:script.package\\r'
+  - yarn run package:linux
+  - echo -en 'travis_fold:end:script.package\\r'
+
   - if [[ $TRUE_COMMIT_MESSAGES == *"+build"* ]]; then ./nightly.sh; fi;
 
   - echo 'Done!'

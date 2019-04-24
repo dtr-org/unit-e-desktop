@@ -117,18 +117,29 @@ export class TransactionsTableComponent implements OnInit {
     return (this.expandedTransactionID === tx.getExpandedTransactionID());
   }
 
-  public styleConfimations(confirm: number): string {
+  public styleConfimations(tx: Transaction): string {
+    if (tx.finalized) {
+      return 'confirm-ok';
+    }
+
+    let confirm = tx.confirmations;
     if (confirm <= 0) {
       return 'confirm-none';
     } else if (confirm >= 1 && confirm <= 4) {
       return 'confirm-1';
-    } else if (confirm >= 5 && confirm <= 8) {
+    } else if (confirm < 50) {
       return 'confirm-2';
-    } else if (confirm >= 9 && confirm <= 12) {
-      return 'confirm-3'
     } else {
-      return 'confirm-ok';
+      return 'confirm-3'
     }
+  }
+
+  public getConfirmationText(tx: Transaction): string {
+    return tx.finalized ? 'Final' : tx.confirmations.toString();
+  }
+
+  public getConfirmationTooltip(tx: Transaction): string {
+    return tx.finalized ? `${tx.confirmations} confirmations` : `Confirmations`;
   }
 
   public resetPagination(): void {

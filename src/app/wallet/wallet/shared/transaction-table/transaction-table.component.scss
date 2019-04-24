@@ -12,6 +12,7 @@
   // confirmations
   .history_confirmation {
     color: $text-muted;
+    white-space: nowrap;
     .confirmations { // icon
       margin-right: 3px;
       font-size: 12px;
@@ -31,7 +32,7 @@
       color: mix($color-alert, $color-warning, 0%);
     }
     &.confirm-ok {
-      color: lighten($text-muted, 20%);
+      color: $color-success;
     }
   }
 

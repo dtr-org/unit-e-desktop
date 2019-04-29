@@ -56,7 +56,7 @@ the wallet GUI in development mode are:
 
 1. Start the Unit-e daemon with `united -regtest`.
 2. In a terminal, run `ng serve --env=regtest` to start the Angular dev server and keep it running
-3. In another terminal, run `yarn run start:electron:dev --regtest --devtools` to
+3. In another terminal, run `yarn run start:electron:dev --regtest` to
    start the Electron application.
    * Note: this command will auto-refresh the client on each saved change
 
@@ -66,7 +66,7 @@ directly, using the `unite-cli` program.
 Alternatively, if you want the daemon process to be managed by the wallet GUI, you may skip
 step 1 above, and change the `yarn` command in step 3 as follows:
 
-    yarn run start:electron:dev --regtest --devtools --daemonpath=<path/to/united>
+    yarn run start:electron:dev --regtest --daemonpath=<path/to/united>
 
 This will instruct the wallet GUI to launch a Unit-e daemon in the background.
 
@@ -74,7 +74,8 @@ This will instruct the wallet GUI to launch a Unit-e daemon in the background.
 
 The command-line flags for the Electron application are:
    * `--v` – enable verbose logging to the terminal.
-   * `--devtools` – automatically open Chrome Developer Tools on client launch.
+   * `--dev` – start the wallet GUI in developer mode. This automatically open Chrome Developer Tools on client launch.
+     Note that the developer mode requires that you start an Angular development server in another terminal (as shown above)
    * `--devport=XXX` – connect to the Angular development server on a port other than the default of 4200.
    * `--datadir=<dir>` – specify the directory to store the wallet and blockchain data
    * `--rpcport=<port>`, `--rpcuser=<user>`, `--rpcpassword=<password>`, `--rpcbind=<ip>` – set custom Unit-e JSON-RPC connection parameters

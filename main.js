@@ -122,7 +122,7 @@ function initMainWindow() {
   });
 
   // and load the index.html of the app.
-  if (options.devport) {
+  if (options.dev) {
     mainWindow.loadURL(`http://localhost:${options.devport}`);
   } else {
     mainWindow.loadURL(url.format({
@@ -133,7 +133,7 @@ function initMainWindow() {
   }
 
   // Open the DevTools.
-  if (options.devtools) {
+  if (options.dev) {
     mainWindow.webContents.openDevTools()
   }
 

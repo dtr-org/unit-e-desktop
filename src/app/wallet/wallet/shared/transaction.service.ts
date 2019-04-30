@@ -213,6 +213,13 @@ export class TransactionService implements OnDestroy {
     setTimeout(this.loadTransactions.bind(this), 1000);
   }
 
+  /**
+   * Return a transaction's URL in Block Explorer
+   */
+  getTransactionUrl(tx: Transaction): string {
+    return `https://blockbook.thirdhash.com/tx/${tx.txid}`;
+  }
+
   getExportBaseName(): string {
     const now = new Date();
     const dateString = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;

@@ -122,7 +122,7 @@ export class TransactionsTableComponent implements OnInit {
       return 'confirm-ok';
     }
 
-    let confirm = tx.confirmations;
+    const confirm = tx.confirmations;
     if (confirm <= 0) {
       return 'confirm-none';
     } else if (confirm >= 1 && confirm <= 4) {

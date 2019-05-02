@@ -67,6 +67,10 @@ export class CoreModule {
   }
 }
 
+export function _(text: string): string {
+  return text;
+}
+
 export { IpcService } from './ipc/ipc.service';
 export { RpcService, Commands } from './rpc/rpc.service';
 export { RpcStateService } from './rpc/rpc-state/rpc-state.service';

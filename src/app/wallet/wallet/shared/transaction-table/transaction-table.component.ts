@@ -22,7 +22,7 @@ import { Log } from 'ng2-logger'
 import { Observable } from 'rxjs';
 
 import { slideDown } from 'app/core-ui/core.animations';
-import { RpcService } from 'app/core/core.module';
+import { RpcService, _ } from 'app/core/core.module';
 import { Transaction } from '../transaction.model';
 import { TransactionService } from '../transaction.service';
 import { BumpFeeModalComponent } from './bump-fee-modal/bump-fee-modal.component';
@@ -135,11 +135,11 @@ export class TransactionsTableComponent implements OnInit {
   }
 
   public getConfirmationText(tx: Transaction): string {
-    return tx.finalized ? 'Final' : tx.confirmations.toString();
+    return tx.finalized ? _('Final') : tx.confirmations.toString();
   }
 
   public getConfirmationTooltip(tx: Transaction): string {
-    return tx.finalized ? `${tx.confirmations} confirmations` : `Confirmations`;
+    return tx.finalized ? (`${tx.confirmations} ` + _('confirmations')) : _('Confirmations');
   }
 
   public resetPagination(): void {

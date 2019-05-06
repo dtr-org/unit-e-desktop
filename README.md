@@ -74,7 +74,7 @@ This will instruct the wallet GUI to launch a Unit-e daemon in the background.
 
 The command-line flags for the Electron application are:
    * `--v` – enable verbose logging to the terminal.
-   * `--dev` – start the wallet GUI in developer mode. This automatically open Chrome Developer Tools on client launch.
+   * `--dev` – start the wallet GUI in developer mode. This automatically opens Chrome Developer Tools on client launch.
      Note that the developer mode requires that you start an Angular development server in another terminal (as shown above)
    * `--devport=XXX` – connect to the Angular development server on a port other than the default of 4200.
    * `--datadir=<dir>` – specify the directory to store the wallet and blockchain data

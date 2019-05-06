@@ -67,7 +67,7 @@ export class CoreModule {
   }
 }
 
-export function _(text: string): string {
+export function TEXT(text: string): string {
   return text;
 }
 

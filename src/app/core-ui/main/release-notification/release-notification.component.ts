@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2017-2018 The Particl developers
+ * Copyright (C) 2018-2019 The Unit-e developers
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,6 +58,10 @@ export class ReleaseNotificationComponent implements OnInit, OnDestroy {
   getCurrentClientVersion() {
     this.clientVersionService.getCurrentVersion()
       .subscribe((response: ReleaseNotification) => {
+        if (!response) {
+          return;
+        }
+
         if (response.tag_name) {
           this.latestClientVersion = response.tag_name.substring(1);
         }

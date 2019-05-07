@@ -140,7 +140,7 @@ export class TransactionsTableComponent implements OnInit {
   }
 
   public getConfirmationTooltip(tx: Transaction): string {
-    return tx.finalized ? (`${tx.confirmations} ` + TEXT('Confirmations (Final)')) : TEXT('Confirmations');
+    return `${tx.confirmations} ` + (tx.finalized ? TEXT('Confirmations (Final)') : TEXT('Confirmations'));
   }
 
   public resetPagination(): void {

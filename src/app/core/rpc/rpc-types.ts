@@ -177,3 +177,17 @@ export class TransactionInfo {
   category: string;
   outputs: TransactionOutput[];
 }
+
+export enum AddressPurpose {
+  ANY = 0,
+  RECEIVE = 1,
+  SEND = 2,
+}
+
+// Address, as returned by `filteraddresses`
+export class Address {
+  address: string;
+  label: string;
+  owned: boolean;
+  timestamp: number;
+}

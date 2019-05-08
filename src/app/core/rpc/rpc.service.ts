@@ -28,6 +28,7 @@ import { IpcService } from '../ipc/ipc.service';
 import { environment } from '../../../environments/environment';
 import { Commands } from './commands';
 import {
+  Address,
   BumpFeeResult,
   CoinControl,
   Outputs,
@@ -35,6 +36,7 @@ import {
   UnspentOutput,
   TransactionInfo,
   WalletInfo,
+  AddressPurpose,
 } from './rpc-types';
 import { Amount } from '../util/amount';
 import { amountConverter } from './rpc-conversions';
@@ -161,15 +163,18 @@ export class RpcService implements OnDestroy {
     return this.call(Commands.BUMPFEE, [txid, options, testFee]);
   }
 
-  filterAddresses(offset?: number, count?: number, sort_code?: 0 | 1, search?: string, match_owned?: 0 | 1 | 2) {
+  filterAddresses(offset?: number, count?: number, match_owned?: AddressPurpose): Observable<Address[]> {
     offset = offset || 0;
     count = count || null;
-    sort_code = sort_code || 0;
-    search = search || '';
-    match_owned = match_owned || 0;
+    match_owned = match_owned || AddressPurpose.ANY;
+
+    // Always return the newest addresses first
+    const sort_code = 1;
+    const search = '';
+    const sort_key = 'timestamp';
 
     return this.call(Commands.FILTERADDRESSES, [
-      offset, count, sort_code, search, match_owned
+      offset, count, sort_key, sort_code, search, match_owned
     ]);
   }
 

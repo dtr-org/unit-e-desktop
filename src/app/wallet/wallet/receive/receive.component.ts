@@ -23,6 +23,7 @@ import { Log } from 'ng2-logger';
 
 import { RpcService, RpcStateService, Commands } from '../../../core/core.module';
 import { ModalsHelperService } from 'app/modals/modals.module';
+import { Address, AddressPurpose } from 'app/core/rpc/rpc-types';
 
 import { AddAddressLabelComponent } from './modals/add-address-label/add-address-label.component';
 import { SignatureAddressModalComponent } from '../shared/signature-address-modal/signature-address-modal.component';
@@ -247,17 +248,16 @@ export class ReceiveComponent implements OnInit {
       return;
     }
     */
-    this.rpc.filterAddresses(0, count, 0, '', 1)
+    this.rpc.filterAddresses(0, count, AddressPurpose.RECEIVE)
       .subscribe(
-        (resp: Array<any>) => this.rpc_loadAddresses_success(resp),
+        (resp: Array<Address>) => this.rpc_loadAddresses_success(resp),
         error => this.log.er('error', error));
   }
 
   /**
     * Used to get the addresses.
-    * @TODO: Create interface Array<AddressInterface?>
     */
-  rpc_loadAddresses_success(response: Array<any>): void {
+  rpc_loadAddresses_success(response: Array<Address>): void {
     const pub = response;
 
     if (pub.length > 0) {
@@ -267,8 +267,6 @@ export class ReceiveComponent implements OnInit {
     pub .forEach((val) => this.addAddress(val, 'public'));
 
     if (!!response[0]) {
-      this.sortArrays();
-
       this.selectAddress(this.addresses[this.type][0]);
     }
 
@@ -304,7 +302,8 @@ export class ReceiveComponent implements OnInit {
       if (!!response.path) {
         tempAddress.id = response.path.replace('m/0/', '');
       }
-      this.addresses.public.unshift(tempAddress);
+    // Preserve the order in which we received the addresses
+    this.addresses.public.push(tempAddress);
   }
 
   /** Sorts the address by id (= HD wallet path m/0/0 < m/0/1) */

@@ -22,6 +22,7 @@ import { Observable, Observer } from 'rxjs'; // use this for testing atm
 
 import { Address, deserialize } from './address.model';
 import { RpcService, Commands } from '../../../core/core.module';
+import { AddressPurpose } from 'app/core/rpc/rpc-types';
 
 
 @Injectable()
@@ -96,11 +97,11 @@ export class AddressService {
 
   private rpc_filterAddresses() {
     if (this.typeOfAddresses === 'send') {
-      return this._rpc.filterAddresses(0, this.addressCount, 0, '',  2);
+      return this._rpc.filterAddresses(0, this.addressCount, AddressPurpose.SEND);
     }  else if (this.typeOfAddresses === 'receive') {
-      return this._rpc.filterAddresses(0, this.addressCount, 0, '',  1);
+      return this._rpc.filterAddresses(0, this.addressCount, AddressPurpose.RECEIVE);
     } else {
-      return this._rpc.filterAddresses(0, this.addressCount, 0, '');
+      return this._rpc.filterAddresses(0, this.addressCount);
     }
   }
 

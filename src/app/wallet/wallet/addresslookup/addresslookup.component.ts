@@ -26,6 +26,7 @@ import { RpcService, Commands } from '../../../core/core.module';
 import { AddressHelper } from '../../../core/util/utils';
 import { AddressLookUpCopy } from '../models/address-look-up-copy';
 import { Contact } from './contact.model';
+import { AddressPurpose } from 'app/core/rpc/rpc-types';
 
 @Component({
   selector: 'app-addresslookup',
@@ -110,17 +111,17 @@ export class AddressLookupComponent implements OnInit {
     this._rpc.addressBookInfo()
       .subscribe(
         (response: any) => {
-          let typeInt: 0 | 1 | 2 = 0;
+          let purpose: AddressPurpose = AddressPurpose.ANY;
           if (this.type === 'send') {
-            typeInt = 2;
+            purpose = AddressPurpose.SEND;
             this._addressCount = response.num_send;
           } else {
             this.filter = 'Private';
-            typeInt = 1;
+            purpose = AddressPurpose.RECEIVE;
             this._addressCount = response.num_receive;
           }
           if (this._addressCount > 0) {
-            this._rpc.filterAddresses(0, this._addressCount, 0, '', typeInt)
+            this._rpc.filterAddresses(0, this._addressCount, purpose)
               .subscribe(
                 (success: any) => {
                   this.addressLookups = [];

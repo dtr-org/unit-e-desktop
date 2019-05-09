@@ -63,10 +63,6 @@ script:
 
   - echo 'Done!'
 
-# Disable coveralls for now
-after_script:
-  - npm run coveralls
-
 #deploy:
 #  - provider: releases
 #    api-key:

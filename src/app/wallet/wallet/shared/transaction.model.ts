@@ -53,6 +53,7 @@ export class Transaction {
     blockindex: number;
     blocktime: number;
     confirmations: number;
+    finalized: boolean;
 
     replaceable: boolean;
     abandoned: boolean;
@@ -90,6 +91,7 @@ export class Transaction {
     this.blockindex = json.blockindex;
     this.blocktime = json.blocktime;
     this.confirmations = json.confirmations;
+    this.finalized = json.finalized;
   }
 
   public getAddress(): string {
@@ -126,15 +128,6 @@ export class Transaction {
   public getExpandedTransactionID(): string {
     return this.txid + this.getAmountObject().toString() + this.category;
   }
-
-
-  public getConfirmationCount(confirmations: number): string {
-    if (this.confirmations > 12) {
-      return '12+';
-    }
-    return this.confirmations.toString();
-  }
-
 
   /* Amount stuff */
   public getAmount(): Amount {

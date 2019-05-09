@@ -22,7 +22,7 @@ import { Log } from 'ng2-logger'
 import { Observable } from 'rxjs';
 
 import { slideDown } from 'app/core-ui/core.animations';
-import { RpcService } from 'app/core/core.module';
+import { RpcService, TEXT } from 'app/core/core.module';
 import { Transaction } from '../transaction.model';
 import { TransactionService } from '../transaction.service';
 import { BumpFeeModalComponent } from './bump-fee-modal/bump-fee-modal.component';
@@ -117,18 +117,30 @@ export class TransactionsTableComponent implements OnInit {
     return (this.expandedTransactionID === tx.getExpandedTransactionID());
   }
 
-  public styleConfimations(confirm: number): string {
+  public styleConfimations(tx: Transaction): string {
+    if (tx.finalized) {
+      return 'confirm-ok';
+    }
+
+    const confirm = tx.confirmations;
     if (confirm <= 0) {
       return 'confirm-none';
     } else if (confirm >= 1 && confirm <= 4) {
       return 'confirm-1';
-    } else if (confirm >= 5 && confirm <= 8) {
+    } else if (confirm < 50) {
       return 'confirm-2';
-    } else if (confirm >= 9 && confirm <= 12) {
-      return 'confirm-3'
     } else {
-      return 'confirm-ok';
+      return 'confirm-3'
     }
+  }
+
+  public getConfirmationText(tx: Transaction): string {
+    // For finalized transactions, just show the checkmark
+    return tx.finalized ? '' : tx.confirmations.toString();
+  }
+
+  public getConfirmationTooltip(tx: Transaction): string {
+    return `${tx.confirmations} ` + (tx.finalized ? TEXT('Confirmations (Final)') : TEXT('Confirmations'));
   }
 
   public resetPagination(): void {

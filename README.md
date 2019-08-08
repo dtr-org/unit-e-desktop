@@ -2,15 +2,16 @@
 
 ![UI Preview](preview.png)
 
-> *"UnitE is an open source project that aims to provide a lean way to make payments on the internet."*
+> *"Unit-e is an open source project that aims to provide a lean way to make payments on the internet."*
 
-This repository is the user interface that works in combination with our [`unite-core`](https://github.com/drt-org/unit-e).
+This repository is the user interface that works in combination with the
+[`unit-e`](https://github.com/drt-org/unit-e) client.
 
 [Download the packaged wallet for Mac, Windows and Linux](https://github.com/dtr-org/unit-e-desktop/releases)
 
 ## Code of conduct
 
-The UnitE team is committed to fostering a welcoming and harassment-free
+The Unit-e team is committed to fostering a welcoming and harassment-free
 environment. All participants are expected to adhere to our [code of
 conduct](CODE_OF_CONDUCT.md).
 
@@ -125,7 +126,7 @@ Join us in `#unite-core-dev` on FreeNode or on our developer [mailing list](http
 
 ## Copyright
 
-Copyright (C) 2018 UnitE Maintainers.
+Copyright (C) 2018 Unit-e Maintainers.
 
 Portions copyright (C) 2017-2018 Particl Maintainers.
 

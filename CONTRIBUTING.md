@@ -1,8 +1,8 @@
 # Contributing guidelines
 
-See the [UnitE contributing
+See the [unit-e contributing
 guidelines](https://github.com/dtr-org/unit-e/blob/master/CONTRIBUTING.md). We
-follow the same process for the desktop UI as we do for all other UnitE
+follow the same process for the desktop UI as we do for all other Unit-e
 software.
 
 There is one notable difference. The desktop UI is licensed under the GPLv2 not

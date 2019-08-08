@@ -18,8 +18,8 @@ A clear and concise description of what you expected to happen.
 
 **Environment**
 * OS: [e.g. Ubuntu 18.4, MacOS 10.13.6]
-* UnitE version: [e.g. compiled from source from git revision 907fc4f]
-* UnitE UI version: [e.g. version 0.1 from the GitHub release page]
+* unit-e version: [e.g. compiled from source from git revision 907fc4f]
+* unit-e-desktop version: [e.g. version 0.1 from the GitHub release page]
 * Any other relevant system information
 
 **Additional context**
